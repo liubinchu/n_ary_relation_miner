@@ -354,7 +354,6 @@ public class RDFDatabase {
         //db.setAutoCommit(false);
         // build_table(db);
         change_int_double(db);
-        DataBaseTools dataBaseTools = new DataBaseTools();
-        dataBaseTools.seperateTriples(dataBaseTools,db,db);
+        DataBaseTools.seperateTriples(db,db);
     }
 }

@@ -38,7 +38,7 @@ public class DataBaseTools {
         return "illegal node id";
     }
 
-    public boolean add_types_string(Connection connection) {
+    public static boolean add_types_string(Connection connection) {
         try {
             Statement statement = connection.createStatement();
             add_types_stringSQL(statement, "String,combine 2,9,13,14,19,20");
@@ -56,14 +56,14 @@ public class DataBaseTools {
         }
     }
 
-    private boolean add_types_stringSQL(Statement statement, String content) throws SQLException {
+    private static boolean add_types_stringSQL(Statement statement, String content) throws SQLException {
         Integer nextIdtypes_string = statement.executeQuery("select max (id) from types_string").getInt(1) + 1;
         String s = "INSERT INTO types_string (id,type_string) VALUES (" + nextIdtypes_string + ", '" + content + "')";
         statement.executeUpdate(s);
         return true;
     }
 
-    public boolean addType_mapping(Connection connection) {
+    public static boolean addType_mapping(Connection connection) {
         try {
             Statement statement = connection.createStatement();
             addType_mappingSQL(statement, "String", 24);
@@ -81,7 +81,7 @@ public class DataBaseTools {
         }
     }
 
-    private boolean addType_mappingSQL(Statement statement, String content, Integer string_type_id) throws SQLException {
+    private static boolean addType_mappingSQL(Statement statement, String content, Integer string_type_id) throws SQLException {
         Integer nextIdtypes_string = statement.executeQuery("select max (id) from mapping").getInt(1) + 1;
         String s = "INSERT INTO mapping (id,content,string_type_id) VALUES ("
                 + nextIdtypes_string
@@ -95,7 +95,7 @@ public class DataBaseTools {
         return true;
     }
 
-    public boolean addType_types_node(Connection connection) {
+    public static boolean addType_types_node(Connection connection) {
         try {
             Statement statement = connection.createStatement();
             addType_types_nodeSQL(statement, 16576049);
@@ -113,7 +113,7 @@ public class DataBaseTools {
         }
     }
 
-    private boolean addType_types_nodeSQL(Statement statement, Integer types_id) throws SQLException {
+    private static boolean addType_types_nodeSQL(Statement statement, Integer types_id) throws SQLException {
         Integer nextIdtypes_string = statement.executeQuery("select max (id) from types_node").getInt(1) + 1;
         String s = "INSERT INTO types_node (id,types_id) VALUES ("
                 + nextIdtypes_string
@@ -125,7 +125,7 @@ public class DataBaseTools {
         return true;
     }
 
-    private ArrayList<Integer> selelctNodes(Connection connection, int[] nodes) throws Exception {
+    private static ArrayList<Integer> selelctNodes(Connection connection, int[] nodes) throws Exception {
         Statement statement = connection.createStatement();
         if (nodes == null || nodes.length == 0) {
             throw new Exception("nodes is empty or null");
@@ -143,11 +143,11 @@ public class DataBaseTools {
         while (resultSet.next()) {
             result.add(resultSet.getInt("id"));
         }
-        System.out.println(result);
+        //System.out.println(result);
         return result;
     }
 
-    public boolean addNodeType_triples_all(Connection connection, Integer nodeId, Integer typeId) {
+    public static boolean addNodeType_triples_all(Connection connection, Integer nodeId, Integer typeId) {
         try {
             Statement statement = connection.createStatement();
             addNodeType_triples_allSQL(statement, nodeId, typeId);
@@ -160,7 +160,7 @@ public class DataBaseTools {
         }
     }
 
-    private boolean addNodeType_triples_allSQL(Statement statement, Integer nodeId, Integer typeId) throws SQLException {
+    private static boolean addNodeType_triples_allSQL(Statement statement, Integer nodeId, Integer typeId) throws SQLException {
         Integer nextId = statement.executeQuery("select max (id) from triples_all").getInt(1) + 1;
         String s = "INSERT INTO triples_all (id,subject_id,predicate_id,object_id) VALUES ("
                 + nextId + ", "
@@ -173,7 +173,7 @@ public class DataBaseTools {
         return true;
     }
 
-    public boolean addNodeType_nodes_type(Connection connection, Integer nodeId, Integer typeId) {
+    public static boolean addNodeType_nodes_type(Connection connection, Integer nodeId, Integer typeId) {
         try {
             Statement statement = connection.createStatement();
             addNodeType_nodes_typeSQL(statement, nodeId, typeId);
@@ -186,7 +186,7 @@ public class DataBaseTools {
         }
     }
 
-    private boolean addNodeType_nodes_typeSQL(Statement statement, Integer nodeId, Integer typeId) throws SQLException {
+    private static boolean addNodeType_nodes_typeSQL(Statement statement, Integer nodeId, Integer typeId) throws SQLException {
         Integer nextId = statement.executeQuery("select max (id) from nodes_type").getInt(1) + 1;
         String s = "INSERT INTO nodes_type (id,node_id,type_id) VALUES ("
                 + nextId + ", "
@@ -202,45 +202,45 @@ public class DataBaseTools {
      * "2013-05-07T10:03:15Z"^^http://www.w3.org/2001/XMLSchema#dateTime 存在这样的数据 需要将其 拆分 得到标签
      * @return
      */
-    public boolean seperateTriples(DataBaseTools dataBaseTools ,Connection readOnly, Connection readWrite) throws SQLException {
+    public static boolean seperateTriples(Connection readOnly, Connection readWrite) throws SQLException {
         try {
-            dataBaseTools.add_types_string(readWrite);
-            dataBaseTools.addType_mapping(readWrite);
-            dataBaseTools.addType_types_node(readWrite);
-            ArrayList<Integer> nodesString = dataBaseTools.selelctNodes(readOnly, new int[]{2, 9, 13, 14, 19, 20});
+            add_types_string(readWrite);
+            addType_mapping(readWrite);
+            addType_types_node(readWrite);
+            ArrayList<Integer> nodesString = selelctNodes(readOnly, new int[]{2, 9, 13, 14, 19, 20});
             for(Integer nodeString :nodesString){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeString, 16576049);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeString, 16576049);
+                addNodeType_triples_all(readWrite, nodeString, 16576049);
+                addNodeType_nodes_type(readWrite, nodeString, 16576049);
             }
-            ArrayList<Integer> nodesTime = dataBaseTools.selelctNodes(readOnly, new int[]{3, 10, 22});
+            ArrayList<Integer> nodesTime = selelctNodes(readOnly, new int[]{3, 10, 22});
             for(Integer nodeTime :nodesTime){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeTime, 16576050);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeTime, 16576050);
+                addNodeType_triples_all(readWrite, nodeTime, 16576050);
+                addNodeType_nodes_type(readWrite, nodeTime, 16576050);
             }
-            ArrayList<Integer> nodesNumber = dataBaseTools.selelctNodes(readOnly, new int[]{4,6,7,8,12,15,18});
+            ArrayList<Integer> nodesNumber = selelctNodes(readOnly, new int[]{4,6,7,8,12,15,18});
             for(Integer nodeNumber :nodesNumber){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeNumber, 16576051);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeNumber, 16576051);
+                addNodeType_triples_all(readWrite, nodeNumber, 16576051);
+                addNodeType_nodes_type(readWrite, nodeNumber, 16576051);
             }
-            ArrayList<Integer> nodesBoolean = dataBaseTools.selelctNodes(readOnly, new int[]{5});
+            ArrayList<Integer> nodesBoolean = selelctNodes(readOnly, new int[]{5});
             for(Integer nodeBoolean :nodesBoolean){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeBoolean, 16576052);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeBoolean, 16576052);
+                addNodeType_triples_all(readWrite, nodeBoolean, 16576052);
+                addNodeType_nodes_type(readWrite, nodeBoolean, 16576052);
             }
-            ArrayList<Integer> nodesWebURI = dataBaseTools.selelctNodes(readOnly, new int[]{11});
+            ArrayList<Integer> nodesWebURI = selelctNodes(readOnly, new int[]{11});
             for(Integer nodeWebURI :nodesWebURI){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeWebURI, 16576053);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeWebURI, 16576053);
+                addNodeType_triples_all(readWrite, nodeWebURI, 16576053);
+                addNodeType_nodes_type(readWrite, nodeWebURI, 16576053);
             }
-            ArrayList<Integer> nodesName = dataBaseTools.selelctNodes(readOnly, new int[]{16});
+            ArrayList<Integer> nodesName = selelctNodes(readOnly, new int[]{16});
             for(Integer nodeName :nodesName){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeName, 16576054);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeName, 16576054);
+                addNodeType_triples_all(readWrite, nodeName, 16576054);
+                addNodeType_nodes_type(readWrite, nodeName, 16576054);
             }
-            ArrayList<Integer> nodesID = dataBaseTools.selelctNodes(readOnly, new int[]{17});
+            ArrayList<Integer> nodesID = selelctNodes(readOnly, new int[]{17});
             for(Integer nodeID :nodesID){
-                dataBaseTools.addNodeType_triples_all(readWrite, nodeID, 16576055);
-                dataBaseTools.addNodeType_nodes_type(readWrite, nodeID, 16576055);
+                addNodeType_triples_all(readWrite, nodeID, 16576055);
+                addNodeType_nodes_type(readWrite, nodeID, 16576055);
             }
             return true;
         } catch (Exception e) {
@@ -255,52 +255,16 @@ public class DataBaseTools {
 
     public static void main(String[] args) throws SQLException {
         DataBaseTools dataBaseTools = new DataBaseTools();
-        Connection dbC = dataBaseTools.sqliteConect("C:\\bioportal_full.sqlite");  // disk C  readonly for Java
-        Connection dbD = dataBaseTools.sqliteConect("D:\\bioportal.sqlite");
+        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal.sqlite");  // disk C  readonly for Java
         try {
-            //dataBaseTools.add_types_string(dbC);
-            //dataBaseTools.addType_mapping(dbC);
-            // dataBaseTools.addType_types_node(dbC);
-            ArrayList<Integer> nodesString = dataBaseTools.selelctNodes(dbC, new int[]{2, 9, 13, 14, 19, 20});
-            for(Integer nodeString :nodesString){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeString, 16576049);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeString, 16576049);
-            }
-            ArrayList<Integer> nodesTime = dataBaseTools.selelctNodes(dbC, new int[]{3, 10, 22});
-            for(Integer nodeTime :nodesTime){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeTime, 16576050);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeTime, 16576050);
-            }
-            ArrayList<Integer> nodesNumber = dataBaseTools.selelctNodes(dbC, new int[]{4,6,7,8,12,15,18});
-            for(Integer nodeNumber :nodesNumber){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeNumber, 16576051);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeNumber, 16576051);
-            }
-            ArrayList<Integer> nodesBoolean = dataBaseTools.selelctNodes(dbC, new int[]{5});
-            for(Integer nodeBoolean :nodesBoolean){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeBoolean, 16576052);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeBoolean, 16576052);
-            }
-            ArrayList<Integer> nodesWebURI = dataBaseTools.selelctNodes(dbC, new int[]{11});
-            for(Integer nodeWebURI :nodesWebURI){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeWebURI, 16576053);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeWebURI, 16576053);
-            }
-            ArrayList<Integer> nodesName = dataBaseTools.selelctNodes(dbC, new int[]{16});
-            for(Integer nodeName :nodesName){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeName, 16576054);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeName, 16576054);
-            }
-            ArrayList<Integer> nodesID = dataBaseTools.selelctNodes(dbC, new int[]{17});
-            for(Integer nodeID :nodesID){
-                dataBaseTools.addNodeType_triples_all(dbD, nodeID, 16576055);
-                dataBaseTools.addNodeType_nodes_type(dbD, nodeID, 16576055);
-            }
+            add_types_string(db);
+            addType_mapping(db);
+            addType_types_node(db);
+            seperateTriples(db,db);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            dbC.close();
-            dbD.close();
+            db.close();
         }
     }
 }
