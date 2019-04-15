@@ -255,7 +255,7 @@ public class DataBaseTools {
 
     public static void main(String[] args) throws SQLException {
         DataBaseTools dataBaseTools = new DataBaseTools();
-        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal.sqlite");  // disk C  readonly for Java
+        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal_full.sqlite");  // disk C  readonly for Java
         try {
             add_types_string(db);
             addType_mapping(db);

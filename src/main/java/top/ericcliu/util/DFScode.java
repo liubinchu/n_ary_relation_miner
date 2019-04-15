@@ -3,6 +3,7 @@ package top.ericcliu.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Table;
 import javafx.util.Pair;
+import org.apache.jena.base.Sys;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -174,7 +175,7 @@ public class DFScode implements Cloneable {
                         continue;
                     }
                     String fileName = file.getName();
-                    if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E'){
+                    if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E'&& file.length()>1){
                         String graphFile = fileName.split("Id_")[0];
                         Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json",""));
                         if(!graphFile.equals(lastGraphFile)){
@@ -226,7 +227,7 @@ public class DFScode implements Cloneable {
                     Map<Integer, DFScode> currentMap = new HashMap<>();
                     for(File reFile :reFiles){
                         String fileName = reFile.getName();
-                        if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E'){
+                        if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E' && reFile.length()>1){
                             String graphFile = dir.getName();
                             Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json",""));
                             System.out.println(dir.getAbsolutePath()+File.separator+fileName);
@@ -563,7 +564,7 @@ public class DFScode implements Cloneable {
 
         //String dirPath = "D:\\April9\\R_0.8\\P_all";
         //DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",true);
-        String dirPath = "D:\\R_1T_0.16\\";
-        DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",false);
+        String dirPath = "D:\\result_April14\\R_1T_0.04\\";
+        DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal_full.sqlite",false);
     }
 }
