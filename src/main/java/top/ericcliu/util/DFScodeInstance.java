@@ -16,7 +16,7 @@ import java.util.Set;
  * @author liubi
  * @date 2019-01-20 19:19
  **/
-public class DFScodeInstance implements  Cloneable{
+public class DFScodeInstance implements  Cloneable, SaveToFile{
     /**
      * row key : instance id
      * column key : node id of DFS code
@@ -32,26 +32,6 @@ public class DFScodeInstance implements  Cloneable{
         this.instances = HashBasedTable.create();
     }
 
-    public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
-        File file = new File(filePath);
-        FileWriter fileWriter;
-        if(file.exists()){
-            fileWriter = new FileWriter(filePath,isAppend);
-        }
-        else {
-            fileWriter = new FileWriter(filePath);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new GuavaModule());
-        try {
-            mapper.writeValue(fileWriter,this);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     /**
      * 向其中添加instance
      * @param instance
@@ -59,12 +39,11 @@ public class DFScodeInstance implements  Cloneable{
      *          value: node id of DFS code embedding in data graph, value is the node id in data graph
      * @return
      */
-    public boolean addInstance(DFScode dfScode,Map<Integer,Integer> instance){
+    public boolean addInstance(DFScode dfScode,Map<Integer,Integer> instance) throws Exception {
         Integer rowId =  this.instances.rowKeySet().size();
         for(Integer nodeId : instance.keySet()){
             if(!dfScode.getNodes().contains(nodeId)){
-                System.err.println("Do not have this node in DFS code");
-                return false;
+                throw new Exception("Do not have this node in DFS code");
             }
             else {
                 this.instances.put(rowId,nodeId,instance.get(nodeId));
@@ -73,10 +52,10 @@ public class DFScodeInstance implements  Cloneable{
         return true;
     }
 
-    public int getMNI(){
+    public int getMNI() throws Exception {
         int mni;
         if(this.instances.columnKeySet().size()==0){
-            mni = -1;
+            throw new Exception("illegal DFS code ");
         }
         else {
             mni = Integer.MAX_VALUE;
@@ -148,7 +127,5 @@ public class DFScodeInstance implements  Cloneable{
         System.out.println(instances.column(0).values());
         dfScodeInstance1.setInstances(instances);
         dfScodeInstance1.saveToFile("dfScodeInstance1.json",false);
-
-
     }
 }
