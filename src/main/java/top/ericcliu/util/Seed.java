@@ -3,13 +3,13 @@ package top.ericcliu.util;
 import java.util.Objects;
 import java.util.Set;
 
-public class Seed implements Comparable {
+public class Seed implements Comparable ,SaveToFile{
     private Integer typeId;
     private double purity;
     private Integer nodeNums;
-    private Set<Integer> commonEdges;
+    private Set<SeedEdge> commonEdges;
 
-    public Seed(Integer typeId, double purity, Integer nodeNums, Set<Integer> commonEdges) {
+    public Seed(Integer typeId, double purity, Integer nodeNums, Set<SeedEdge> commonEdges) {
         this.typeId = typeId;
         this.purity = purity;
         this.nodeNums = nodeNums;
@@ -18,6 +18,8 @@ public class Seed implements Comparable {
 
     public Seed() {
     }
+
+
 
     public Integer getTypeId() {
         return typeId;
@@ -43,11 +45,11 @@ public class Seed implements Comparable {
         this.nodeNums = nodeNums;
     }
 
-    public Set<Integer> getCommonEdges() {
+    public Set<SeedEdge> getCommonEdges() {
         return commonEdges;
     }
 
-    public void setCommonEdges(Set<Integer> commonEdges) {
+    public void setCommonEdges(Set<SeedEdge> commonEdges) {
         this.commonEdges = commonEdges;
     }
 

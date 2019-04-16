@@ -26,7 +26,6 @@ public class DFScodeString implements Cloneable , SaveToFile{
      */
     private Map<Integer, String> nodeLabelMap = new HashMap<>();
 
-
 /*    public DFScodeString(DFScodeJson dfScodeJson){
         ObjectMapper mapper = new ObjectMapper();
         this.edgeSeq = new ArrayList<>(dfScodeJson.getEdgeSeq().size());

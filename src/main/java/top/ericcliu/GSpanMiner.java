@@ -293,13 +293,13 @@ public class GSpanMiner {
         try {
             //String filePath = args[0];
             //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
-            //String filePath = "R_1T_10894041D_5.json";
-            //double dataSetSizeRelatedthreshold = 0.01;
-            //MultiLabelGraph graph = new MultiLabelGraph(filePath);
+            String filePath = "R_1T_8980078D_5.json";
+            double dataSetSizeRelatedthreshold = 0.01;
+            MultiLabelGraph graph = new MultiLabelGraph(filePath);
+            System.out.println("finish read file");
+            MultiLabelGraph big = new MultiLabelGraph(true);
 
-            MultiLabelGraph big = new MultiLabelGraph(false);
-
-            GSpanMiner miner = new GSpanMiner(big,1);
+            GSpanMiner miner = new GSpanMiner(graph,1);
             System.out.println(miner.getDataGraph().graphName);
             System.out.println("    MNISupportThreshold"+miner.MNIThreshold);
             miner.mineGSpan();
