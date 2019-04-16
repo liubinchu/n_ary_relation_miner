@@ -14,7 +14,7 @@ import java.util.Set;
  * @author liubi
  * @date 2019-04-09 14:51
  **/
-public class DFScodeString implements Cloneable {
+public class DFScodeString implements Cloneable , SaveToFile{
     /**
      * 边的集合，边的排序代表着边的添加次序
      */
@@ -67,41 +67,6 @@ public class DFScodeString implements Cloneable {
         }
     }
 
-
-
-
-
-   public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
-        File file = new File(filePath);
-        FileWriter fileWriter;
-        if(file.exists()){
-            fileWriter = new FileWriter(filePath,isAppend);
-        }
-        else {
-            fileWriter = new FileWriter(filePath);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(fileWriter,this);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public ArrayList<GSpanEdgeString> getEdgeSeq() {
-        return edgeSeq;
-    }
-
-    public Integer getMaxNodeId() {
-        return maxNodeId;
-    }
-
-    public Map<Integer, String> getNodeLabelMap() {
-        return nodeLabelMap;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -140,10 +105,6 @@ public class DFScodeString implements Cloneable {
     }
 
 
-
-
     public static void main(String[] args)  {
-
-
     }
 }

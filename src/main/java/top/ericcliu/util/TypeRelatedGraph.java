@@ -22,22 +22,15 @@ import java.util.*;
  */
 public class TypeRelatedGraph {
     private Integer typeId;
-    private List<Integer> nodes;
+    private Set<Integer> nodes;
     private List<Integer[]> triples;
     private Integer maxDeep;
-    private Multimap<Integer,Integer> nodeLabels;
+    private Multimap<Integer, Integer> nodeLabels;
 
     private static List<Integer> getNodesOfType(Connection db, Integer typeId) throws SQLException {
         Statement stmt = db.createStatement();
-        String sql = "SELECT COUNT(DISTINCT node_id) FROM \"nodes_type\" WHERE type_id =" + typeId.toString();
-        ResultSet res = stmt.executeQuery(sql);
-        Integer typesNum = res.getInt("COUNT(DISTINCT node_id)");
-        List<Integer> nodes = new ArrayList<>(typesNum);
-        res.close();
-        stmt.close();
-
-        sql = "SELECT DISTINCT node_id FROM \"nodes_type\" WHERE type_id =" + typeId.toString();
-        res = stmt.executeQuery(sql);
+        List<Integer> nodes = new ArrayList<>();
+        ResultSet res = stmt.executeQuery("SELECT DISTINCT node_id FROM \"nodes_type\" WHERE type_id =" + typeId.toString());
         while (res.next()) {
             nodes.add(res.getInt("node_id"));
         }
@@ -52,33 +45,38 @@ public class TypeRelatedGraph {
                                                    List<Integer[]> triples,
                                                    Integer maxDeep,
                                                    Multimap<Integer, Integer> nodeLabels
-    )throws SQLException {
+    ) throws SQLException {
         // deep controls the deep of recursion ie. the steps when generate triples from one node
         // 使用前 应在函数外 声明一个set<multimap> nodeLabels 用以记录 node 的label
-        if(deep >maxDeep) {return triples;}
-        if(triples == null){
+        if (deep > maxDeep) {
+            return triples;
+        }
+        if (triples == null) {
             triples = new ArrayList<Integer[]>();
         }
         // 查找 第一层节点label label 加入nodeLabels
         Statement stmt = db.createStatement();
-        String sql = "SELECT type_id FROM \"nodes_type\" WHERE node_id =" + nodeId.toString();
-        ResultSet res = stmt.executeQuery(sql);
-        while(res.next()){
-            nodeLabels.put(nodeId,res.getInt("type_id"));
+        ResultSet res;
+        if (deep.equals(1)) {
+            stmt = db.createStatement();
+            res = stmt.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + nodeId.toString());
+            while (res.next()) {
+                nodeLabels.put(nodeId, res.getInt("type_id"));
+            }
+            res.close();
+            stmt.close();
         }
-        res.close();
-        stmt.close();
-
-        // 查找 triple List<Integer[]> triples,
-        sql = "SELECT * FROM \"triples_all\" WHERE subject_id =" + nodeId.toString();
-        res = stmt.executeQuery(sql);
+        // 查找 triple List<Integer[]> triples
+        res = stmt.executeQuery("SELECT * FROM \"triples_all\" WHERE subject_id =" + nodeId.toString());
         Set<Integer> objects = new HashSet<>();
-        while(res.next()){
+        while (res.next()) {
             Integer[] triple = new Integer[3];
             triple[0] = res.getInt("subject_id");
             triple[1] = res.getInt("predicate_id");
             triple[2] = res.getInt("object_id");
-            if(triple[1] == 4 ) {continue;}
+            if (triple[1] == 4) {
+                continue;
+            }
             // http://www.w3.org/1999/02/22-rdf-syntax-ns#type
             objects.add(triple[2]);
             triples.add(triple);
@@ -86,29 +84,27 @@ public class TypeRelatedGraph {
         res.close();
         stmt.close();
         // 查找 object label 加入
-        for(Integer object : objects){
-            sql = "SELECT type_id FROM \"nodes_type\" WHERE node_id =" + object.toString();
-            res = stmt.executeQuery(sql);
+        for (Integer object : objects) {
+            res = stmt.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + object.toString());
             boolean haveType = false;
-            while(res.next()){
+            while (res.next()) {
                 haveType = true;
-                nodeLabels.put(object,res.getInt("type_id"));
+                nodeLabels.put(object, res.getInt("type_id"));
             }
             res.close();
             stmt.close();
-            if(haveType == false){
+            if (!haveType) {
                 // 该node为 literal
-                sql = "SELECT string_type_id FROM \"mapping\" WHERE id =" + object.toString();
-                res = stmt.executeQuery(sql);
-                while(res.next()){
-                    nodeLabels.put(object,-res.getInt("string_type_id"));
+                res = stmt.executeQuery("SELECT string_type_id FROM \"mapping\" WHERE id =" + object.toString());
+                while (res.next()) {
+                    nodeLabels.put(object, -res.getInt("string_type_id"));
                 }
             }
             res.close();
             stmt.close();
         }
-        for(Integer object:objects){
-            return generateTriples(db,object,deep+1,triples,maxDeep,nodeLabels);
+        for (Integer object : objects) {
+            generateTriples(db, object, deep + 1, triples, maxDeep, nodeLabels);
         }
         return triples;
     }
@@ -116,6 +112,7 @@ public class TypeRelatedGraph {
     /**
      * 从给定类型 typeID 下 的所有节点 nodeId ，向外搜索n步 生成同类型相关的子图、
      * 存储 typeId / type下的所有 nodeId / id形式的三元组
+     *
      * @param db
      * @param maxDeep
      * @param typeId
@@ -127,29 +124,38 @@ public class TypeRelatedGraph {
                                                            Integer typeId, String filePath, boolean saveToFile, double sampleRatio) throws Exception {
         // 使用前 应在函数外 声明一个set<multimap> nodeLabels 用以记录 node 的label
 
-        List<Integer> OriginNodes = getNodesOfType(db,typeId);
-        int sampleQuantity = (int) (OriginNodes.size()*sampleRatio);
-        Random random  = new Random();
-        List<Integer> nodes = new ArrayList<>(sampleQuantity);
-        for(int i=0;i<sampleQuantity;i++){
-            nodes.add(random.nextInt(OriginNodes.size()-1));
+        List<Integer> originNodes = getNodesOfType(db, typeId);
+
+        int sampleNum = (int) (originNodes.size() * sampleRatio);
+        Random random = new Random();
+        Set<Integer> nodeIndexes = new HashSet<>(sampleNum);
+        for (int i = 0; i < sampleNum; i++) {
+            Integer nextNodeIndex = random.nextInt(originNodes.size() - 1);
+            while (nodeIndexes.contains(nextNodeIndex)) {
+                nextNodeIndex = (nextNodeIndex + 1) % sampleNum;
+            }
+            nodeIndexes.add(nextNodeIndex);
+        }
+        Set<Integer> nodes = new HashSet<>(sampleNum);
+        for (Integer index : nodeIndexes) {
+            nodes.add(originNodes.get(index));
         }
 
         List<Integer[]> triples = null;
-        Multimap<Integer,Integer> nodeLabels =  TreeMultimap.create();
-        for(Integer nodeId : nodes ){
-            triples = generateTriples(db,nodeId,1,triples,maxDeep,nodeLabels);
+        Multimap<Integer, Integer> nodeLabels = TreeMultimap.create();
+        for (Integer nodeId : nodes) {
+            triples = generateTriples(db, nodeId, 1, triples, maxDeep, nodeLabels);
         }
-        TypeRelatedGraph typeRelatedGraph = new TypeRelatedGraph(typeId, nodes, triples,maxDeep,nodeLabels);
-        if(saveToFile){
+
+        TypeRelatedGraph typeRelatedGraph = new TypeRelatedGraph(typeId, nodes, triples, maxDeep, nodeLabels);
+        if (saveToFile) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new GuavaModule());
             // 增加jackson 对google guava的支持
             File resultFile = new File(filePath);
-            if(resultFile.createNewFile()){
-                mapper.writeValue(resultFile,typeRelatedGraph);
-            }
-            else {
+            if (resultFile.createNewFile()) {
+                mapper.writeValue(resultFile, typeRelatedGraph);
+            } else {
                 throw new Exception("file already exist");
             }
         }
@@ -159,14 +165,13 @@ public class TypeRelatedGraph {
     public static TypeRelatedGraph readFromFile(String filePath) throws Exception {
         File file = new File(filePath);
         TypeRelatedGraph typeRelatedGraph;
-        if(file.exists()){
+        if (file.exists()) {
             // 增加jackson 对google guava的支持
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new GuavaModule());
             typeRelatedGraph = mapper.readValue(file, TypeRelatedGraph.class);
 
-        }
-        else {
+        } else {
             throw new Exception("file does not exist");
         }
         return typeRelatedGraph;
@@ -174,6 +179,7 @@ public class TypeRelatedGraph {
 
     public TypeRelatedGraph() {
     }
+
     public TypeRelatedGraph(TypeRelatedGraph s) {
         this.typeId = s.typeId;
         this.nodes = s.nodes;
@@ -182,7 +188,7 @@ public class TypeRelatedGraph {
         this.nodeLabels = s.nodeLabels;
     }
 
-    public TypeRelatedGraph(Integer typeId, List<Integer> nodes, List<Integer[]> triples, Integer maxDeep, Multimap nodeLabels) {
+    public TypeRelatedGraph(Integer typeId, Set<Integer> nodes, List<Integer[]> triples, Integer maxDeep, Multimap nodeLabels) {
         this.typeId = typeId;
         this.nodes = nodes;
         //当前类型下的所有节点 ， 子图的起始节点
@@ -194,40 +200,20 @@ public class TypeRelatedGraph {
         // 子图中所有出现过的节点 (不限制于第一层节点) 的类型标签
     }
 
-    public Multimap<Integer,Integer> getNodeLabels() { return nodeLabels; }
-
-    public void setNodeLabels(Multimap<Integer,Integer> nodeLabels) { this.nodeLabels = nodeLabels; }
-
-    public Integer getMaxDeep(){
-        return this.maxDeep;
-    }
-
-    public void setMaxDeep(Integer maxDeep){
-        this.maxDeep = maxDeep;
+    public Multimap<Integer, Integer> getNodeLabels() {
+        return nodeLabels;
     }
 
     public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
-
-    public List<Integer> getNodes() {
+    public Set<Integer> getNodes() {
         return nodes;
-    }
-
-    public void setNodes(List<Integer> nodes) {
-        this.nodes = nodes;
     }
 
     public List<Integer[]> getTriples() {
         return triples;
-    }
-
-    public void setTriples(List<Integer[]> triples) {
-        this.triples = triples;
     }
 
     @Override
@@ -247,7 +233,7 @@ public class TypeRelatedGraph {
 
     @Override
     public int hashCode() {
-        return Objects.hash(typeId, nodes, triples,maxDeep);
+        return Objects.hash(typeId, nodes, triples, maxDeep);
     }
 
     @Override
@@ -261,16 +247,15 @@ public class TypeRelatedGraph {
     }
 
     public static void main(String[] args) throws Exception {
-        DataBaseTools dataBaseTools = new DataBaseTools();
-        Connection db = dataBaseTools.sqliteConect("C:\\bioportal.sqlite");
         //8980078
-        Integer maxDeep = 10;
-        Integer typeId = 8980078;
-       // String filePath = "typeRelatedGraph"+typeId+".json";
-        String filePath = "TRG_Ratio" + "0.001" + "typeId" + typeId;
-        
-        TypeRelatedGraph extractAndWirteTest = TypeRelatedGraph.extractTypeRelatedGraph(db,maxDeep,typeId,filePath,true,1);
+        Integer maxDeep = 5;
+        Integer typeId = 10894041;
+        // String filePath = "typeRelatedGraph"+typeId+".json";
+        String filePath = "R_" + "1" + "T_" + typeId+"D_"+maxDeep+".json";
+        DataBaseTools dataBaseTools = new DataBaseTools();
+        Connection db = dataBaseTools.sqliteConect("C:\\bioportal_full.sqlite");
+        TypeRelatedGraph extractAndWirteTest = TypeRelatedGraph.extractTypeRelatedGraph(db, maxDeep, typeId, filePath, true, 1);
         TypeRelatedGraph readTest = TypeRelatedGraph.readFromFile(filePath);
+        //System.out.println(readTest.getNodeLabels().get(10894041));
     }
-
 }
