@@ -20,10 +20,10 @@ public class SeedsCalculator {
     private static Set<Integer> subMetaData = new HashSet<>();
     private static Set<Integer> predMetaData = new HashSet<>();
     private static Set<Integer> objMetaData = new HashSet<>();
-    //private final static String dataBaseFile = "/home/lbc/bioportal1.sqlite";
-    private static String dataBaseFile = "C:\\bioportal1.sqlite";
-    private final static String outPutFileName = "seeds_withMetaData.json";
-    private static Connection db = new DataBaseTools().sqliteConect(dataBaseFile);
+    private final static String DATA_BASE_PATH = "/home/lbc/bioportal1.sqlite";
+    //private static String DATA_BASE_PATH = "C:\\bioportal1.sqlite";
+    private final static String OUT_PUT_FILE_NAME = "seeds1"+".json";
+    private static Connection db = new DataBaseTools().sqliteConect(DATA_BASE_PATH);
 
    static {
         try {
@@ -211,7 +211,7 @@ public class SeedsCalculator {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new GuavaModule());
 
-            File seedFile = new File(outPutFileName);
+            File seedFile = new File(OUT_PUT_FILE_NAME);
             if (seedFile.exists()) {
                 throw new Exception("file already exist");
             } else if (seedFile.createNewFile()) {
@@ -229,7 +229,7 @@ public class SeedsCalculator {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new GuavaModule());
 
-            File seedFile = new File("READ_" + outPutFileName);
+            File seedFile = new File("READ_" + OUT_PUT_FILE_NAME);
             if (seedFile.exists()) {
                 throw new Exception("file already exist");
             } else if (seedFile.createNewFile()) {
@@ -373,15 +373,14 @@ public class SeedsCalculator {
     }
 
     public static void main(String[] args) throws Exception {
-/*        ArrayList<Seed> seeds = calculateSeeds(true, true, dataBaseFile);
+       ArrayList<Seed> seeds = calculateSeeds(true, true, DATA_BASE_PATH);
         double sampleRatio = 1;
         int maxDeep = Integer.parseInt(args[0]);
         for (Seed seed : seeds) {
-            String filePath = "D_" + maxDeep + "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId() + ".json";
+            String filePath = "D1_" + maxDeep + "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId() + ".json";
             SeedsCalculator.extractTypeRelatedGraph(maxDeep, seed.getTypeId(), filePath, sampleRatio);
             System.out.println("finish " + filePath + " at " + new Date());
-        }*/
-        SeedsCalculator.extractTypeRelatedGraph(10, 14963072, "TEST14963072.json", 1);
+        }
         db.close();
     }
 }
