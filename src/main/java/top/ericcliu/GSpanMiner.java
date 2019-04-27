@@ -31,8 +31,8 @@ public class GSpanMiner {
         this.dataGraph = dataGraph;
         this.threshold = thresh;
         int num = this.dataGraph.getTypeRelatedNum();
-        this.MNIThreshold = ((Double)(threshold * this.dataGraph.getTypeRelatedNum())).intValue();
-        if(this.MNIThreshold <2){
+        this.MNIThreshold = ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue();
+        if (this.MNIThreshold < 2) {
             this.MNIThreshold = 2;
         }
         //this.MNISupportThreshold = 1;
@@ -187,7 +187,7 @@ public class GSpanMiner {
                 Integer instanceId = nodeAIdDSMap.getKey();
                 //Set<Integer> nodes = new HashSet<>(parentInstances.getInstances().row(instanceId).values());
                 Set<Integer> nodes = new HashSet<>();
-                for(Integer node : parentInstances.getInstances().get(instanceId)){
+                for (Integer node : parentInstances.getInstances().get(instanceId)) {
                     nodes.add(node);
                 }
                 Integer nodeAIdDS = nodeAIdDSMap.getValue();
@@ -202,9 +202,9 @@ public class GSpanMiner {
                     if (!edgeValue.equals(edgeLabel)) {
                         continue;
                     }
-                    int newLength = parentInstances.getInstances().get(instanceId).length+1;
+                    int newLength = parentInstances.getInstances().get(instanceId).length + 1;
                     int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId), newLength);
-                    newInstance[newLength-1] = possNodeBId;
+                    newInstance[newLength - 1] = possNodeBId;
                     childInstance.addInstance(child, newInstance);
                 }
             }
@@ -212,16 +212,16 @@ public class GSpanMiner {
             // backward edge
             //Set<Integer> instanceIds = parentInstances.getInstances().rowKeySet();
             //for (Integer instanceId : instanceIds) {
-            for(int instanceId=0;  instanceId<parentInstances.getInstances().size(); instanceId++){
+            for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
                 Integer nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
                 Integer nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
                 boolean correctEdge = this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdsDS, nodeBIdsDS);
-                correctEdge = (correctEdge == false ? false : ((Integer)this.dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()).equals(edgeLabel));
+                correctEdge = (correctEdge == false ? false : ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()).equals(edgeLabel));
                 // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
                 // 目前只考虑 两个节点之间只存在一条边
                 if (correctEdge) {
                     //Map<Integer, Integer> nodeInstanceMap = new HashMap<>(parentInstances.getInstances().row(instanceId));
-                    int [] nodeInstanceMap = parentInstances.getInstances().get(instanceId);
+                    int[] nodeInstanceMap = parentInstances.getInstances().get(instanceId);
                     childInstance.addInstance(child, nodeInstanceMap);
                 }
             }
@@ -244,13 +244,13 @@ public class GSpanMiner {
                 Integer MNI = childInstance.calMNI();
                 if (MNI >= this.MNIThreshold && isCannoical) {
                     this.result.add(childDFScode);
-                    File dir = new File(this.getDataGraph().graphName+"MNI_"+threshold);
-                    if(!dir.exists()){
+                    File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
+                    if (!dir.exists()) {
                         dir.mkdirs();
                     }
-                    childDFScode.saveToFile(this.getDataGraph().graphName+"MNI_"+threshold+File.separator+"RE_"+this.getDataGraph().graphName+"MNI_"+threshold+"Id_"+this.result.size()+".json",false);
+                    childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
                     System.out.println("instance num:" + childInstance.getInstances().size());
-                    childInstance.saveToFile(this.getDataGraph().graphName+"MNI_"+threshold+File.separator+"IN_"+this.getDataGraph().graphName+"MNI_"+threshold+"Id_"+this.result.size()+".json",false);
+                    childInstance.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
                     gspanCore(childDFScode, childInstance);
                 }
                 childInstance = null;
@@ -269,11 +269,12 @@ public class GSpanMiner {
                 //this.stepRecorder = new LinkedList<>();
                 //this.stepRecorder.add(i++);
                 gspanCore(entry.getKey(), entry.getValue());
-                System.out.println("finish the "+ (i++)+ "nd edge");
+                System.out.println("finish the " + (i++) + "nd edge");
             }
         }
         //System.out.println("result" + this.result);
     }
+
     public void mineNAryRelation() throws Exception {
         Iterator<Map<DFScode, EdgeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
         int i = 0;
@@ -283,29 +284,31 @@ public class GSpanMiner {
                 //this.stepRecorder = new LinkedList<>();
                 //this.stepRecorder.add(i++);
                 gspanCore(entry.getKey(), entry.getValue());
-                System.out.println("finish the "+ (i++)+ "nd edge");
+                System.out.println("finish the " + (i++) + "nd edge");
             }
         }
         //System.out.println("result" + this.result);
     }
 
     public static void main(String[] args) throws Exception {
+        //String filePath = args[0];
+        //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
+        String filePath = "TEST14963072.json";
+        Double dataSetSizeRelatedthreshold = 0.01;
         try {
-            //String filePath = args[0];
-            //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
-            String filePath = "R_1T_8980078D_5.json";
-            double dataSetSizeRelatedthreshold = 0.01;
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
             System.out.println("finish read file");
-            MultiLabelGraph big = new MultiLabelGraph(true);
-
-            GSpanMiner miner = new GSpanMiner(graph,1);
+            GSpanMiner miner = new GSpanMiner(graph, dataSetSizeRelatedthreshold);
             System.out.println(miner.getDataGraph().graphName);
-            System.out.println("    MNISupportThreshold"+miner.MNIThreshold);
+            System.out.println(graph.getGraphEdge());
+            System.out.println("    MNISupportThreshold" + miner.MNIThreshold);
             miner.mineGSpan();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace(System.out);
         }
+    }
+}
+
 
 /*
         MultiLabelGraph big = new MultiLabelGraph(false);
@@ -318,5 +321,4 @@ public class GSpanMiner {
         gSpanMinerFromFile.mine();*/
 /*        GSpanMiner gSpanMinersmall = new GSpanMiner(small, 0.001);
         gSpanMinersmall.mine();*/
-    }
-}
+

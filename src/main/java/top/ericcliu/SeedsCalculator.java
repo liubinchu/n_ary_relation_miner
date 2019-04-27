@@ -17,19 +17,18 @@ import java.util.*;
  * @author liubi
  */
 public class SeedsCalculator {
-    private static Set<Integer> subMetaData;
-    private static Set<Integer> predMetaData;
-    private static Set<Integer> objMetaData;
-    private static Connection db;
-    private static String dataBaseFile = "C:\\bioportal_full.sqlite";
-    private static String outPutFileName = "seeds1.json";
+    private static Set<Integer> subMetaData = new HashSet<>();
+    private static Set<Integer> predMetaData = new HashSet<>();
+    private static Set<Integer> objMetaData = new HashSet<>();
+    //private final static String dataBaseFile = "/home/lbc/bioportal1.sqlite";
+    private static String dataBaseFile = "C:\\bioportal1.sqlite";
+    private final static String outPutFileName = "seeds_withMetaData.json";
+    private static Connection db = new DataBaseTools().sqliteConect(dataBaseFile);
 
-    static {
+   static {
         try {
-            db = new DataBaseTools().sqliteConect(dataBaseFile);
-            // 需要去除的类型 ie 主语
-            //ArrayList<Integer> idContainsBio2RdfP = getIDs(db, "SELECT id FROM mapping WHERE content LIKE \"http://bio2rdf.org/bio2rdf_vocabulary:%\"");
-            subMetaData = new HashSet<>(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://www.w3.org/%\""));
+             // 需要去除的类型 ie 主语
+            subMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://www.w3.org/%\""));
             subMetaData.removeAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://www.w3.org/2001/sw/hcls/ns/transmed/TMO%\""));
             subMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://purl.org/dc/terms%\""));
             subMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content like \"http://bio2rdf.org%esource\""));
@@ -48,7 +47,7 @@ public class SeedsCalculator {
             subMetaData.addAll(getIDs("select id from mapping where content like \"%sameAs\""));
             subMetaData.addAll(getIDs("select id from mapping where content like \"%description\""));
             System.out.println("finish getting subMetaData");
-            predMetaData = new HashSet<>(getIDs("SELECT id FROM mapping WHERE content = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\""));
+            predMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content = \"http://www.w3.org/2000/01/rdf-schema#subClassOf\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%Dataset\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://www.w3.org/2002/07/%Class\""));
@@ -56,7 +55,7 @@ public class SeedsCalculator {
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://www.w3.org/2002/07/owl#Thing\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://www.w3.org/2000/01/rdf-schema#label\""));
             System.out.println("finish getting predMetaData");
-            objMetaData = new HashSet<>(getIDs("SELECT * FROM mapping WHERE content = \"http://bio2rdf.org/bio2rdf_vocabulary:namespace\""));
+            objMetaData.addAll(getIDs("SELECT * FROM mapping WHERE content = \"http://bio2rdf.org/bio2rdf_vocabulary:namespace\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://bio2rdf.org%Resource\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%Dataset\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://who.int/icd#%DefinitionTerm\" or content like \"http://who.int/icd#ClamlReference\" or content like \"http://who.int/icd#TitleTerm\" or content like \"http://who.int/icd#InclusionTerm\""));
@@ -71,8 +70,8 @@ public class SeedsCalculator {
         Statement stmt = db.createStatement();
         String sql = "SELECT COUNT(*) FROM \"types_node\" ";
         ResultSet res = stmt.executeQuery(sql);
-        Integer typesNum = res.getInt("COUNT(*)");
-        System.out.println("types num : " + typesNum.toString());
+        int typesNum = res.getInt("COUNT(*)");
+        System.out.println("types num : " + typesNum);
         ArrayList<Integer> types = new ArrayList<>(typesNum);
         res.close();
         stmt.close();
@@ -89,14 +88,12 @@ public class SeedsCalculator {
     private static Map<Integer, Integer> getNodesOfType(Integer typeId) throws SQLException {
         // firstElement = nodeId ;second element = edgeNums of this node , initial with -1 // means uncalculated
         Statement stmt = db.createStatement();
-        String sql = "SELECT COUNT(DISTINCT node_id) FROM \"nodes_type\" WHERE type_id =" + typeId.toString();
-        ResultSet res = stmt.executeQuery(sql);
-        Integer typesNum = res.getInt("COUNT(DISTINCT node_id)");
+        ResultSet res = stmt.executeQuery("SELECT COUNT(DISTINCT node_id) FROM \"nodes_type\" WHERE type_id =" + typeId.toString());
+        int typesNum = res.getInt("COUNT(DISTINCT node_id)");
         Map<Integer, Integer> nodes = new HashMap<>(typesNum);
         res.close();
         stmt.close();
-        sql = "SELECT DISTINCT node_id FROM \"nodes_type\" WHERE type_id =" + typeId.toString();
-        res = stmt.executeQuery(sql);
+        res = stmt.executeQuery("SELECT DISTINCT node_id FROM \"nodes_type\" WHERE type_id =" + typeId.toString());
         while (res.next()) {
             nodes.put(res.getInt("node_id"), -1);
         }
@@ -105,47 +102,46 @@ public class SeedsCalculator {
         return nodes;
     }
 
-    private static Set<SeedEdge> getEdgesOfNode(Integer nodeId,
+    private static Set<SeedEdge> getEdgesOfNode(int nodeId,
                                                 Map<Integer, Integer> nodes,
                                                 Set<SeedEdge> commonEdges) throws SQLException {
         // 1 .get all edges of one node  2.calculate the union set of these edges from different edges
         Set<SeedEdge> edges = new HashSet<>();
         Statement stmt0 = db.createStatement();
-        ResultSet res0 = stmt0.executeQuery("SELECT DISTINCT * FROM \"triples_all\" WHERE subject_id =" + nodeId.toString());
+        Statement stmt1 = db.createStatement();
+        ResultSet res1;
+        ResultSet res0 = stmt0.executeQuery("SELECT DISTINCT * FROM \"triples_all\" WHERE subject_id =" + nodeId);
         while (res0.next()) {
-            Integer edgeLabel = res0.getInt("predicate_id");
+            int edgeLabel = res0.getInt("predicate_id");
             if (predMetaData.contains(edgeLabel)) {
                 continue;
             }
-            Integer nodeBId = res0.getInt("object_id");
-            Statement stmt1 = db.createStatement();
-            ResultSet res1 = stmt1.executeQuery("SELECT DISTINCT type_id FROM \"nodes_type\" WHERE node_id = " + nodeBId.toString());
+            int nodeBId = res0.getInt("object_id");
+            res1 = stmt1.executeQuery("SELECT DISTINCT type_id FROM \"nodes_type\" WHERE node_id = " + nodeBId);
             Set<Integer> nodeBLabel = new HashSet<>();
             boolean haveType = false;
             while (res1.next()) {
                 haveType = true;
-                Integer objLabel = res1.getInt("type_id");
+                int objLabel = res1.getInt("type_id");
                 if (objMetaData.contains(objLabel)) {
-                    res1.close();
-                    stmt1.close();
                     continue;
                 }
                 nodeBLabel.add(objLabel);
             }
+            res1.close();
+            stmt1.close();
             if (!haveType) {
                 // 该node为 literal
-                res1 = stmt1.executeQuery("SELECT string_type_id FROM \"mapping\" WHERE id =" + nodeBId.toString());
+                res1 = stmt1.executeQuery("SELECT string_type_id FROM \"mapping\" WHERE id =" + nodeBId);
                 while (res1.next()) {
                     nodeBLabel.add(-res1.getInt("string_type_id"));
                 }
-            }
-            if (nodeBLabel.isEmpty()) {
                 res1.close();
                 stmt1.close();
+            }
+            if (nodeBLabel.isEmpty()) {
                 continue;
             }
-            res1.close();
-            stmt1.close();
             edges.add(new SeedEdge(edgeLabel, nodeBLabel));
         }
         nodes.put(nodeId, edges.size());
@@ -180,11 +176,11 @@ public class SeedsCalculator {
         System.out.println(types.size());
         System.out.println("finish get All types ");
         ArrayList<Seed> seeds = new ArrayList<>(types.size());
-        for (Integer typeId : types) {
+        for (int typeId : types) {
             Map<Integer, Integer> nodes = getNodesOfType(typeId);
             System.out.println("finish get Nodes Of Type " + typeId);
-            if (nodes.size() < 3) {
-                // 若该类型下 节点个数 小于 3 那么不计算 ,不具有代表性
+            if (nodes.size() < 10) {
+                // 若该类型下 节点个数 小于 10 那么不计算 ,不具有代表性
                 continue;
             }
             Set<SeedEdge> commonEdges = null;
@@ -198,10 +194,10 @@ public class SeedsCalculator {
             }
 
             // 计算 purity
-            Integer nodesNums = nodes.size();
+            int nodesNums = nodes.size();
             double purity = 0;
-            for (Integer nodeId : nodes.keySet()) {
-                Double nodeEdgesNum = nodes.get(nodeId).doubleValue();
+            for (int nodeId : nodes.keySet()) {
+                double nodeEdgesNum = nodes.get(nodeId).doubleValue();
                 purity += nodeEdgesNum / (commonEdges.size() + nodeEdgesNum);
             }
             purity /= nodesNums;
@@ -245,27 +241,32 @@ public class SeedsCalculator {
         return seeds;
     }
 
-    private static List<Integer[]> generateTriples(Integer nodeId,
-                                                   Integer deep,
-                                                   List<Integer[]> triples,
-                                                   Integer maxDeep,
-                                                   Multimap<Integer, Integer> nodeLabels
+    private static List<int[]> generateTriples(int nodeId,
+                                               Integer deep,
+                                               List<int[]> triples,
+                                               Set<Integer> appearedSub,
+                                               int maxDeep,
+                                               Multimap<Integer, Integer> nodeLabels
     ) throws SQLException {
         // deep controls the deep of recursion ie. the steps when generate triples from one node
         // 使用前 应在函数外 声明一个set<multimap> nodeLabels 用以记录 node 的label
         if (deep > maxDeep) {
             return triples;
         }
-        if (triples == null) {
+        if (triples == null || appearedSub==null) {
+            appearedSub = new HashSet<>();
             triples = new ArrayList<>();
         }
+        System.out.println("triples.size(): " + triples.size());
+        System.out.println("appearedSub.size(): " + appearedSub.size());
         // 查找 第一层节点label label 加入nodeLabels
         Statement stmt = db.createStatement();
         Statement stmt1 = db.createStatement();
         ResultSet res;
+        ResultSet res1;
         if (deep.equals(1)) {
             stmt = db.createStatement();
-            res = stmt.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + nodeId.toString());
+            res = stmt.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + nodeId);
             while (res.next()) {
                 nodeLabels.put(nodeId, res.getInt("type_id"));
             }
@@ -273,33 +274,31 @@ public class SeedsCalculator {
             stmt.close();
         }
         // 查找 triple List<Integer[]> triples
-        res = stmt.executeQuery("SELECT * FROM \"triples_all\" WHERE subject_id =" + nodeId.toString());
+        res = stmt.executeQuery("SELECT * FROM \"triples_all\" WHERE subject_id =" + nodeId);
         Set<Integer> objects = new HashSet<>();
+
         while (res.next()) {
-            Integer[] triple = new Integer[3];
+            int[] triple = new int[3];
             triple[0] = res.getInt("subject_id");
             triple[1] = res.getInt("predicate_id");
             triple[2] = res.getInt("object_id");
             if (predMetaData.contains(triple[1])) {
                 continue;
             }
-
             Set<Integer> objLabelSet = new HashSet<>();
-            ResultSet res1 = stmt1.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + triple[2].toString());
+            res1 = stmt1.executeQuery("SELECT type_id FROM \"nodes_type\" WHERE node_id =" + triple[2]);
             boolean haveType = false;
             while (res1.next()) {
                 haveType = true;
-                //nodeLabels.put(triple[2], res1.getInt("type_id"));
                 objLabelSet.add(res1.getInt("type_id"));
             }
             res1.close();
             stmt1.close();
             if (!haveType) {
                 // 该node为 literal
-                res1 = stmt1.executeQuery("SELECT string_type_id FROM \"mapping\" WHERE id =" + triple[2].toString());
+                res1 = stmt1.executeQuery("SELECT string_type_id FROM \"mapping\" WHERE id =" + triple[2]);
                 while (res1.next()) {
                     objLabelSet.add(-res1.getInt("string_type_id"));
-                    //nodeLabels.put(triple[2], -res1.getInt("string_type_id"));
                 }
             }
             res1.close();
@@ -308,16 +307,18 @@ public class SeedsCalculator {
             if (objLabelSet.isEmpty()) {
                 continue;
             }
-            for (Integer objLabel : objLabelSet) {
+            for (int objLabel : objLabelSet) {
                 nodeLabels.put(triple[2], objLabel);
             }
             objects.add(triple[2]);
             triples.add(triple);
+            appearedSub.add(triple[0]);
         }
         res.close();
         stmt.close();
-        for (Integer object : objects) {
-            generateTriples(object, deep + 1, triples, maxDeep, nodeLabels);
+        for (int object : objects) {
+            if (appearedSub.contains(object)) { continue; }
+            generateTriples(object, deep + 1, triples, appearedSub, maxDeep, nodeLabels);
         }
         return triples;
     }
@@ -332,9 +333,9 @@ public class SeedsCalculator {
      * @throws SQLException
      */
 
-    public static TypeRelatedGraph extractTypeRelatedGraph(Integer maxDeep, Integer typeId,
-                                                           String filePath, boolean saveToFile,
-                                                           double sampleRatio) throws Exception {
+    public static void extractTypeRelatedGraph(int maxDeep, int typeId,
+                                               String filePath,
+                                               double sampleRatio) throws Exception {
 
         // typeId 从 Seed 中得到 ，经过metadata 去除
         List<Integer> originNodes = new ArrayList<>(getNodesOfType(typeId).keySet());
@@ -342,49 +343,45 @@ public class SeedsCalculator {
         Random random = new Random();
         Set<Integer> nodeIndexes = new HashSet<>(sampleNum);
         for (int i = 0; i < sampleNum; i++) {
-            Integer nextNodeIndex = random.nextInt(originNodes.size() - 1);
+            int nextNodeIndex = random.nextInt(originNodes.size() - 1);
             while (nodeIndexes.contains(nextNodeIndex)) {
                 nextNodeIndex = (nextNodeIndex + 1) % sampleNum;
             }
             nodeIndexes.add(nextNodeIndex);
         }
         Set<Integer> nodes = new HashSet<>(sampleNum);
-        for (Integer index : nodeIndexes) {
+        for (int index : nodeIndexes) {
             nodes.add(originNodes.get(index));
         }
-
-        List<Integer[]> triples = null;
+        List<int[]> triples =  new ArrayList<>();
+        Set<Integer> appearedNodes = null;
         Multimap<Integer, Integer> nodeLabels = TreeMultimap.create();
-        for (Integer nodeId : nodes) {
+        for (int nodeId : nodes) {
             // 使用前 应在函数外 声明一个set<multimap> nodeLabels 用以记录 node 的label
-            triples = generateTriples(nodeId, 1, triples, maxDeep, nodeLabels);
+            triples.addAll(generateTriples(nodeId, 1, triples, appearedNodes, maxDeep, nodeLabels));
         }
 
-        TypeRelatedGraph typeRelatedGraph = new TypeRelatedGraph(typeId, nodes, triples, maxDeep, nodeLabels);
-        if (saveToFile) {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new GuavaModule());
-            // 增加jackson 对google guava的支持
-            File resultFile = new File(filePath);
-            if (resultFile.createNewFile()) {
-                mapper.writeValue(resultFile, typeRelatedGraph);
-            } else {
-                throw new Exception("file already exist");
-            }
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new GuavaModule());
+        // 增加jackson 对google guava的支持
+        File resultFile = new File(filePath);
+        if (resultFile.createNewFile()) {
+            mapper.writeValue(resultFile, new TypeRelatedGraph(typeId, nodes, triples, maxDeep, nodeLabels));
+        } else {
+            throw new Exception("file already exist");
         }
-        return typeRelatedGraph;
     }
 
     public static void main(String[] args) throws Exception {
-        ArrayList<Seed> seeds = calculateSeeds(true, true, dataBaseFile);
-        //double sampleRatio = Double.parseDouble(args[0]);
+/*        ArrayList<Seed> seeds = calculateSeeds(true, true, dataBaseFile);
         double sampleRatio = 1;
-        //extract typeRelatedGraph
-        Integer maxDeep = 10;
+        int maxDeep = Integer.parseInt(args[0]);
         for (Seed seed : seeds) {
-            String filePath = "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId();
-            TypeRelatedGraph typeRelatedGraph = SeedsCalculator.extractTypeRelatedGraph(maxDeep, seed.getTypeId(), filePath, true, sampleRatio);
-        }
+            String filePath = "D_" + maxDeep + "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId() + ".json";
+            SeedsCalculator.extractTypeRelatedGraph(maxDeep, seed.getTypeId(), filePath, sampleRatio);
+            System.out.println("finish " + filePath + " at " + new Date());
+        }*/
+        SeedsCalculator.extractTypeRelatedGraph(10, 14963072, "TEST14963072.json", 1);
         db.close();
     }
 }

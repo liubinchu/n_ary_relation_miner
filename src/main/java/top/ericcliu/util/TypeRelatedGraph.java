@@ -3,15 +3,11 @@ package top.ericcliu.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.TreeMultimap;
-import top.ericcliu.SeedsCalculator;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author liubi
@@ -24,7 +20,7 @@ import java.util.*;
 public class TypeRelatedGraph {
     private Integer typeId;
     private Set<Integer> nodes;
-    private List<Integer[]> triples;
+    private List<int[]> triples;
     private Integer maxDeep;
     private Multimap<Integer, Integer> nodeLabels;
 
@@ -54,7 +50,7 @@ public class TypeRelatedGraph {
         this.nodeLabels = s.nodeLabels;
     }
 
-    public TypeRelatedGraph(Integer typeId, Set<Integer> nodes, List<Integer[]> triples, Integer maxDeep, Multimap nodeLabels) {
+    public TypeRelatedGraph(Integer typeId, Set<Integer> nodes, List<int[]> triples, Integer maxDeep, Multimap nodeLabels) {
         this.typeId = typeId;
         this.nodes = nodes;
         //当前类型下的所有节点 ， 子图的起始节点
@@ -78,8 +74,12 @@ public class TypeRelatedGraph {
         return nodes;
     }
 
-    public List<Integer[]> getTriples() {
+    public List<int[]> getTriples() {
         return triples;
+    }
+
+    public Integer getMaxDeep() {
+        return maxDeep;
     }
 
     @Override
@@ -117,9 +117,10 @@ public class TypeRelatedGraph {
         Integer maxDeep = 5;
         Integer typeId = 10894041;
         // String filePath = "typeRelatedGraph"+typeId+".json";
-        String filePath = "R_" + "1" + "T_" + typeId+"D_"+maxDeep+".json";
-        TypeRelatedGraph extractAndWirteTest = SeedsCalculator.extractTypeRelatedGraph(maxDeep, typeId, filePath, true, 1);
+        //String filePath = "R_" + "1" + "T_" + typeId+"D_"+maxDeep+".json";
+        String filePath = "P_0.9984126984126984R_1T_12330515.json";
+        //SeedsCalculator.extractTypeRelatedGraph(maxDeep, typeId, filePath, 1);
         TypeRelatedGraph readTest = TypeRelatedGraph.readFromFile(filePath);
-        //System.out.println(readTest.getNodeLabels().get(10894041));
+        System.out.println(readTest.getNodeLabels().get(10894041));
     }
 }
