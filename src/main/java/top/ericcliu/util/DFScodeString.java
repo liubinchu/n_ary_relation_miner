@@ -103,6 +103,29 @@ public class DFScodeString implements Cloneable , SaveToFile{
                 '}';
     }
 
+    public ArrayList<GSpanEdgeString> getEdgeSeq() {
+        return edgeSeq;
+    }
+
+    public void setEdgeSeq(ArrayList<GSpanEdgeString> edgeSeq) {
+        this.edgeSeq = edgeSeq;
+    }
+
+    public Integer getMaxNodeId() {
+        return maxNodeId;
+    }
+
+    public void setMaxNodeId(Integer maxNodeId) {
+        this.maxNodeId = maxNodeId;
+    }
+
+    public Map<Integer, String> getNodeLabelMap() {
+        return nodeLabelMap;
+    }
+
+    public void setNodeLabelMap(Map<Integer, String> nodeLabelMap) {
+        this.nodeLabelMap = nodeLabelMap;
+    }
 
     public static void main(String[] args)  {
     }

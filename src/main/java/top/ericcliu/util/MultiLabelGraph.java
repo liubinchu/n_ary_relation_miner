@@ -35,7 +35,7 @@ public class MultiLabelGraph {
      * typeId ie. root node id
      */
     private Integer typeId;
-    private final Integer replacedTypeId = Integer.MIN_VALUE;
+    //private final Integer replacedTypeId = Integer.MIN_VALUE;
     /**
      * key1 : labelA , key2 : labelB
      * value: Map<DFScode,EdgeInstance> using one edge DFS code to represent edge
@@ -68,11 +68,11 @@ public class MultiLabelGraph {
             nodeLabels.put(0, 1);
             nodeLabels.put(1, 1);
             nodeLabels.put(2, 2);
-            //nodeLabels.put(2, 3);
-            nodeLabels.put(2, this.replacedTypeId);  // -1 means type id , ie root node id of a pattern, make it the minGspanEdge, extension start from this node
+            nodeLabels.put(2, 3);
+            //nodeLabels.put(2, this.replacedTypeId);  // -1 means type id , ie root node id of a pattern, make it the minGspanEdge, extension start from this node
             nodeLabels.put(3, 5);
-            //nodeLabels.put(4, 3);
-            nodeLabels.put(4, this.replacedTypeId);
+            nodeLabels.put(4, 3);
+            //nodeLabels.put(4, this.replacedTypeId);
             nodeLabels.put(4, 6);
             nodeLabels.put(5, 4);
             nodeLabels.put(5, 5);
@@ -82,12 +82,12 @@ public class MultiLabelGraph {
             labelNodes.put(0, 0);
             labelNodes.put(1, 0);
             labelNodes.put(1, 1);
-            //labelNodes.put(3, 2);
-            labelNodes.put(this.replacedTypeId, 2);
+            labelNodes.put(3, 2);
+            //labelNodes.put(this.replacedTypeId, 2);
             labelNodes.put(2, 2);
             labelNodes.put(5, 3);
-            //labelNodes.put(3, 4);
-            labelNodes.put(this.replacedTypeId, 4);
+            labelNodes.put(3, 4);
+            //labelNodes.put(this.replacedTypeId, 4);
             labelNodes.put(6, 4);
             labelNodes.put(4, 5);
             labelNodes.put(5, 5);
@@ -137,14 +137,14 @@ public class MultiLabelGraph {
             nodeLabels.put(10, 2);
             nodeLabels.put(10, 20);
             nodeLabels.put(11, 0);
-            //nodeLabels.put(11, 1);
-            nodeLabels.put(11, this.replacedTypeId);
+            nodeLabels.put(11, 1);
+            //nodeLabels.put(11, this.replacedTypeId);
             nodeLabels.put(12, 0);
             nodeLabels.put(12, 6);
             nodeLabels.put(13, 9);
             nodeLabels.put(14, 0);
-            //nodeLabels.put(14, 1);
-            nodeLabels.put(14, this.replacedTypeId);
+            nodeLabels.put(14, 1);
+            //nodeLabels.put(14, this.replacedTypeId);
             nodeLabels.put(14, 7);
             nodeLabels.put(15, 2);
             nodeLabels.put(15, 20);
@@ -176,14 +176,14 @@ public class MultiLabelGraph {
             labelNodes.put(2, 10);
             labelNodes.put(20, 10);
             labelNodes.put(0, 11);
-            //labelNodes.put(1, 11);
-            labelNodes.put(this.replacedTypeId, 11);
+            labelNodes.put(1, 11);
+            //labelNodes.put(this.replacedTypeId, 11);
             labelNodes.put(0, 12);
             labelNodes.put(6, 12);
             labelNodes.put(9, 13);
             labelNodes.put(0, 14);
-            //labelNodes.put(1, 14);
-            labelNodes.put(this.replacedTypeId, 14);
+            labelNodes.put(1, 14);
+            //labelNodes.put(this.replacedTypeId, 14);
             labelNodes.put(7, 14);
             labelNodes.put(2, 15);
             labelNodes.put(20, 15);
@@ -273,7 +273,7 @@ public class MultiLabelGraph {
         this.typeId = typeRelatedGraph.getTypeId();
         this.typeRelatedNum = typeRelatedGraph.getNodes().size();
 
-        this.nodeLabels = MultimapBuilder.treeKeys().hashSetValues().build();
+/*        this.nodeLabels = MultimapBuilder.treeKeys().hashSetValues().build();
         for (Integer key : typeRelatedGraph.getNodeLabels().keySet()) {
             for (Integer value : typeRelatedGraph.getNodeLabels().get(key)) {
                 if (value.equals(this.typeId)) {
@@ -282,8 +282,8 @@ public class MultiLabelGraph {
                     this.nodeLabels.put(key, value);
                 }
             }
-        }
-
+        }*/
+        this.nodeLabels = typeRelatedGraph.getNodeLabels();
         this.labelNodes = MultimapBuilder.treeKeys().hashSetValues().build();
         for (Integer node : this.nodeLabels.keySet()) {
             for (Integer label : this.nodeLabels.get(node)) {
@@ -298,7 +298,7 @@ public class MultiLabelGraph {
                 if (spo[0] != spo[2]) {
                     graph.addNode(spo[0]);
                     graph.addNode(spo[2]);
-                    addEdgeToGraph(graph, spo[0], spo[2], spo[1], nodeLabels, graphEdge);
+                    addEdgeToGraph(graph, spo[0], spo[2], spo[1], this.nodeLabels, graphEdge);
                 }
             }
         }

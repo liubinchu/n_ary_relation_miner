@@ -42,12 +42,19 @@ public class DataBaseTools {
         try {
             Statement statement = connection.createStatement();
             add_types_stringSQL(statement, "String,combine 2,9,13,14,19,20");
+            connection.commit();
             add_types_stringSQL(statement, "Time,combine 3,10,22");
+            connection.commit();
             add_types_stringSQL(statement, "Number,combine 4,6,7,8,12,15,18");
+            connection.commit();
             add_types_stringSQL(statement, "Boolean,combine 5");
+            connection.commit();
             add_types_stringSQL(statement, "Web URI, combine 11");
+            connection.commit();
             add_types_stringSQL(statement, "Name, combine 16");
+            connection.commit();
             add_types_stringSQL(statement, "ID, combine 17");
+            connection.commit();
             statement.close();
             return true;
         } catch (Exception e) {
@@ -67,12 +74,19 @@ public class DataBaseTools {
         try {
             Statement statement = connection.createStatement();
             addType_mappingSQL(statement, "String", 24);
+            connection.commit();
             addType_mappingSQL(statement, "Time", 25);
+            connection.commit();
             addType_mappingSQL(statement, "Number", 26);
+            connection.commit();
             addType_mappingSQL(statement, "Boolean", 27);
+            connection.commit();
             addType_mappingSQL(statement, "Web URI", 28);
+            connection.commit();
             addType_mappingSQL(statement, "Name", 29);
+            connection.commit();
             addType_mappingSQL(statement, "ID", 30);
+            connection.commit();
             statement.close();
             return true;
         } catch (Exception e) {
@@ -99,12 +113,19 @@ public class DataBaseTools {
         try {
             Statement statement = connection.createStatement();
             addType_types_nodeSQL(statement, 16576049);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576050);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576051);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576052);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576053);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576054);
+            connection.commit();
             addType_types_nodeSQL(statement, 16576055);
+            connection.commit();
             statement.close();
             return true;
         } catch (Exception e) {
@@ -255,15 +276,14 @@ public class DataBaseTools {
 
     public static void main(String[] args) throws SQLException {
         DataBaseTools dataBaseTools = new DataBaseTools();
-        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal_full.sqlite");  // disk C  readonly for Java
+        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal1.sqlite");
+        // disk C  readonly for Java
         try {
-            add_types_string(db);
-            addType_mapping(db);
-            addType_types_node(db);
             seperateTriples(db,db);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            db.commit();
             db.close();
         }
     }

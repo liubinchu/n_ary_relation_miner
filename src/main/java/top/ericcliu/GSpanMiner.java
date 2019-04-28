@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 public class GSpanMiner {
     private MultiLabelGraph dataGraph;
     private Double threshold;
-    private Integer MNIThreshold;     // >= 该阈值 则认为频繁
+    private Integer MNIThreshold;// >= 该阈值 则认为频繁
     private LinkedList<DFScode> result;
 
     //private LinkedList<Integer> stepRecorder ;
@@ -35,21 +35,6 @@ public class GSpanMiner {
         if (this.MNIThreshold < 2) {
             this.MNIThreshold = 2;
         }
-        //this.MNISupportThreshold = 1;
-        // 先设置为1
-/*        Iterator<Map<DFScode, DFScodeInstance>> it = this.getDataGraph().getGraphEdge().values().iterator();
-        int i = 0;*/
-
-/*        System.out.println("before washing");
-
-        while (it.hasNext()) {
-            Map<DFScode, DFScodeInstance> map = it.next();
-            for (Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
-                System.out.println("origin edge " + (i++) + ": " + entry);
-            }
-        }*/
-
-
         //清洗不频繁的边
         for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
             for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
@@ -70,18 +55,7 @@ public class GSpanMiner {
                 }
             }
         }
-
-/*        System.out.println("\nafter washing");
-        it = this.getDataGraph().getGraphEdge().values().iterator();
-        i = 0;
-        while (it.hasNext()) {
-            Map<DFScode, DFScodeInstance> map = it.next();
-            for (Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
-                System.out.println("washed edge " + (i++) + ": " + entry);
-            }
-        }*/
     }
-
     /**
      * 模式拓展原则， 先从最右节点后向拓展，距离根节点近的节点优先
      * 再 在最右路径上，前向拓展，距离根节点远的节点优先
@@ -178,14 +152,12 @@ public class GSpanMiner {
         int edgeLabel = childernEdge.getEdgeLabel();
         if (nodeA < nodeB) {
             // forward edge
-            //Map<Integer, Integer> nodeAIdsDSMap = parentInstances.getInstances().column(nodeA);
             Map<Integer, Integer> nodeAIdsDSMap = parentInstances.fetchInstanceNode(nodeA);
             // key : instance id , value : node id in data set
             Collection<Integer> possNodeBIds = this.dataGraph.getLabelNodes().get(labelB);
             // possible node B id in data set
             for (Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
                 Integer instanceId = nodeAIdDSMap.getKey();
-                //Set<Integer> nodes = new HashSet<>(parentInstances.getInstances().row(instanceId).values());
                 Set<Integer> nodes = new HashSet<>();
                 for (Integer node : parentInstances.getInstances().get(instanceId)) {
                     nodes.add(node);
@@ -210,8 +182,6 @@ public class GSpanMiner {
             }
         } else {
             // backward edge
-            //Set<Integer> instanceIds = parentInstances.getInstances().rowKeySet();
-            //for (Integer instanceId : instanceIds) {
             for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
                 Integer nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
                 Integer nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
@@ -220,13 +190,30 @@ public class GSpanMiner {
                 // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
                 // 目前只考虑 两个节点之间只存在一条边
                 if (correctEdge) {
-                    //Map<Integer, Integer> nodeInstanceMap = new HashMap<>(parentInstances.getInstances().row(instanceId));
                     int[] nodeInstanceMap = parentInstances.getInstances().get(instanceId);
                     childInstance.addInstance(child, nodeInstanceMap);
                 }
             }
         }
         return childInstance;
+    }
+    private double calRelatedRatio(Integer MNI,DFScode childDFScode) throws Exception {
+        Double relatedRatio = 0d;
+        for (GSpanEdge edge : childDFScode.getEdgeSeq()) {
+            Map<DFScode, EdgeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
+            DFScode dfScode = null;
+            if (map == null) {
+                map = this.getDataGraph().getGraphEdge().get(edge.getLabelB(), edge.getLabelA());
+                dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelB(), edge.getLabelA(), edge.getEdgeLabel(), edge.getDirection()));
+            }
+            if (dfScode == null) {
+                dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
+            }
+            relatedRatio += map.get(dfScode).calMNI();
+        }
+        relatedRatio = MNI * childDFScode.getEdgeSeq().size() / relatedRatio;
+        System.out.println("relatedRatio" + relatedRatio);
+        return relatedRatio;
     }
 
 
@@ -238,20 +225,26 @@ public class GSpanMiner {
             //this.stepRecorder.add(++turn);
             //System.out.println("\nstep: "+this.stepRecorder.toString()+"edge: " +childEdge.toString());
             DFScode childDFScode = ((DFScode) parent.clone()).addEdge(childEdge);
+            // 最小DFScode剪枝
             boolean isCannoical = new MinDFSCodeJustifier(childDFScode).justify();
             if (isCannoical) {
+                //频繁度剪枝
                 EdgeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
                 Integer MNI = childInstance.calMNI();
-                if (MNI >= this.MNIThreshold && isCannoical) {
-                    this.result.add(childDFScode);
-                    File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
+                if (MNI >= this.MNIThreshold) {
+                    //相关度剪枝
+                    double relatedRatio = calRelatedRatio(MNI,childDFScode);
+                    if (relatedRatio > 0.5) {
+                        this.result.add(childDFScode);
+                        File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                        childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
+                        System.out.println("instance num:" + childInstance.getInstances().size());
+                        childInstance.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
+                        gspanCore(childDFScode, childInstance);
                     }
-                    childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
-                    System.out.println("instance num:" + childInstance.getInstances().size());
-                    childInstance.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
-                    gspanCore(childDFScode, childInstance);
                 }
                 childInstance = null;
                 System.gc();
@@ -268,8 +261,11 @@ public class GSpanMiner {
             for (Entry<DFScode, EdgeInstance> entry : map.entrySet()) {
                 //this.stepRecorder = new LinkedList<>();
                 //this.stepRecorder.add(i++);
-                gspanCore(entry.getKey(), entry.getValue());
-                System.out.println("finish the " + (i++) + "nd edge");
+                if (this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(0)) ||
+                        this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(1))) {
+                    gspanCore(entry.getKey(), entry.getValue());
+                    System.out.println("finish the " + (i++) + "nd edge");
+                }
             }
         }
         //System.out.println("result" + this.result);
@@ -291,8 +287,8 @@ public class GSpanMiner {
     }
 
     public static void main(String[] args) throws Exception {
-        //String filePath = args[0];
-        //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
+/*        String filePath = args[0];
+        Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
         String filePath = "TEST14963072.json";
         Double dataSetSizeRelatedthreshold = 0.01;
         try {

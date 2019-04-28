@@ -564,7 +564,7 @@ public class DFScode implements Cloneable {
 
         //String dirPath = "D:\\April9\\R_0.8\\P_all";
         //DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",true);
-        String dirPath = "D:\\result_April14\\R_1T_0.04\\";
-        DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal_full.sqlite",false);
+        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\New folder";
+        DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal1.sqlite",false);
     }
 }
