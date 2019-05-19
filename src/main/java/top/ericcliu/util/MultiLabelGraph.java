@@ -35,12 +35,12 @@ public class MultiLabelGraph {
      * typeId ie. root node id
      */
     private Integer typeId;
-    //private final Integer replacedTypeId = Integer.MIN_VALUE;
+    private final Integer replacedTypeId = Integer.MIN_VALUE;
     /**
      * key1 : labelA , key2 : labelB
-     * value: Map<DFScode,EdgeInstance> using one edge DFS code to represent edge
+     * value: Map<DFScode,DFScodeInstance> using one edge DFS code to represent edge
      */
-    private Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge = null;
+    private Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = null;
 
     public Integer getTypeRelatedNum() {
         return typeRelatedNum;
@@ -68,11 +68,11 @@ public class MultiLabelGraph {
             nodeLabels.put(0, 1);
             nodeLabels.put(1, 1);
             nodeLabels.put(2, 2);
-            nodeLabels.put(2, 3);
-            //nodeLabels.put(2, this.replacedTypeId);  // -1 means type id , ie root node id of a pattern, make it the minGspanEdge, extension start from this node
+            //nodeLabels.put(2, 3);
+            nodeLabels.put(2, this.replacedTypeId);  // -1 means type id , ie root node id of a pattern, make it the minGspanEdge, extension start from this node
             nodeLabels.put(3, 5);
-            nodeLabels.put(4, 3);
-            //nodeLabels.put(4, this.replacedTypeId);
+            //nodeLabels.put(4, 3);
+            nodeLabels.put(4, this.replacedTypeId);
             nodeLabels.put(4, 6);
             nodeLabels.put(5, 4);
             nodeLabels.put(5, 5);
@@ -82,18 +82,18 @@ public class MultiLabelGraph {
             labelNodes.put(0, 0);
             labelNodes.put(1, 0);
             labelNodes.put(1, 1);
-            labelNodes.put(3, 2);
-            //labelNodes.put(this.replacedTypeId, 2);
+            //labelNodes.put(3, 2);
+            labelNodes.put(this.replacedTypeId, 2);
             labelNodes.put(2, 2);
             labelNodes.put(5, 3);
-            labelNodes.put(3, 4);
-            //labelNodes.put(this.replacedTypeId, 4);
+            //labelNodes.put(3, 4);
+            labelNodes.put(this.replacedTypeId, 4);
             labelNodes.put(6, 4);
             labelNodes.put(4, 5);
             labelNodes.put(5, 5);
             this.labelNodes = labelNodes;
 
-            Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge = HashBasedTable.create();
+            Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
             addEdgeToGraph(graph, 0, 2, 1, nodeLabels, graphEdge);
             addEdgeToGraph(graph, 3, 2, 2, nodeLabels, graphEdge);
             addEdgeToGraph(graph, 3, 4, 2, nodeLabels, graphEdge);
@@ -137,14 +137,14 @@ public class MultiLabelGraph {
             nodeLabels.put(10, 2);
             nodeLabels.put(10, 20);
             nodeLabels.put(11, 0);
-            nodeLabels.put(11, 1);
-            //nodeLabels.put(11, this.replacedTypeId);
+            //nodeLabels.put(11, 1);
+            nodeLabels.put(11, this.replacedTypeId);
             nodeLabels.put(12, 0);
             nodeLabels.put(12, 6);
             nodeLabels.put(13, 9);
             nodeLabels.put(14, 0);
-            nodeLabels.put(14, 1);
-            //nodeLabels.put(14, this.replacedTypeId);
+            //nodeLabels.put(14, 1);
+            nodeLabels.put(14, this.replacedTypeId);
             nodeLabels.put(14, 7);
             nodeLabels.put(15, 2);
             nodeLabels.put(15, 20);
@@ -176,14 +176,14 @@ public class MultiLabelGraph {
             labelNodes.put(2, 10);
             labelNodes.put(20, 10);
             labelNodes.put(0, 11);
-            labelNodes.put(1, 11);
-            //labelNodes.put(this.replacedTypeId, 11);
+            //labelNodes.put(1, 11);
+            labelNodes.put(this.replacedTypeId, 11);
             labelNodes.put(0, 12);
             labelNodes.put(6, 12);
             labelNodes.put(9, 13);
             labelNodes.put(0, 14);
-            labelNodes.put(1, 14);
-            //labelNodes.put(this.replacedTypeId, 14);
+            //labelNodes.put(1, 14);
+            labelNodes.put(this.replacedTypeId, 14);
             labelNodes.put(7, 14);
             labelNodes.put(2, 15);
             labelNodes.put(20, 15);
@@ -194,7 +194,7 @@ public class MultiLabelGraph {
             labelNodes.put(15, 17);
             this.labelNodes = labelNodes;
 
-            Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge = HashBasedTable.create();
+            Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
             addEdgeToGraph(graph, 5, 1, 6, nodeLabels, graphEdge);
             addEdgeToGraph(graph, 7, 1, 7, nodeLabels, graphEdge);
             addEdgeToGraph(graph, 7, 2, 7, nodeLabels, graphEdge);
@@ -249,7 +249,7 @@ public class MultiLabelGraph {
         this.nodeLabels = nodeLabels;
         this.labelNodes = labelNodes;
 
-        Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge = HashBasedTable.create();
+        Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
         for (GSpanEdge edge : dfScode.getEdgeSeq()) {
             addEdgeToGraph(graph, edge.getNodeA(), edge.getNodeB(), edge.getEdgeLabel(), nodeLabels, graphEdge);
         }
@@ -273,7 +273,7 @@ public class MultiLabelGraph {
         this.typeId = typeRelatedGraph.getTypeId();
         this.typeRelatedNum = typeRelatedGraph.getNodes().size();
 
-/*        this.nodeLabels = MultimapBuilder.treeKeys().hashSetValues().build();
+        this.nodeLabels = MultimapBuilder.treeKeys().hashSetValues().build();
         for (Integer key : typeRelatedGraph.getNodeLabels().keySet()) {
             for (Integer value : typeRelatedGraph.getNodeLabels().get(key)) {
                 if (value.equals(this.typeId)) {
@@ -282,8 +282,8 @@ public class MultiLabelGraph {
                     this.nodeLabels.put(key, value);
                 }
             }
-        }*/
-        this.nodeLabels = typeRelatedGraph.getNodeLabels();
+        }
+        //this.nodeLabels = typeRelatedGraph.getNodeLabels();
         this.labelNodes = MultimapBuilder.treeKeys().hashSetValues().build();
         for (Integer node : this.nodeLabels.keySet()) {
             for (Integer label : this.nodeLabels.get(node)) {
@@ -291,8 +291,8 @@ public class MultiLabelGraph {
             }
         }
 
-        Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge = HashBasedTable.create();
-        MutableValueGraph graph = ValueGraphBuilder.undirected().build();
+        Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
+        MutableValueGraph graph = ValueGraphBuilder.undirected().expectedNodeCount(this.nodeLabels.keySet().size()).build();
         if (typeRelatedGraph.getTriples() != null && !typeRelatedGraph.getTriples().isEmpty()) {
             for (int[] spo : typeRelatedGraph.getTriples()) {
                 if (spo[0] != spo[2]) {
@@ -312,7 +312,7 @@ public class MultiLabelGraph {
                                        Integer nodeIdB,
                                        Integer edgeLabel,
                                        Multimap<Integer, Integer> nodeLabels,
-                                       Table<Integer, Integer, Map<DFScode, EdgeInstance>> graphEdge) throws Exception {
+                                       Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge) throws Exception {
         // 每个node上 有不同的label 通过排列组合得到 多个边
         graph.putEdgeValue(nodeIdA, nodeIdB, edgeLabel);
         for (Integer label1 : nodeLabels.get(nodeIdA)) {
@@ -328,8 +328,8 @@ public class MultiLabelGraph {
                     nodeLabelB = label2;
                 }
                 DFScode dfScode = new DFScode(new GSpanEdge(0, 1, nodeLabelA, nodeLabelB, edgeLabel, 1));
-                EdgeInstance instance;
-                Map<DFScode, EdgeInstance> edge;
+                DFScodeInstance instance;
+                Map<DFScode, DFScodeInstance> edge;
                 if (graphEdge.contains(nodeLabelA, nodeLabelB)) {
                     edge = graphEdge.get(nodeLabelA, nodeLabelB);
                 } else {
@@ -338,7 +338,7 @@ public class MultiLabelGraph {
                 if (edge.containsKey(dfScode)) {
                     instance = edge.get(dfScode);
                 } else {
-                    instance = new EdgeInstance();
+                    instance = new DFScodeInstance();
                 }
                 int[] instanceMap = new int[2];
 
@@ -367,7 +367,7 @@ public class MultiLabelGraph {
         return valueGraph;
     }
 
-    public Table<Integer, Integer, Map<DFScode, EdgeInstance>> getGraphEdge() {
+    public Table<Integer, Integer, Map<DFScode, DFScodeInstance>> getGraphEdge() {
         return graphEdge;
     }
 
@@ -409,59 +409,7 @@ public class MultiLabelGraph {
 
     public static void main(String[] args) throws Exception {
 
-/*        File dir = new File("D_10P");
-        FileWriter res = new FileWriter("res");
-
-
-        if (dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            for (File file : files) {
-
-                System.out.println(file.getAbsolutePath());
-                res.write(file.getAbsolutePath()+System.lineSeparator());
-                MultiLabelGraph graphFromFile = new MultiLabelGraph(file.getAbsolutePath());
-                if (graphFromFile.labelNodes.size() == graphFromFile.nodeLabels.size()) {
-                    res.write("true"+System.lineSeparator());
-                } else {
-                    res.write("false"+System.lineSeparator());
-                }
-
-                res.write(graphFromFile.labelNodes.toString()+System.lineSeparator());
-                res.write(graphFromFile.nodeLabels.toString()+System.lineSeparator());
-                res.write(graphFromFile.valueGraph.nodes().size()+System.lineSeparator());
-                res.write(graphFromFile.valueGraph.toString()+System.lineSeparator());
-*//*                System.out.println(graphFromFile.labelNodes.size() == graphFromFile.nodeLabels.size());
-                System.out.println(graphFromFile.labelNodes);
-                System.out.println(graphFromFile.nodeLabels);
-                System.out.println(graphFromFile.valueGraph.nodes().size());
-                System.out.println(graphFromFile.valueGraph);*//*
-
-                for (Integer row : graphFromFile.graphEdge.rowKeySet()) {
-                    for (Map.Entry<Integer, Map<DFScode, EdgeInstance>> entry : graphFromFile.graphEdge.row(row).entrySet()) {
-                        for (Map.Entry<DFScode, EdgeInstance> entry1 : entry.getValue().entrySet()) {
-                            if (entry1.getValue().calMNI() > 1) {
-                                res.write("labelA: " + row+System.lineSeparator());
-                                res.write("labelB: " + entry.getKey()+System.lineSeparator());
-                                res.write("DFS code " + entry1.getKey()+System.lineSeparator());
-                                res.write("DFS code MNI " + entry1.getValue().calMNI()+System.lineSeparator());
-                                res.write("____________________________________________________________________________________________________________________________"+System.lineSeparator());
-                                System.out.println("labelA : " + row);
-                                System.out.println("labelB: " + entry.getKey());
-                                System.out.println("DFS code " + entry1.getKey());
-                                System.out.println("DFS code MNI " + entry1.getValue().calMNI());
-                                System.out.println("____________________________________________________________________________________________________________________________");
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-        res.close();*/
-
-
-
-        MultiLabelGraph graphBig= new MultiLabelGraph("TEST14963072.json");
+        MultiLabelGraph graphBig= new MultiLabelGraph("D_10P_0.7378246753246751R_1.0T_11260.json");
         System.out.println("graphBig.labelNodes.size() == graphBig.nodeLabels.size()");
         System.out.println(graphBig.labelNodes.size() == graphBig.nodeLabels.size());
         System.out.println("graphBig.labelNodes");
@@ -472,12 +420,13 @@ public class MultiLabelGraph {
         System.out.println(graphBig.nodeLabels);
         System.out.println("graphBig.valueGraph.nodes()");
         System.out.println(graphBig.valueGraph.nodes().size());
+        System.out.println("graphBig.valueGraph");
         System.out.println(graphBig.valueGraph);
 
         for (Integer row : graphBig.graphEdge.rowKeySet()) {
-            for (Map.Entry<Integer, Map<DFScode, EdgeInstance>> entry : graphBig.graphEdge.row(row).entrySet()) {
-                for (Map.Entry<DFScode, EdgeInstance> entry1 : entry.getValue().entrySet()) {
-                    if (entry1.getValue().calMNI() > 1) {
+            for (Map.Entry<Integer, Map<DFScode, DFScodeInstance>> entry : graphBig.graphEdge.row(row).entrySet()) {
+                for (Map.Entry<DFScode, DFScodeInstance> entry1 : entry.getValue().entrySet()) {
+                    if (entry1.getValue().calMNI() > 0) {
                         System.out.println("labelA : " + row);
                         System.out.println("labelB: " + entry.getKey());
                         System.out.println("DFS code " + entry1.getKey());

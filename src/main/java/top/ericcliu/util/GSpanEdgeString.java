@@ -21,14 +21,24 @@ public class GSpanEdgeString implements Serializable {
     public GSpanEdgeString() {
     }
 
-    public GSpanEdgeString(GSpanEdge gSpanEdge, String databasePath){
+    public GSpanEdgeString(GSpanEdge gSpanEdge, String databasePath,Integer relationId){
         DataBaseTools dataBaseTools = new DataBaseTools();
         try {
             Connection db =dataBaseTools.sqliteConect(databasePath);
             this.nodeA = gSpanEdge.getNodeA();
             this.nodeB = gSpanEdge.getNodeB();
-            this.labelA = dataBaseTools.printer(db,gSpanEdge.getLabelA());
-            this.labelB = dataBaseTools.printer(db,gSpanEdge.getLabelB());
+            if(gSpanEdge.getLabelA()==Integer.MIN_VALUE){
+                this.labelA = dataBaseTools.printer(db,relationId);
+            }
+            else {
+                this.labelA = dataBaseTools.printer(db,gSpanEdge.getLabelA());
+            }
+            if(gSpanEdge.getLabelB()==Integer.MIN_VALUE){
+                this.labelB = dataBaseTools.printer(db,relationId);
+            }
+            else {
+                this.labelB = dataBaseTools.printer(db,gSpanEdge.getLabelB());
+            }
             this.edgeLabel =dataBaseTools.printer(db,gSpanEdge.getEdgeLabel());
             this.direction = String.valueOf(gSpanEdge.getDirection());
             db.close();

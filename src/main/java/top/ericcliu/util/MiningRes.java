@@ -1,5 +1,7 @@
 package top.ericcliu.util;
 
+import org.apache.jena.base.Sys;
+
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
@@ -62,5 +64,10 @@ public class MiningRes {
 
     public Map<Integer, Set<Integer>> getNodeCardinality() {
         return nodeCardinality;
+    }
+    public static void main(String[] args){
+        String file = "D_10P_0.7378246753246751R_1.0T_11260.jsonMNI_0.1";
+        String[] strings = file.split("T_|.json");
+        System.currentTimeMillis();
     }
 }

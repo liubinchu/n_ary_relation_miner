@@ -22,15 +22,15 @@ public class MinDFSCodeJustifier {
         // 标记待判断的DFScode边 id
         Integer maxTurn = this.dFScode.getEdgeSeq().size();
         DFScode minDFScode = new DFScode();
-        EdgeInstance minDFSCodeInstance = null;
+        DFScodeInstance minDFSCodeInstance = null;
 
         // 选取最小边
         GSpanEdge minEdge = null;
-        Iterator<Map<DFScode, EdgeInstance>> mapIt = this.dFSCodeGraph.getGraphEdge().values().iterator();
+        Iterator<Map<DFScode, DFScodeInstance>> mapIt = this.dFSCodeGraph.getGraphEdge().values().iterator();
         while (mapIt.hasNext()) {
-            for (Map.Entry<DFScode, EdgeInstance> entry : mapIt.next().entrySet()) {
+            for (Map.Entry<DFScode, DFScodeInstance> entry : mapIt.next().entrySet()) {
                 ArrayList<GSpanEdge> edgeSeq = entry.getKey().getEdgeSeq();
-                EdgeInstance currentInstance = entry.getValue();
+                DFScodeInstance currentInstance = entry.getValue();
                 GSpanEdge currentEdge = null;
                 if (edgeSeq.size() != 1) {
                     throw new Exception("dFSCodeGraph 初始化 存在问题");
@@ -52,15 +52,15 @@ public class MinDFSCodeJustifier {
         while (edgeIndex < maxTurn) {
             //对最小边进行最右拓展
             ArrayList<GSpanEdge> childrenEdge = rightMostPathExtension(minDFScode);
-            Map<GSpanEdge,EdgeInstance> childrenEdgeInstanceMap = new HashMap<>(childrenEdge.size());
+            Map<GSpanEdge, DFScodeInstance> childrenEdgeInstanceMap = new HashMap<>(childrenEdge.size());
             minEdge = null;
             Iterator<GSpanEdge> edgeIt = childrenEdge.iterator();
             while (edgeIt.hasNext()) {
                 GSpanEdge childEdge = edgeIt.next();
-                EdgeInstance childInstace = subGraphIsomorphism(minDFScode, minDFSCodeInstance, childEdge);
+                DFScodeInstance childInstace = subGraphIsomorphism(minDFScode, minDFSCodeInstance, childEdge);
                 childrenEdgeInstanceMap.put(childEdge,childInstace);
             }
-            for(Map.Entry<GSpanEdge,EdgeInstance> entry : childrenEdgeInstanceMap.entrySet()){
+            for(Map.Entry<GSpanEdge, DFScodeInstance> entry : childrenEdgeInstanceMap.entrySet()){
                 if (entry.getValue().calMNI() > 0) {
                     if (minEdge == null || minEdge.compareTo(entry.getKey()) > 0) {
                         minEdge = entry.getKey();
@@ -83,9 +83,9 @@ public class MinDFSCodeJustifier {
         return true;
     }
 
-    private EdgeInstance subGraphIsomorphism(DFScode parent, EdgeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
+    private DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
-        EdgeInstance childInstance = new EdgeInstance();
+        DFScodeInstance childInstance = new DFScodeInstance();
         DFScode child = ((DFScode) parent.clone()).addEdge(childernEdge);
         int nodeA = childernEdge.getNodeA();
         int nodeB = childernEdge.getNodeB();
@@ -166,8 +166,8 @@ public class MinDFSCodeJustifier {
                 int node2 = rightMostPathIt.next();
                 int label2 = parent.getNodeLabel(node2);
                 Set<DFScode> possibleChildren = new HashSet<>();
-                Map<DFScode, EdgeInstance> map1 = this.dFSCodeGraph.getGraphEdge().get(rightMostNodeLabel, label2);
-                Map<DFScode, EdgeInstance> map2 = this.dFSCodeGraph.getGraphEdge().get(label2, rightMostNodeLabel);
+                Map<DFScode, DFScodeInstance> map1 = this.dFSCodeGraph.getGraphEdge().get(rightMostNodeLabel, label2);
+                Map<DFScode, DFScodeInstance> map2 = this.dFSCodeGraph.getGraphEdge().get(label2, rightMostNodeLabel);
                 if (map1 != null) {
                     possibleChildren.addAll(map1.keySet());
                 }
@@ -195,7 +195,7 @@ public class MinDFSCodeJustifier {
             Integer nodeInRMP = descRMPit.next();
             Integer nodeInRMPLabel = parent.getNodeLabel(nodeInRMP);
             Set<DFScode> possibleChildren = new HashSet<>();
-            for (Map<DFScode, EdgeInstance> map : this.dFSCodeGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
+            for (Map<DFScode, DFScodeInstance> map : this.dFSCodeGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());
             }
             for (DFScode possibleChild : possibleChildren) {
@@ -209,7 +209,7 @@ public class MinDFSCodeJustifier {
                 childrenEdge.add(possibleEdge);
             }
             possibleChildren = new HashSet<>();
-            for (Map<DFScode, EdgeInstance> map : this.dFSCodeGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
+            for (Map<DFScode, DFScodeInstance> map : this.dFSCodeGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());
             }
             for (DFScode possibleChild : possibleChildren) {

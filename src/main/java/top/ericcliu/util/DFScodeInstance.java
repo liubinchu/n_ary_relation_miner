@@ -1,131 +1,132 @@
 package top.ericcliu.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author liubi
- * @date 2019-01-20 19:19
+ * @date 2019-04-15 20:24
  **/
-public class DFScodeInstance implements  Cloneable, SaveToFile{
+public class DFScodeInstance implements SaveToFile{
     /**
-     * row key : instance id
-     * column key : node id of DFS code
-     * value: DFScode 对应embedding中相对应的data graph node id
+     * Arraylist 中 每一个元素 为 一个 edge instance, 用数组表示
+     * edge 有三个元素唯一标识  subject_label , predicate , object_label
+     * 边的 instance 这三个元素都相同， 但是 subject， 和 object 不同
      */
-    private Table<Integer,Integer,Integer> instances;
-
-    private void setInstances(Table<Integer, Integer, Integer> instances) {
-        this.instances = instances;
-    }
+    private ArrayList<int[]> instances = new ArrayList<>();
+    private DFScode dfScode;
 
     public DFScodeInstance() {
-        this.instances = HashBasedTable.create();
+    }
+
+    public DFScodeInstance(DFScode dfScode) {
+        this.dfScode = dfScode;
+    }
+
+    public ArrayList<int[]> getInstances() {
+        return instances;
     }
 
     /**
      * 向其中添加instance
-     * @param instance
-     *          key: node id in corresponding DFS code
-     *          value: node id of DFS code embedding in data graph, value is the node id in data graph
+     *
+     * @param instance key: node id in corresponding DFS code
+     *                 value: node id of DFS code embedding in data graph, value is the node id in data graph
      * @return
      */
-    public boolean addInstance(DFScode dfScode,Map<Integer,Integer> instance) throws Exception {
-        Integer rowId =  this.instances.rowKeySet().size();
-        for(Integer nodeId : instance.keySet()){
-            if(!dfScode.getNodes().contains(nodeId)){
-                throw new Exception("Do not have this node in DFS code");
-            }
-            else {
-                this.instances.put(rowId,nodeId,instance.get(nodeId));
-            }
+    public boolean addInstance(DFScode dfScode, int[] instance) throws Exception {
+        if (this.dfScode == null) {
+            this.dfScode = dfScode;
         }
+        if (!this.dfScode.equals(dfScode)) {
+            throw new Exception("illegal DFS code");
+        }
+        if (instance.length != dfScode.getNodes().size()) {
+            throw new Exception("illegal instance");
+        }
+        this.instances.add(instance);
         return true;
     }
 
-    public int getMNI() throws Exception {
-        int mni;
-        if(this.instances.columnKeySet().size()==0){
-            throw new Exception("illegal DFS code ");
+    public Integer calMNI() throws Exception {
+        if(this.dfScode == null && this.instances.size()==0){
+            return 0;
+            // 当前模式 在图中 不存在 实例
         }
-        else {
-            mni = Integer.MAX_VALUE;
-            for(Integer nodeId : this.instances.columnKeySet()){
-                Set<Integer> dataNodes = new HashSet<>();
-                Collection<Integer> dataNodesDup = this.instances.column(nodeId).values();
-                for(Integer dataNode : dataNodesDup){
-                    dataNodes.add(dataNode);
-                }
-                if(dataNodes.size()<mni){
-                    mni = dataNodes.size();
-                }
+        ArrayList<Set<Integer>> sets = new ArrayList<>(this.dfScode.getNodes().size());
+        for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
+            sets.add(new HashSet<>());
+        }
+
+        for (int[] instance : this.instances) {
+            for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
+                Set<Integer> set = sets.get(i);
+                set.add(instance[i]);
+                sets.set(i, set);
             }
         }
-        return mni;
-    }
-
-    public Table<Integer, Integer, Integer> getInstances() {
-        return instances;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+        Integer MNI = Integer.MAX_VALUE;
+        for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
+            if (MNI > sets.get(i).size()) {
+                MNI = sets.get(i).size();
+            }
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
+        return MNI;
+    }
+
+    /**
+     * 给定 DFS code 中的 node， 给出 实力层 的 instance node
+     * @param nodeId   nodeId in DFS code
+     * @return Map key instanceId, value instanceNodeId in Data Graph
+     * @throws Exception
+     */
+    public Map<Integer,Integer> fetchInstanceNode(Integer nodeId) throws Exception {
+        if(!this.dfScode.getNodes().contains(nodeId)){
+            throw new Exception("illeagl para");
+        }
+        Map<Integer,Integer> instanceNodeMap = new HashMap<>(this.instances.size());
+        int index = 0;
+        for(int[]instance : this.instances){
+            instanceNodeMap.put(index++,instance[nodeId]);
+        }
+        return instanceNodeMap;
+    }
+    public DFScodeInstance sample(double ratio, int upperBound, int bottomBound ) throws Exception {
+        int sampleNum = (int) (this.instances.size() * ratio);
+        if(sampleNum> upperBound)
+            sampleNum = upperBound;
+        if(bottomBound>this.instances.size())
+            bottomBound = this.instances.size();
+        if(sampleNum<bottomBound)
+            sampleNum = bottomBound;
+
+        DFScodeInstance sampled = new DFScodeInstance();
+        sampled.dfScode = this.dfScode;
+
+        Random random = new Random();
+        Set<Integer> instanceIds = new HashSet<>(sampleNum);
+
+        for (int i = 0; i < sampleNum; i++) {
+            int nextInstanceId = random.nextInt(this.instances.size() - 1);
+            while (instanceIds.contains(nextInstanceId)) {
+                nextInstanceId = (nextInstanceId + 1) % sampleNum;
+            }
+            instanceIds.add(nextInstanceId);
         }
 
-        DFScodeInstance that = (DFScodeInstance) o;
-
-        return instances != null ? instances.equals(that.instances) : that.instances == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return instances != null ? instances.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "DFScodeInstance{" +
-                "instances=" + instances +
-                '}';
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        DFScodeInstance cloned = (DFScodeInstance) super.clone();
-        cloned.instances = HashBasedTable.create(this.instances);
-        return cloned;
-    }
-
-    public static void main(String[]args) throws Exception {
-        DFScodeInstance dfScodeInstance1= new DFScodeInstance();
-        DFScodeInstance dfScodeInstance2 = new DFScodeInstance();
-        System.out.println(dfScodeInstance1.getInstances());
-        if(dfScodeInstance1.getInstances() != dfScodeInstance2.getInstances()){
-            System.out.println("deep copy");
+        for(int instanceId : instanceIds){
+            sampled.addInstance(this.dfScode,this.instances.get(instanceId));
         }
-        Table<Integer,Integer,Integer> instances = HashBasedTable.create();
-        instances.put(0,0,1);
-        instances.put(0,1,4);
-        instances.put(1,0,2);
-        instances.put(1,1,5);
-        instances.put(2,0,3);
-        instances.put(2,1,6);
-        System.out.println(instances.column(0).values());
-        dfScodeInstance1.setInstances(instances);
-        dfScodeInstance1.saveToFile("dfScodeInstance1.json",false);
+        return sampled;
+    }
+    public static void main(String[] args) throws Exception {
+        DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
+        //dfScode.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
+        DFScodeInstance DFScodeInstance = new DFScodeInstance();
+        DFScodeInstance.addInstance(dfScode, new int[]{1, 3});
+        DFScodeInstance.addInstance(dfScode, new int[]{2, 1});
+        DFScodeInstance.addInstance(dfScode, new int[]{3, 2});
+        DFScodeInstance.addInstance(dfScode, new int[]{1, 3});
+        DFScodeInstance.sample(1,1,1).saveToFile("edgeInstanceTest.json",false);
+        System.out.println(DFScodeInstance.calMNI());
     }
 }

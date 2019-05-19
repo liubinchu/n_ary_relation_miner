@@ -1,9 +1,5 @@
 package top.ericcliu.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,19 +22,9 @@ public class DFScodeString implements Cloneable , SaveToFile{
      */
     private Map<Integer, String> nodeLabelMap = new HashMap<>();
 
-/*    public DFScodeString(DFScodeJson dfScodeJson){
-        ObjectMapper mapper = new ObjectMapper();
-        this.edgeSeq = new ArrayList<>(dfScodeJson.getEdgeSeq().size());
-        for(Object object : dfScodeJson.getEdgeSeq()){
-            this.edgeSeq.add(mapper.convertValue(object,GSpanEdge.class));
-        }
-        this.maxNodeId = dfScodeJson.getMaxNodeId();
-        this.nodeLabelMap = new TreeMap<>(dfScodeJson.getNodeLabelMap());
-    }*/
-
     public DFScodeString() {
     }
-    public DFScodeString(DFScode dfScode,String databasePath) throws Exception {
+    public DFScodeString(DFScode dfScode,String databasePath,Integer relationId) throws Exception {
         if(dfScode==null){
             throw new Exception("DFScode is null");
         }
@@ -50,7 +36,12 @@ public class DFScodeString implements Cloneable , SaveToFile{
                 if(dfScode.getNodeLabelMap()!=null&&!dfScode.getNodeLabelMap().isEmpty()){
                     Set<Map.Entry<Integer,Integer>> nodeLabelMapEntrySet = dfScode.getNodeLabelMap().entrySet();
                     for(Map.Entry<Integer,Integer> entry : nodeLabelMapEntrySet){
-                        this.nodeLabelMap.put(entry.getKey(),dataBaseTools.printer(db,entry.getValue()));
+                        if(entry.getValue().equals(Integer.MIN_VALUE)){
+                            this.nodeLabelMap.put(entry.getKey(),dataBaseTools.printer(db,relationId));
+                        }
+                        else {
+                            this.nodeLabelMap.put(entry.getKey(),dataBaseTools.printer(db,entry.getValue()));
+                        }
                     }
                 }
                 db.close();
@@ -60,7 +51,7 @@ public class DFScodeString implements Cloneable , SaveToFile{
 
             if(dfScode.getEdgeSeq()!=null&&!dfScode.getEdgeSeq().isEmpty()){
                 for(GSpanEdge edge : dfScode.getEdgeSeq()){
-                    this.edgeSeq.add(new GSpanEdgeString(edge,databasePath));
+                    this.edgeSeq.add(new GSpanEdgeString(edge,databasePath,relationId));
                 }
             }
         }

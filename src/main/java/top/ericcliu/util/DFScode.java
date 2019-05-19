@@ -190,12 +190,13 @@ public class DFScode implements Cloneable {
                 for (Pair<String,Map<Integer, DFScode>> dFScodeOfFile : dfScodes){
                     //DFScode.removeDupDumpReadable(dFScodeOfFile,"C:\\bioportal.sqlite");
                     String graphFile = dFScodeOfFile.getKey();
+                    Integer relationId = Integer.parseInt(graphFile.split("Id_")[1].replace(".json",""));
                     Map<Integer, DFScode> map = dFScodeOfFile.getValue();
                     if (map.isEmpty()) {
                         continue;
                     }
                     else if (map.size() == 1) {
-                        new DFScodeString(map.get(1),dataBasePath).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_1.json", false);
+                        new DFScodeString(map.get(1),dataBasePath,relationId).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_1.json", false);
                         // id start from 1
                     }
                     else {
@@ -210,7 +211,7 @@ public class DFScode implements Cloneable {
                                 }
                             }
                             if(flag){
-                                new DFScodeString(currentDFScode,dataBasePath).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_"+i+".json", false);
+                                new DFScodeString(currentDFScode,dataBasePath,relationId).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_"+i+".json", false);
                             }
                         }
                     }
@@ -228,7 +229,6 @@ public class DFScode implements Cloneable {
                     for(File reFile :reFiles){
                         String fileName = reFile.getName();
                         if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E' && reFile.length()>1){
-                            String graphFile = dir.getName();
                             Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json",""));
                             System.out.println(dir.getAbsolutePath()+File.separator+fileName);
                             DFScode dfScode = DFScode.readFromFile(dir.getAbsolutePath()+File.separator+fileName);
@@ -239,12 +239,15 @@ public class DFScode implements Cloneable {
                 }
                 for (Pair<File,Map<Integer, DFScode>> dFScodeOfFile : dfScodes){
                     File graphFile = dFScodeOfFile.getKey();
+                    Integer typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
+
                     Map<Integer, DFScode> map = dFScodeOfFile.getValue();
                     if (map.isEmpty()) {
                         continue;
                     }
                     else if (map.size() == 1) {
-                        new DFScodeString(map.get(1),dataBasePath).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_1.json", false);
+                        new DFScodeString(map.get(1), dataBasePath,typeId).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_1.json", false
+                                );
                         // id start from 1
                     }
                     else {
@@ -259,7 +262,7 @@ public class DFScode implements Cloneable {
                                 }
                             }
                             if(flag){
-                                new DFScodeString(currentDFScode,dataBasePath).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_"+i+".json", false);
+                                new DFScodeString(currentDFScode,dataBasePath,typeId).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_"+i+".json", false);
                             }
                         }
                     }
@@ -564,7 +567,9 @@ public class DFScode implements Cloneable {
 
         //String dirPath = "D:\\April9\\R_0.8\\P_all";
         //DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",true);
-        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\New folder";
+/*        String dirPath = "/hdd/liubinchu/D_10/";
+        DFScode.removeDupDumpReadable(dirPath,"/home/lbc/bioportal1.sqlite",false);*/
+        String dirPath = "D:\\New folder\\";
         DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal1.sqlite",false);
     }
 }

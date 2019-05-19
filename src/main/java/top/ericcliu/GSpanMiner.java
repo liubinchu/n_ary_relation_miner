@@ -38,12 +38,12 @@ public class GSpanMiner {
         //清洗不频繁的边
         for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
             for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
-                Map<DFScode, EdgeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
+                Map<DFScode, DFScodeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
                 if (map != null) {
                     Boolean changed = false;
-                    Iterator<Entry<DFScode, EdgeInstance>> iterator = map.entrySet().iterator();
+                    Iterator<Entry<DFScode, DFScodeInstance>> iterator = map.entrySet().iterator();
                     while (iterator.hasNext()) {
-                        Entry<DFScode, EdgeInstance> entry = iterator.next();
+                        Entry<DFScode, DFScodeInstance> entry = iterator.next();
                         if (entry.getValue().calMNI() < this.MNIThreshold) {
                             iterator.remove();
                             changed = true;
@@ -56,6 +56,7 @@ public class GSpanMiner {
             }
         }
     }
+
     /**
      * 模式拓展原则， 先从最右节点后向拓展，距离根节点近的节点优先
      * 再 在最右路径上，前向拓展，距离根节点远的节点优先
@@ -81,8 +82,8 @@ public class GSpanMiner {
                 int node2 = rightMostPathIt.next();
                 int label2 = parent.getNodeLabel(node2);
                 Set<DFScode> possibleChildren = new HashSet<>();
-                Map<DFScode, EdgeInstance> map1 = this.dataGraph.getGraphEdge().get(rightMostNodelabel, label2);
-                Map<DFScode, EdgeInstance> map2 = this.dataGraph.getGraphEdge().get(label2, rightMostNodelabel);
+                Map<DFScode, DFScodeInstance> map1 = this.dataGraph.getGraphEdge().get(rightMostNodelabel, label2);
+                Map<DFScode, DFScodeInstance> map2 = this.dataGraph.getGraphEdge().get(label2, rightMostNodelabel);
                 if (map1 != null) {
                     possibleChildren.addAll(map1.keySet());
                 }
@@ -110,7 +111,7 @@ public class GSpanMiner {
             Integer nodeInRMP = descRMPit.next();
             Integer nodeInRMPLabel = parent.getNodeLabel(nodeInRMP);
             Set<DFScode> possibleChildren = new HashSet<>();
-            for (Map<DFScode, EdgeInstance> map : this.dataGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
+            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());
             }
             for (DFScode possibleChild : possibleChildren) {
@@ -124,7 +125,7 @@ public class GSpanMiner {
                 childrenEdge.add(possibleEdge);
             }
             possibleChildren = new HashSet<>();
-            for (Map<DFScode, EdgeInstance> map : this.dataGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
+            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());
             }
             for (DFScode possibleChild : possibleChildren) {
@@ -142,9 +143,9 @@ public class GSpanMiner {
     }
 
 
-    private EdgeInstance subGraphIsomorphism(DFScode parent, EdgeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
+    private DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
-        EdgeInstance childInstance = new EdgeInstance();
+        DFScodeInstance childInstance = new DFScodeInstance();
         DFScode child = ((DFScode) parent.clone()).addEdge(childernEdge);
         int nodeA = childernEdge.getNodeA();
         int nodeB = childernEdge.getNodeB();
@@ -197,10 +198,11 @@ public class GSpanMiner {
         }
         return childInstance;
     }
-    private double calRelatedRatio(Integer MNI,DFScode childDFScode) throws Exception {
+
+    private double calRelatedRatio(Integer MNI, DFScode childDFScode) throws Exception {
         Double relatedRatio = 0d;
         for (GSpanEdge edge : childDFScode.getEdgeSeq()) {
-            Map<DFScode, EdgeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
+            Map<DFScode, DFScodeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
             DFScode dfScode = null;
             if (map == null) {
                 map = this.getDataGraph().getGraphEdge().get(edge.getLabelB(), edge.getLabelA());
@@ -217,23 +219,19 @@ public class GSpanMiner {
     }
 
 
-    private void gspanCore(DFScode parent, EdgeInstance parentInstances) throws Exception {
+    private void gspanCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
         ArrayList<GSpanEdge> childrenEdges = rightMostPathExtension(parent);
-        //System.out.println("\nchildrenEdges size:  " + childrenEdges.size());
-        //int turn = 0;
         for (GSpanEdge childEdge : childrenEdges) {
-            //this.stepRecorder.add(++turn);
-            //System.out.println("\nstep: "+this.stepRecorder.toString()+"edge: " +childEdge.toString());
             DFScode childDFScode = ((DFScode) parent.clone()).addEdge(childEdge);
             // 最小DFScode剪枝
             boolean isCannoical = new MinDFSCodeJustifier(childDFScode).justify();
             if (isCannoical) {
                 //频繁度剪枝
-                EdgeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
+                DFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
                 Integer MNI = childInstance.calMNI();
                 if (MNI >= this.MNIThreshold) {
                     //相关度剪枝
-                    double relatedRatio = calRelatedRatio(MNI,childDFScode);
+                    double relatedRatio = calRelatedRatio(MNI, childDFScode);
                     if (relatedRatio > 0.5) {
                         this.result.add(childDFScode);
                         File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
@@ -242,27 +240,27 @@ public class GSpanMiner {
                         }
                         childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
                         System.out.println("instance num:" + childInstance.getInstances().size());
-                        childInstance.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
+                        childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + this.result.size() + ".json", false);
                         gspanCore(childDFScode, childInstance);
                     }
                 }
                 childInstance = null;
                 System.gc();
             }
-            //this.stepRecorder.removeLast();
         }
     }
 
     public void mineGSpan() throws Exception {
-        Iterator<Map<DFScode, EdgeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
+        Iterator<Map<DFScode, DFScodeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
         int i = 0;
         while (iterator.hasNext()) {
-            Map<DFScode, EdgeInstance> map = iterator.next();
-            for (Entry<DFScode, EdgeInstance> entry : map.entrySet()) {
-                //this.stepRecorder = new LinkedList<>();
-                //this.stepRecorder.add(i++);
-                if (this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(0)) ||
-                        this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(1))) {
+            Map<DFScode, DFScodeInstance> map = iterator.next();
+            for (Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
+/*                if (this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(0)) ||
+                        this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(1))) {*/
+                if (entry.getKey().getNodeLabel(0).equals(Integer.MIN_VALUE) ||
+                        entry.getKey().getNodeLabel(1).equals(Integer.MIN_VALUE)) {
+                    // 仅从当前 typeId 作为根节点 出发 拓展
                     gspanCore(entry.getKey(), entry.getValue());
                     System.out.println("finish the " + (i++) + "nd edge");
                 }
@@ -272,11 +270,11 @@ public class GSpanMiner {
     }
 
     public void mineNAryRelation() throws Exception {
-        Iterator<Map<DFScode, EdgeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
+        Iterator<Map<DFScode, DFScodeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
         int i = 0;
         while (iterator.hasNext()) {
-            Map<DFScode, EdgeInstance> map = iterator.next();
-            for (Entry<DFScode, EdgeInstance> entry : map.entrySet()) {
+            Map<DFScode, DFScodeInstance> map = iterator.next();
+            for (Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
                 //this.stepRecorder = new LinkedList<>();
                 //this.stepRecorder.add(i++);
                 gspanCore(entry.getKey(), entry.getValue());
@@ -289,8 +287,9 @@ public class GSpanMiner {
     public static void main(String[] args) throws Exception {
 /*        String filePath = args[0];
         Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
-        String filePath = "TEST14963072.json";
-        Double dataSetSizeRelatedthreshold = 0.01;
+        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
+        Double dataSetSizeRelatedthreshold = 0.1;
         try {
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
             System.out.println("finish read file");
