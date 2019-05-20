@@ -1,21 +1,22 @@
 package top.ericcliu.util;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author liubi
  * @date 2019-04-09 14:51
  **/
 public class DFScodeString implements Cloneable , SaveToFile{
+    private Integer rootNodeId = -1;
+    private Integer MNI = -1;
+    private Double relatedRatio = -1.0;
+    private Integer instanceNum = -1;
+    private Integer maxNodeId = -1;
     /**
      * 边的集合，边的排序代表着边的添加次序
      */
     private ArrayList<GSpanEdgeString> edgeSeq = new ArrayList<>();
-    private Integer maxNodeId = -1;
     /**
      * key : nodes appeared in this DFS code, ie nodeId in DFScode, having no relation with dataGraph
      * value : node label of this node in DFS code
@@ -29,6 +30,10 @@ public class DFScodeString implements Cloneable , SaveToFile{
             throw new Exception("DFScode is null");
         }
         else {
+            this.rootNodeId = dfScode.getRootNodeId();
+            this.MNI = dfScode.getMNI();
+            this.relatedRatio = dfScode.getRelatedRatio();
+            this.instanceNum = dfScode.getInstanceNum();
             this.maxNodeId  = dfScode.getMaxNodeId();
             DataBaseTools dataBaseTools = new DataBaseTools();
             try {
@@ -68,13 +73,13 @@ public class DFScodeString implements Cloneable , SaveToFile{
 
         DFScodeString that = (DFScodeString) o;
 
-        if (edgeSeq != null ? !edgeSeq.equals(that.edgeSeq) : that.edgeSeq != null) {
+        if (!Objects.equals(edgeSeq, that.edgeSeq)) {
             return false;
         }
-        if (maxNodeId != null ? !maxNodeId.equals(that.maxNodeId) : that.maxNodeId != null) {
+        if (!Objects.equals(maxNodeId, that.maxNodeId)) {
             return false;
         }
-        return nodeLabelMap != null ? nodeLabelMap.equals(that.nodeLabelMap) : that.nodeLabelMap == null;
+        return Objects.equals(nodeLabelMap, that.nodeLabelMap);
     }
 
     @Override
@@ -116,6 +121,38 @@ public class DFScodeString implements Cloneable , SaveToFile{
 
     public void setNodeLabelMap(Map<Integer, String> nodeLabelMap) {
         this.nodeLabelMap = nodeLabelMap;
+    }
+
+    public Integer getRootNodeId() {
+        return rootNodeId;
+    }
+
+    public void setRootNodeId(Integer rootNodeId) {
+        this.rootNodeId = rootNodeId;
+    }
+
+    public Integer getMNI() {
+        return MNI;
+    }
+
+    public void setMNI(Integer MNI) {
+        this.MNI = MNI;
+    }
+
+    public Double getRelatedRatio() {
+        return relatedRatio;
+    }
+
+    public void setRelatedRatio(Double relatedRatio) {
+        this.relatedRatio = relatedRatio;
+    }
+
+    public Integer getInstanceNum() {
+        return instanceNum;
+    }
+
+    public void setInstanceNum(Integer instanceNum) {
+        this.instanceNum = instanceNum;
     }
 
     public static void main(String[] args)  {

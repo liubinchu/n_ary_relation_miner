@@ -3,7 +3,6 @@ package top.ericcliu.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Table;
 import javafx.util.Pair;
-import org.apache.jena.base.Sys;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,10 +14,17 @@ import java.util.*;
  **/
 public class DFScode implements Cloneable {
     /**
+     * -1 未计算
+     */
+    private Integer rootNodeId = -1;
+    private Integer MNI = -1;
+    private Double relatedRatio = -1.0;
+    private Integer instanceNum = -1;
+    private Integer maxNodeId = -1;
+    /**
      * 边的集合，边的排序代表着边的添加次序
      */
     private ArrayList<GSpanEdge> edgeSeq;
-    private Integer maxNodeId = -1;
     /**
      * key : nodes appeared in this DFS code, ie nodeId in DFScode, having no relation with dataGraph
      * value : node label of this node in DFS code
@@ -53,15 +59,26 @@ public class DFScode implements Cloneable {
         this.nodeLabelMap.put(nodeA, edge.getLabelA());
         this.nodeLabelMap.put(nodeB, edge.getLabelB());
         this.maxNodeId = nodeA > nodeB ? nodeA : nodeB;
+        this.rootNodeId = edge.getLabelA();
+        this.MNI = -1;
+        this.relatedRatio = -1.0;
+        this.instanceNum = -1;
     }
 
     public DFScode(DFScodeJson dfScodeJson) {
+        this.rootNodeId = dfScodeJson.getRootNodeId();
+        this.MNI = dfScodeJson.getMNI();
+        this.relatedRatio = dfScodeJson.getRelatedRatio();
+        this.instanceNum = dfScodeJson.getInstanceNum();
+
+        this.maxNodeId = dfScodeJson.getMaxNodeId();
+
         ObjectMapper mapper = new ObjectMapper();
         this.edgeSeq = new ArrayList<>(dfScodeJson.getEdgeSeq().size());
         for (Object object : dfScodeJson.getEdgeSeq()) {
             this.edgeSeq.add(mapper.convertValue(object, GSpanEdge.class));
         }
-        this.maxNodeId = dfScodeJson.getMaxNodeId();
+
         this.nodeLabelMap = new TreeMap<>(dfScodeJson.getNodeLabelMap());
     }
 
@@ -73,18 +90,19 @@ public class DFScode implements Cloneable {
     public DFScode(ArrayList<GSpanEdge> edgeSeq) {
         this.edgeSeq = new ArrayList<>(edgeSeq);
         this.nodeLabelMap = new HashMap<>();
+
+        int minNodeId = Integer.MAX_VALUE;
         for (GSpanEdge edge : edgeSeq) {
             Integer nodeA = edge.getNodeA();
             Integer nodeB = edge.getNodeB();
             this.nodeLabelMap.put(nodeA, edge.getLabelA());
             this.nodeLabelMap.put(nodeB, edge.getLabelB());
-            if (nodeA > this.maxNodeId) {
-                this.maxNodeId = nodeA;
-            }
-            if (nodeB > this.maxNodeId) {
-                this.maxNodeId = nodeB;
-            }
+            this.maxNodeId = Math.max(this.maxNodeId, nodeA);
+            this.maxNodeId = Math.max(this.maxNodeId, nodeB);
+            minNodeId = Math.min(minNodeId, nodeA);
+            minNodeId = Math.min(minNodeId, nodeB);
         }
+        this.rootNodeId = getNodeLabel(minNodeId);
     }
 
     /**
@@ -112,6 +130,25 @@ public class DFScode implements Cloneable {
         }
     }
 
+    public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
+        File file = new File(filePath);
+        FileWriter fileWriter;
+        DFScodeJson dfScodeJson = new DFScodeJson(this);
+        if (file.exists()) {
+            fileWriter = new FileWriter(filePath, isAppend);
+        } else {
+            fileWriter = new FileWriter(filePath);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(fileWriter, dfScodeJson);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static DFScode readFromFile(String filePath) throws Exception {
         File file = new File(filePath);
         DFScodeJson dfScodeJson;
@@ -135,163 +172,87 @@ public class DFScode implements Cloneable {
             map.get(1).saveToFile("READ" + graphFile + "Id_1.json", false);
             return true;
             // id start from 1
-        }
-        else {
-            for(int i=1;i<map.size()+1;i++){
+        } else {
+            for (int i = 1; i < map.size() + 1; i++) {
                 boolean flag = true;
                 DFScode currentDFScode = map.get(i);
-                for(int j=i+1;j<map.size()+1;j++){
+                for (int j = i + 1; j < map.size() + 1; j++) {
                     DFScode nextDFScode = map.get(j);
-                    if(currentDFScode.isParentOf(nextDFScode)){
+                    if (currentDFScode.isParentOf(nextDFScode)) {
                         flag = false;
                         break;
                     }
                 }
-                if(flag){
-                    currentDFScode.saveToFile("NODUP" + graphFile + "Id_"+i+".json", false);
+                if (flag) {
+                    currentDFScode.saveToFile("NODUP" + graphFile + "Id_" + i + ".json", false);
                 }
             }
             return true;
         }
     }
-    public static void removeDupDumpReadable(String dirPath ,String dataBasePath,boolean inOneDir) throws Exception {
-        // boolean inOneDir true: 结果保存在一级目录中 false: 结果保存在第二级目录中
+
+    public static void removeDupDumpReadable(String dirPath, String dataBasePath) throws Exception {
+        //结果保存在第二级目录中
         try {
             File dirFile = new File(dirPath);
-            File[] files ;
-            if(dirFile.isDirectory()){
+            File[] files;
+            if (dirFile.isDirectory()) {
                 files = dirFile.listFiles();
-            }
-            else {
+            } else {
                 throw new Exception("dirPath must be a dir");
             }
-            if(inOneDir){
-                //结果保存在一级目录中
-                ArrayList<Pair<String,Map<Integer, DFScode>>> dfScodes = new ArrayList<>();
+            ArrayList<Pair<File, Map<Integer, DFScode>>> dfScodes = new ArrayList<>();
+            for (File dir : files) {
+                if (!dir.isDirectory()) {
+                    continue;
+                }
+                File[] reFiles = dir.listFiles();
                 Map<Integer, DFScode> currentMap = new HashMap<>();
-                String lastGraphFile = "";
-                for(File file : files){
-                    if(file.isDirectory()){
-                        continue;
-                    }
-                    String fileName = file.getName();
-                    if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E'&& file.length()>1){
-                        String graphFile = fileName.split("Id_")[0];
-                        Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json",""));
-                        if(!graphFile.equals(lastGraphFile)){
-                            dfScodes.add(new Pair<>(lastGraphFile,currentMap));
-                            lastGraphFile = graphFile;
-                            currentMap = new HashMap<>();
-                        }
-                        DFScode dfScode = DFScode.readFromFile(fileName);
-                        currentMap.put(relationId,dfScode);
+                for (File reFile : reFiles) {
+                    String fileName = reFile.getName();
+                    if (fileName.length() >= 2 && fileName.charAt(0) == 'R' && fileName.charAt(1) == 'E' && reFile.length() > 1) {
+                        Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json", ""));
+                        System.out.println(dir.getAbsolutePath() + File.separator + fileName);
+                        DFScode dfScode = DFScode.readFromFile(dir.getAbsolutePath() + File.separator + fileName);
+                        currentMap.put(relationId, dfScode);
                     }
                 }
-                for (Pair<String,Map<Integer, DFScode>> dFScodeOfFile : dfScodes){
-                    //DFScode.removeDupDumpReadable(dFScodeOfFile,"C:\\bioportal.sqlite");
-                    String graphFile = dFScodeOfFile.getKey();
-                    Integer relationId = Integer.parseInt(graphFile.split("Id_")[1].replace(".json",""));
-                    Map<Integer, DFScode> map = dFScodeOfFile.getValue();
-                    if (map.isEmpty()) {
-                        continue;
-                    }
-                    else if (map.size() == 1) {
-                        new DFScodeString(map.get(1),dataBasePath,relationId).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_1.json", false);
-                        // id start from 1
-                    }
-                    else {
-                        for(int i=1;i<map.size()+1;i++){
-                            boolean flag = true;
-                            DFScode currentDFScode = map.get(i);
-                            for(int j=i+1;j<map.size()+1;j++){
-                                DFScode nextDFScode = map.get(j);
-                                if(currentDFScode.isParentOf(nextDFScode)){
-                                    flag = false;
-                                    break;
-                                }
-                            }
-                            if(flag){
-                                new DFScodeString(currentDFScode,dataBasePath,relationId).saveToFile(dirFile.getAbsolutePath()+File.separator+"READ" + graphFile + "Id_"+i+".json", false);
-                            }
-                        }
-                    }
-                }
+                dfScodes.add(new Pair<>(dir, currentMap));
             }
-            else {
-                //结果保存在第二级目录中
-                ArrayList<Pair<File,Map<Integer, DFScode>>> dfScodes = new ArrayList<>();
-                for(File dir: files){
-                    if(!dir.isDirectory()){
-                        continue;
-                    }
-                    File[] reFiles = dir.listFiles();
-                    Map<Integer, DFScode> currentMap = new HashMap<>();
-                    for(File reFile :reFiles){
-                        String fileName = reFile.getName();
-                        if(fileName.length()>=2&&fileName.charAt(0)=='R' && fileName.charAt(1)=='E' && reFile.length()>1){
-                            Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json",""));
-                            System.out.println(dir.getAbsolutePath()+File.separator+fileName);
-                            DFScode dfScode = DFScode.readFromFile(dir.getAbsolutePath()+File.separator+fileName);
-                            currentMap.put(relationId,dfScode);
-                        }
-                    }
-                    dfScodes.add(new Pair<>(dir,currentMap));
-                }
-                for (Pair<File,Map<Integer, DFScode>> dFScodeOfFile : dfScodes){
-                    File graphFile = dFScodeOfFile.getKey();
-                    Integer typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
+            for (Pair<File, Map<Integer, DFScode>> dFScodeOfFile : dfScodes) {
+                File graphFile = dFScodeOfFile.getKey();
+                Integer typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
 
-                    Map<Integer, DFScode> map = dFScodeOfFile.getValue();
-                    if (map.isEmpty()) {
-                        continue;
-                    }
-                    else if (map.size() == 1) {
-                        new DFScodeString(map.get(1), dataBasePath,typeId).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_1.json", false
-                                );
-                        // id start from 1
-                    }
-                    else {
-                        for(int i=1;i<map.size()+1;i++){
-                            boolean flag = true;
-                            DFScode currentDFScode = map.get(i);
-                            for(int j=i+1;j<map.size()+1;j++){
-                                DFScode nextDFScode = map.get(j);
-                                if(currentDFScode.isParentOf(nextDFScode)){
-                                    flag = false;
-                                    break;
-                                }
+                Map<Integer, DFScode> map = dFScodeOfFile.getValue();
+                if (map.isEmpty()) {
+                    continue;
+                } else if (map.size() == 1) {
+                    new DFScodeString(map.get(1), dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
+                    );
+                    // id start from 1
+                } else {
+                    for (int i = 1; i < map.size() + 1; i++) {
+                        boolean flag = true;
+                        DFScode currentDFScode = map.get(i);
+                        for (int j = i + 1; j < map.size() + 1; j++) {
+                            DFScode nextDFScode = map.get(j);
+                            if (currentDFScode.isParentOf(nextDFScode)) {
+                                flag = false;
+                                break;
                             }
-                            if(flag){
-                                new DFScodeString(currentDFScode,dataBasePath,typeId).saveToFile(graphFile.getAbsolutePath()+File.separator+"READRE_" + graphFile.getName() + "Id_"+i+".json", false);
-                            }
+                        }
+                        if (flag) {
+                            new DFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_" + i + ".json", false);
                         }
                     }
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
     }
 
-
-    public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
-        File file = new File(filePath);
-        FileWriter fileWriter;
-        DFScodeJson dfScodeJson = new DFScodeJson(this);
-        if (file.exists()) {
-            fileWriter = new FileWriter(filePath, isAppend);
-        } else {
-            fileWriter = new FileWriter(filePath);
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(fileWriter, dfScodeJson);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     public LinkedList<Integer> getRightMostPath() throws Exception {
         LinkedList<Integer> rightMostPath = new LinkedList<>();
@@ -411,6 +372,42 @@ public class DFScode implements Cloneable {
         }
     }
 
+    public void setMaxNodeId(Integer maxNodeId) {
+        this.maxNodeId = maxNodeId;
+    }
+
+    public Integer getRootNodeId() {
+        return rootNodeId;
+    }
+
+    public void setRootNodeId(Integer rootNodeId) {
+        this.rootNodeId = rootNodeId;
+    }
+
+    public Integer getMNI() {
+        return MNI;
+    }
+
+    public void setMNI(Integer MNI) {
+        this.MNI = MNI;
+    }
+
+    public Double getRelatedRatio() {
+        return relatedRatio;
+    }
+
+    public void setRelatedRatio(Double relatedRatio) {
+        this.relatedRatio = relatedRatio;
+    }
+
+    public Integer getInstanceNum() {
+        return instanceNum;
+    }
+
+    public void setInstanceNum(Integer instanceNum) {
+        this.instanceNum = instanceNum;
+    }
+
     public ArrayList<GSpanEdge> getEdgeSeq() {
         return edgeSeq;
     }
@@ -480,96 +477,71 @@ public class DFScode implements Cloneable {
     public static void main(String[] args) throws Exception {
 /*        DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
-
         dfScode.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
         //2
-
         dfScode.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
         //3
-
         dfScode.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
         //4
-
         dfScode.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
         //5
-
         dfScode.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
         //6
-
         dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
         //7
-
         //dfScode.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
         //8
-
         //dfScode.addEdge(new GSpanEdge(5, 7, 3, 1, 1, 1));
         //9
-
         //dfScode.addEdge(new GSpanEdge(7, 8, 1, 2, 1, 1));
         //10
-
         DFScode dfScode1 = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
-
         dfScode1.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
         //2
-
         dfScode1.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
         //3
-
         dfScode1.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
         //4
-
         dfScode1.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
         //5
-
         dfScode1.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
         //6
-
         dfScode1.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
         //7
-
         dfScode1.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
         //8
         DFScode dfScode2 = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
-
         dfScode2.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
         //2
-
         dfScode2.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
         //3
-
         dfScode2.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
         //4
-
         dfScode2.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
         //5
-
         dfScode2.addEdge(new GSpanEdge(3, 5, 1, 3, 1, 1));
         //6
-
         dfScode2.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
         //7
-
         dfScode2.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
         //8
-
-
         System.out.println(dfScode.isParentOf(dfScode1));
         System.out.println(dfScode.isParentOf(dfScode));
         System.out.println(dfScode.isParentOf(dfScode2));
         GSpanEdge gSpanEdge1 = new GSpanEdge(6, 5, 3, 1, 1, 1);
         GSpanEdge gSpanEdge2 = new GSpanEdge(6, 1, 4, 1, 1, 1);
         System.out.println(gSpanEdge1.equals(gSpanEdge2));
-        *//*        dfScode.saveToFile("test.json", true);
-        DFScode dfScode1 = DFScode.readFromFile("test.json");*/
+                dfScode.saveToFile("test.json", true);
+        dfScode1 = DFScode.readFromFile("test.json");
 
-        //String dirPath = "D:\\April9\\R_0.8\\P_all";
+        String dirPath = "D:\\April9\\R_0.8\\P_all";*/
         //DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",true);
 /*        String dirPath = "/hdd/liubinchu/D_10/";
         DFScode.removeDupDumpReadable(dirPath,"/home/lbc/bioportal1.sqlite",false);*/
-        String dirPath = "D:\\New folder (2)\\";
-        DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal1.sqlite",false);
+
+        String dirPath = "D:\\New folder\\";
+        DFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 }
