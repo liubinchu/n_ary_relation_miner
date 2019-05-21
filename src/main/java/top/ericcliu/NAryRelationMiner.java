@@ -12,8 +12,14 @@ import java.util.*;
 public class NAryRelationMiner {
     private MultiLabelGraph dataGraph;
     private Double threshold;
-    private Integer MNIThreshold;  // >= 该阈值 则认为频繁
-    private int maxDepth; // 模式扩展的最大深度 <= maxDepth
+    /**
+     * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
+     */
+    private Integer support;
+    /**
+     *  模式扩展的最大深度 <= maxDepth
+     */
+    private int maxDepth;
     private Double relatedRatio;
     private int resultSize = 0;
 
@@ -31,10 +37,7 @@ public class NAryRelationMiner {
     public NAryRelationMiner(MultiLabelGraph dataGraph, double thresh, int maxDepth, double relatedRatio) throws Exception {
         this.dataGraph = dataGraph;
         this.threshold = thresh;
-        this.MNIThreshold = ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue();
-        if (this.MNIThreshold < 2) {
-            this.MNIThreshold = 2;
-        }
+        this.support = Math.max(2,((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
         this.maxDepth = maxDepth;
         this.relatedRatio = relatedRatio;
         //清洗不频繁的边
@@ -46,7 +49,7 @@ public class NAryRelationMiner {
                     Iterator<Map.Entry<DFScode, DFScodeInstance>> iterator = map.entrySet().iterator();
                     while (iterator.hasNext()) {
                         Map.Entry<DFScode, DFScodeInstance> entry = iterator.next();
-                        if (entry.getValue().calMNI() < this.MNIThreshold) {
+                        if (entry.getValue().calMNI() < this.support) {
                             iterator.remove();
                             changed = true;
                         }
@@ -201,6 +204,15 @@ public class NAryRelationMiner {
         return relatedRatio;
     }
 
+    private void savePattern(DFScode childDFScode,DFScodeInstance childInstance) throws Exception {
+        File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        childDFScode.setInstanceNum(childInstance.getInstances().size());
+        childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
+        childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+    }
 
     private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
         ArrayList<GSpanEdge> childrenEdges = nAryRelationExtension(parent);
@@ -208,34 +220,30 @@ public class NAryRelationMiner {
             DFScode childDFScode = ((DFScode) parent.clone()).addEdge(childEdge);
             boolean isCannoical = new MinDFSCodeJustifier(childDFScode).justify();
             if (!isCannoical) {
-                // 最小DFScode剪枝
+                // 最小DFS code剪枝
                 continue;
             }
             DFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
             Integer MNI = childInstance.calMNI();
-            if (MNI < this.MNIThreshold) {
+            childDFScode.setMNI(MNI);
+            if (MNI < this.support) {
                 //频繁度剪枝
+                if(childInstance.getInstances().size()>=this.support){
+                    // 如果 MNI 不频繁 但是 instance Num 频繁，需要输出模式 但是 不扩展
+                    double relatedRatio = calRelatedRatio(MNI, childDFScode);
+                    childDFScode.setRelatedRatio(relatedRatio);
+                    savePattern(childDFScode,childInstance);
+                }
                 continue;
             }
-            childDFScode.setMNI(MNI);
             double relatedRatio = calRelatedRatio(MNI, childDFScode);
             if (relatedRatio < this.relatedRatio) {
                 //相关度剪枝
                 //continue;
             }
             childDFScode.setRelatedRatio(relatedRatio);
-            File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
-
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            childDFScode.setInstanceNum(childInstance.getInstances().size());
-            childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
-
-            childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+            savePattern(childDFScode,childInstance);
             mineCore(childDFScode, childInstance);
-            childInstance = null;
-            System.gc();
         }
     }
 
@@ -263,8 +271,8 @@ public class NAryRelationMiner {
         Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
         String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        double dataSetSizeRelatedthreshold = 0.01;
-        int maxDepth = 1;
+        double dataSetSizeRelatedthreshold = 0.1;
+        int maxDepth = 2;
         double relatedRatioThreshold = 0.001;
         try {
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
@@ -272,7 +280,7 @@ public class NAryRelationMiner {
             NAryRelationMiner miner = new NAryRelationMiner(graph, dataSetSizeRelatedthreshold, maxDepth, relatedRatioThreshold);
             System.out.println(miner.getDataGraph().graphName);
             System.out.println(graph.getGraphEdge());
-            System.out.println("    MNISupportThreshold" + miner.MNIThreshold);
+            System.out.println("SupportThreshold" + miner.support);
             miner.mineNAryRelation();
         } catch (Exception e) {
             e.printStackTrace(System.out);
