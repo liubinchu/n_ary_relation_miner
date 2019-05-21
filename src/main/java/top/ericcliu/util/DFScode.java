@@ -109,15 +109,13 @@ public class DFScode implements Cloneable {
      * if this dfsCode is parent of  possibleChild return true else return false
      *
      * @param possibleChild
-     * @return
+     * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
-    public boolean isParentOf(DFScode possibleChild) throws Exception {
-        if (possibleChild.getEdgeSeq().isEmpty()) {
-            return false;
-        } else if (this.getEdgeSeq().isEmpty()) {
-            return false;
-        } else if (possibleChild.getEdgeSeq().size() <= this.getEdgeSeq().size()) {
-            return false;
+    public int isParentOf(DFScode possibleChild) throws Exception {
+        if (possibleChild.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
+            throw new Exception("illegal DFS code");
+        } else if (possibleChild.getEdgeSeq().size() < this.getEdgeSeq().size()) {
+            return -1;
         } else {
             return DFScodeTree.isParentOf(new DFScodeTree(this), new DFScodeTree(possibleChild));
 /*            for (int i = 0; i < this.getEdgeSeq().size(); i++) {
@@ -164,34 +162,6 @@ public class DFScode implements Cloneable {
         return new DFScode(dfScodeJson);
     }
 
-    public static boolean removeDupDump(Pair<String, Map<Integer, DFScode>> dfScodes) throws Exception {
-        String graphFile = dfScodes.getKey();
-        Map<Integer, DFScode> map = dfScodes.getValue();
-        if (map.isEmpty()) {
-            return false;
-        } else if (map.size() == 1) {
-            map.get(1).saveToFile("READ" + graphFile + "Id_1.json", false);
-            return true;
-            // id start from 1
-        } else {
-            for (int i = 1; i < map.size() + 1; i++) {
-                boolean flag = true;
-                DFScode currentDFScode = map.get(i);
-                for (int j = i + 1; j < map.size() + 1; j++) {
-                    DFScode nextDFScode = map.get(j);
-                    if (currentDFScode.isParentOf(nextDFScode)) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-                    currentDFScode.saveToFile("NODUP" + graphFile + "Id_" + i + ".json", false);
-                }
-            }
-            return true;
-        }
-    }
-
     public static void removeDupDumpReadable(String dirPath, String dataBasePath) throws Exception {
         //结果保存在第二级目录中
         try {
@@ -223,7 +193,6 @@ public class DFScode implements Cloneable {
             for (Pair<File, Map<Integer, DFScode>> dFScodeOfFile : dfScodes) {
                 File graphFile = dFScodeOfFile.getKey();
                 Integer typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
-
                 Map<Integer, DFScode> map = dFScodeOfFile.getValue();
                 if (map.isEmpty()) {
                     continue;
@@ -235,9 +204,13 @@ public class DFScode implements Cloneable {
                     for (int i = 1; i < map.size() + 1; i++) {
                         boolean flag = true;
                         DFScode currentDFScode = map.get(i);
-                        for (int j = i + 1; j < map.size() + 1; j++) {
+                        for (int j = 1; j < map.size() + 1; j++) {
+                            if (i == j) {
+                                continue;
+                            }
                             DFScode nextDFScode = map.get(j);
-                            if (currentDFScode.isParentOf(nextDFScode)) {
+                            int mode = currentDFScode.isParentOf(nextDFScode);
+                            if (mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI && i>j)) {
                                 flag = false;
                                 break;
                             }
@@ -248,7 +221,6 @@ public class DFScode implements Cloneable {
                     }
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
@@ -476,7 +448,7 @@ public class DFScode implements Cloneable {
     }
 
     public static void main(String[] args) throws Exception {
-DFScode dfScode=new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
+        DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
         dfScode.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
         //2

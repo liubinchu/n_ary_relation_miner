@@ -30,12 +30,12 @@ public class DFScodeTree {
             for(GSpanEdge edge : edgeSeq){
                 if(nodeMap==null||nodeMap.size()==0){
                     this.nodeMap = new HashMap<>();
-                    this.root = new TreeNode(edge.getLabelA());
+                    this.root = new TreeNode(edge.getLabelA(),Integer.MAX_VALUE);
                     this.nodeMap.put(edge.getNodeA(),this.root);
                 }
                 try {
                     TreeNode parent = nodeMap.get(edge.getNodeA());
-                    TreeNode current = new TreeNode(edge.getLabelB());
+                    TreeNode current = new TreeNode(edge.getLabelB(),edge.getEdgeLabel());
                     parent.addChild(current);
                     this.nodeMap.put(edge.getNodeB(),current);
                 }catch (NullPointerException e){
@@ -50,9 +50,9 @@ public class DFScodeTree {
      * 判断  treeA 是否是 treeB的 父模式
      * @param treeA
      * @param treeB
-     * @return
+     * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
-    public static boolean isParentOf(DFScodeTree treeA, DFScodeTree treeB){
+    public static int isParentOf(DFScodeTree treeA, DFScodeTree treeB){
         return TreeNode.isParent(treeA.root,treeB.root);
     }
     public static void main(String[] args) throws Exception {
@@ -64,7 +64,7 @@ public class DFScodeTree {
         //3
         dfScode.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
         //4
-        dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
+        //dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
         //5
         DFScodeTree dfScodeTree = new DFScodeTree(dfScode);
 
@@ -80,7 +80,7 @@ public class DFScodeTree {
         //5
         DFScodeTree dfScodeTree1 = new DFScodeTree(dfScode1);
 
-        boolean f = DFScodeTree.isParentOf(dfScodeTree1,dfScodeTree);
+        int f = DFScodeTree.isParentOf(dfScodeTree1,dfScodeTree);
         System.out.println(f);
     }
 }

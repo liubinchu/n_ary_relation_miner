@@ -263,7 +263,7 @@ public class NAryRelationMiner {
         Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
         String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        double dataSetSizeRelatedthreshold = 0.001;
+        double dataSetSizeRelatedthreshold = 0.01;
         int maxDepth = 1;
         double relatedRatioThreshold = 0.001;
         try {

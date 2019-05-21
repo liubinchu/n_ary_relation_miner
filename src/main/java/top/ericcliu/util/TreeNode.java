@@ -15,12 +15,13 @@ public class TreeNode {
     /**
      * node label in DFScode
      */
-    private Integer val;
+    private int nodeVal;
+    private int edgeVal;
     private Set<TreeNode> childern;
 
-    public TreeNode(Integer val) {
-        this.val = val;
-
+    public TreeNode(int nodeVal,int edgeVal) {
+        this.nodeVal = nodeVal;
+        this.edgeVal = edgeVal;
     }
 
     public boolean addChild(TreeNode child) {
@@ -41,76 +42,88 @@ public class TreeNode {
      * treeA 与 treeB 完全相同时也认为是父模式
      * @param treeA
      * @param treeB
-     * @return
+     * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
-    public static boolean isParent(TreeNode treeA, TreeNode treeB){
-        if(treeA == null){
-            return true;
+    public static int isParent(TreeNode treeA, TreeNode treeB){
+        if(treeA==null&&treeB==null){
+            return 1;
         }
-        else if(treeB == null || !treeA.val.equals(treeB.val) ){
-            return false;
+        else if(treeA == null && treeB!=null){
+            return 0;
+        }
+        else if(treeA!=null&&treeB==null){
+            return -1;
+        }
+        else if(treeA.equals(treeB)){
+            return 1;
+        }
+        else if(treeA.nodeVal!=treeB.nodeVal||treeA.edgeVal!=treeB.edgeVal){
+            return -1;
         }
         else if(treeA.childern==null){
-            return true;
+            return 0;
         }
         else if(treeB.childern==null || treeA.childern.size()>treeB.childern.size()){
-            return false;
+            return -1;
         }
         else {
             //treeA.val.equals(treeB.val) && treeA.childern.size()==treeB.childern.size()
             Set<List<TreeNode>> arrangesB = ArrangeCombination.arrangementSelect(treeB.childern,treeA.childern.size(),false);
             List<TreeNode> childrenA = new ArrayList<>(treeA.childern);
             for(List<TreeNode> arrange : arrangesB){
-                boolean isParent = true;
+                int mode = treeA.childern.size()==treeB.childern.size()?1:0;
                 // treeA的childern 与 treeB的childern， 当前两两配对，且都满足isParent
                 for(int i=0;i<arrange.size();i++){
                     TreeNode childA = childrenA.get(i);
                     TreeNode childB = arrange.get(i);
-                    if(!TreeNode.isParent(childA,childB)){
-                        isParent = false;
-                        break;
-                    }
+                    mode = Math.min(TreeNode.isParent(childA,childB),mode);
                 }
-                if(isParent){
-                    return true;
+                if(mode!=-1){
+                    return mode;
                 }
             }
-            return false;
+            return -1;
         }
     }
 
     @Override
     public String toString() {
         return "TreeNode{" +
-                "val=" + val +
+                "nodeVal=" + nodeVal +
+                ", edgeVal=" + edgeVal +
                 ", childern=" + childern +
                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         TreeNode node = (TreeNode) o;
-        return Objects.equal(val, node.val) &&
+        return Objects.equal(nodeVal, node.nodeVal) &&
+                Objects.equal(edgeVal, node.edgeVal) &&
                 Objects.equal(childern, node.childern);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(val, childern);
+        return Objects.hashCode(nodeVal, edgeVal, childern);
     }
 
-    public Integer getVal() {
-        return val;
+    public Integer getNodeVal() {
+        return nodeVal;
     }
 
-    public void setVal(Integer val) {
-        this.val = val;
+    public void setNodeVal(Integer nodeVal) {
+        this.nodeVal = nodeVal;
+    }
+
+    public Integer getEdgeVal() {
+        return edgeVal;
+    }
+
+    public void setEdgeVal(Integer edgeVal) {
+        this.edgeVal = edgeVal;
     }
 
     public Set<TreeNode> getChildern() {

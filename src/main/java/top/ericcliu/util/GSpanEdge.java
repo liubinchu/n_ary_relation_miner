@@ -134,12 +134,24 @@ public class GSpanEdge<NodeType, EdgeType> implements
 	 *
 	 * @see Object#equals(Object)
 	 */
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(final Object obj) {
 		return obj instanceof GSpanEdge && compareTo((GSpanEdge) obj) == 0;
-	}
+	}*/
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GSpanEdge<?, ?> gSpanEdge = (GSpanEdge<?, ?>) o;
+		return nodeA == gSpanEdge.nodeA &&
+				nodeB == gSpanEdge.nodeB &&
+				labelA == gSpanEdge.labelA &&
+				labelB == gSpanEdge.labelB &&
+				edgeLabel == gSpanEdge.edgeLabel &&
+				direction == gSpanEdge.direction;
+	}
 
 	/** @return the direction of the edge */
 	public final int getDirection() {
