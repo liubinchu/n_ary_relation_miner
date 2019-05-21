@@ -186,7 +186,9 @@ public class ArrangeCombination {
         dataSet2.add("2");
         dataSet2.add("3");
         System.out.println(combinationSelect(dataSet ,4,true));
+        System.out.println(combinationSelect(dataSet ,3,true));
         System.out.println(arrangementSelect(dataSet ,4,true));
+        System.out.println(arrangementSelect(dataSet ,3,true));
         System.out.println(binaryCombination(dataSet,dataSet2));
     }
 }

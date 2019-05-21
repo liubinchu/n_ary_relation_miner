@@ -111,7 +111,7 @@ public class DFScode implements Cloneable {
      * @param possibleChild
      * @return
      */
-    public boolean isParentOf(DFScode possibleChild) {
+    public boolean isParentOf(DFScode possibleChild) throws Exception {
         if (possibleChild.getEdgeSeq().isEmpty()) {
             return false;
         } else if (this.getEdgeSeq().isEmpty()) {
@@ -119,14 +119,15 @@ public class DFScode implements Cloneable {
         } else if (possibleChild.getEdgeSeq().size() <= this.getEdgeSeq().size()) {
             return false;
         } else {
-            for (int i = 0; i < this.getEdgeSeq().size(); i++) {
+            return DFScodeTree.isParentOf(new DFScodeTree(this), new DFScodeTree(possibleChild));
+/*            for (int i = 0; i < this.getEdgeSeq().size(); i++) {
                 GSpanEdge parentEdge = this.getEdgeSeq().get(i);
                 GSpanEdge childEdge = possibleChild.getEdgeSeq().get(i);
                 if (!parentEdge.equals(childEdge)) {
                     return false;
                 }
             }
-            return true;
+            return true;*/
         }
     }
 
@@ -475,7 +476,7 @@ public class DFScode implements Cloneable {
     }
 
     public static void main(String[] args) throws Exception {
-/*        DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
+DFScode dfScode=new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
         dfScode.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
         //2
@@ -488,7 +489,7 @@ public class DFScode implements Cloneable {
         dfScode.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
         //6
         dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
-        //7
+  /*        //7
         //dfScode.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
         //8
         //dfScode.addEdge(new GSpanEdge(5, 7, 3, 1, 1, 1));
@@ -541,7 +542,7 @@ public class DFScode implements Cloneable {
 /*        String dirPath = "/hdd/liubinchu/D_10/";
         DFScode.removeDupDumpReadable(dirPath,"/home/lbc/bioportal1.sqlite",false);*/
 
-        String dirPath = "D:\\New folder\\";
+        String dirPath = "D:\\New folder (2)\\";
         DFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 }
