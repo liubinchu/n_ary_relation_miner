@@ -8,9 +8,8 @@ import java.util.*;
  **/
 public class DFScodeInstance implements SaveToFile{
     /**
-     * Arraylist 中 每一个元素 为 一个 edge instance, 用数组表示
-     * edge 有三个元素唯一标识  subject_label , predicate , object_label
-     * 边的 instance 这三个元素都相同， 但是 subject， 和 object 不同
+     * instances 中每个元素 为一个 instance
+     * instance[nodeId] 表示 dfsCode 中 指定nodeId节点 在 数据中的实例节点
      */
     private ArrayList<int[]> instances = new ArrayList<>();
     private DFScode dfScode;
@@ -48,6 +47,20 @@ public class DFScodeInstance implements SaveToFile{
     }
 
     public Integer calMNI() throws Exception {
+/*        if(this.dfScode == null && this.instances.size()==0){
+            return 0;
+            // 当前模式 在图中 不存在 实例
+        }
+        int MNI = Integer.MAX_VALUE;
+        for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
+            Set<Integer> nodeSet = new HashSet<>(this.instances.size());
+            for (int[] instance : this.instances){
+                nodeSet.add(instance[i]);
+            }
+            MNI = Math.max(MNI,nodeSet.size());
+        }
+        return MNI;*/
+
         if(this.dfScode == null && this.instances.size()==0){
             return 0;
             // 当前模式 在图中 不存在 实例

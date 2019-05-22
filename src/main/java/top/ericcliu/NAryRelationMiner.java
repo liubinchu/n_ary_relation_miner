@@ -17,7 +17,7 @@ public class NAryRelationMiner {
      */
     private Integer support;
     /**
-     *  模式扩展的最大深度 <= maxDepth
+     * 模式扩展的最大深度 <= maxDepth
      */
     private int maxDepth;
     private Double relatedRatio;
@@ -37,7 +37,7 @@ public class NAryRelationMiner {
     public NAryRelationMiner(MultiLabelGraph dataGraph, double thresh, int maxDepth, double relatedRatio) throws Exception {
         this.dataGraph = dataGraph;
         this.threshold = thresh;
-        this.support = Math.max(2,((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
+        this.support = Math.max(2, ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
         this.maxDepth = maxDepth;
         this.relatedRatio = relatedRatio;
         //清洗不频繁的边
@@ -45,12 +45,12 @@ public class NAryRelationMiner {
             for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
                 Map<DFScode, DFScodeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
                 if (map != null) {
-                    Boolean changed = false;
-                    Iterator<Map.Entry<DFScode, DFScodeInstance>> iterator = map.entrySet().iterator();
-                    while (iterator.hasNext()) {
-                        Map.Entry<DFScode, DFScodeInstance> entry = iterator.next();
+                    boolean changed = false;
+                    Iterator<Map.Entry<DFScode, DFScodeInstance>> it = map.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry<DFScode, DFScodeInstance> entry = it.next();
                         if (entry.getValue().calMNI() < this.support) {
-                            iterator.remove();
+                            it.remove();
                             changed = true;
                         }
                     }
@@ -80,10 +80,8 @@ public class NAryRelationMiner {
         }
         int maxSizeRMP = this.maxDepth + 1;
         boolean extendOnNode = true;
-        if (rightMostPath.size() < maxSizeRMP) {
-            // 在最右节点上 向前拓展 深度加1
-            extendOnNode = true;
-        } else { // 超过最大深度
+        if (rightMostPath.size() >= maxSizeRMP) {
+            // 超过最大深度
             extendOnNode = false;
         }
         // forward extend
@@ -107,22 +105,7 @@ public class NAryRelationMiner {
                 int node2 = parent.getMaxNodeId() + 1;
                 int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelB();
                 int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                childrenEdge.add(possibleEdge);
-            }
-
-            possibleChildren = new HashSet<>();
-            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
-                possibleChildren.addAll(map.keySet());
-            }
-            for (DFScode possibleChild : possibleChildren) {
-                if (possibleChild.getEdgeSeq().size() != 1) {
-                    throw new Exception("wrong edge");
-                }
-                int node2 = parent.getMaxNodeId() + 1;
-                int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelA();
-                int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
+                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 0);
                 childrenEdge.add(possibleEdge);
             }
         }
@@ -137,66 +120,45 @@ public class NAryRelationMiner {
         int nodeB = childernEdge.getNodeB();
         int labelB = childernEdge.getLabelB();
         int edgeLabel = childernEdge.getEdgeLabel();
-        if (nodeA < nodeB) {
-            // forward edge
-            Map<Integer, Integer> nodeAIdsDSMap = parentInstances.fetchInstanceNode(nodeA);
-            // key : instance id , value : node id in data set
-            Collection<Integer> possNodeBIds = this.dataGraph.getLabelNodes().get(labelB);
-            // possible node B id in data set
-            for (Map.Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
-                Integer instanceId = nodeAIdDSMap.getKey();
-                Set<Integer> nodes = new HashSet<>();
-                for (Integer node : parentInstances.getInstances().get(instanceId)) {
-                    nodes.add(node);
-                }
-                Integer nodeAIdDS = nodeAIdDSMap.getValue();
-                for (Integer possNodeBId : possNodeBIds) {
-                    if (nodes.contains(possNodeBId)) {
-                        continue;
-                    }
-                    if (!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdDS, possNodeBId)) {
-                        continue;
-                    }
-                    Integer edgeValue = ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
-                    if (!edgeValue.equals(edgeLabel)) {
-                        continue;
-                    }
-                    int newLength = parentInstances.getInstances().get(instanceId).length + 1;
-                    int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId), newLength);
-                    newInstance[newLength - 1] = possNodeBId;
-                    childInstance.addInstance(child, newInstance);
-                }
+
+        // forward edge
+        Map<Integer, Integer> nodeAIdsDSMap = parentInstances.fetchInstanceNode(nodeA);
+        // key : instance id , value : node id in data set
+        Collection<Integer> possNodeBIds = this.dataGraph.getLabelNodes().get(labelB);
+        // possible node B id in data set
+        for (Map.Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
+            Integer instanceId = nodeAIdDSMap.getKey();
+            Set<Integer> appearedNodes = new HashSet<>();
+            for (Integer node : parentInstances.getInstances().get(instanceId)) {
+                appearedNodes.add(node);
             }
-        } else {
-            // backward edge
-            for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
-                Integer nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
-                Integer nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
-                boolean correctEdge = this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdsDS, nodeBIdsDS);
-                correctEdge = (correctEdge == false ? false : ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()).equals(edgeLabel));
-                // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
-                // 目前只考虑 两个节点之间只存在一条边
-                if (correctEdge) {
-                    int[] nodeInstanceMap = parentInstances.getInstances().get(instanceId);
-                    childInstance.addInstance(child, nodeInstanceMap);
+            Integer nodeAIdDS = nodeAIdDSMap.getValue();
+            for (Integer possNodeBId : possNodeBIds) {
+                if (appearedNodes.contains(possNodeBId)) {
+                    continue;
                 }
+
+                if (!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdDS, possNodeBId)) {
+                    continue;
+                }
+                Integer edgeValue = ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
+                if (!edgeValue.equals(edgeLabel)) {
+                    continue;
+                }
+                int newLength = parentInstances.getInstances().get(instanceId).length + 1;
+                int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId), newLength);
+                newInstance[newLength - 1] = possNodeBId;
+                childInstance.addInstance(child, newInstance);
             }
         }
         return childInstance;
     }
 
-    private double calRelatedRatio(Integer MNI, DFScode childDFScode) throws Exception {
+    private double calRelatedRatio(int MNI, DFScode childDFScode) throws Exception {
         Double relatedRatio = 0d;
         for (GSpanEdge edge : childDFScode.getEdgeSeq()) {
             Map<DFScode, DFScodeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
-            DFScode dfScode = null;
-            if (map == null) {
-                map = this.getDataGraph().getGraphEdge().get(edge.getLabelB(), edge.getLabelA());
-                dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelB(), edge.getLabelA(), edge.getEdgeLabel(), edge.getDirection()));
-            }
-            if (dfScode == null) {
-                dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
-            }
+            DFScode dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
             relatedRatio += map.get(dfScode).calMNI();
         }
         relatedRatio = MNI * childDFScode.getEdgeSeq().size() / relatedRatio;
@@ -204,7 +166,7 @@ public class NAryRelationMiner {
         return relatedRatio;
     }
 
-    private void savePattern(DFScode childDFScode,DFScodeInstance childInstance) throws Exception {
+    private void savePattern(DFScode childDFScode, DFScodeInstance childInstance) throws Exception {
         File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
         if (!dir.exists()) {
             dir.mkdirs();
@@ -218,21 +180,20 @@ public class NAryRelationMiner {
         ArrayList<GSpanEdge> childrenEdges = nAryRelationExtension(parent);
         for (GSpanEdge childEdge : childrenEdges) {
             DFScode childDFScode = ((DFScode) parent.clone()).addEdge(childEdge);
-            boolean isCannoical = new MinDFSCodeJustifier(childDFScode).justify();
-            if (!isCannoical) {
+            if (!new NaryMDCJustifier(childDFScode).justify()) {
                 // 最小DFS code剪枝
                 continue;
             }
             DFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
-            Integer MNI = childInstance.calMNI();
+            int MNI = childInstance.calMNI();
             childDFScode.setMNI(MNI);
             if (MNI < this.support) {
                 //频繁度剪枝
-                if(childInstance.getInstances().size()>=this.support){
+                if (childInstance.getInstances().size() >= this.support) {
                     // 如果 MNI 不频繁 但是 instance Num 频繁，需要输出模式 但是 不扩展
                     double relatedRatio = calRelatedRatio(MNI, childDFScode);
                     childDFScode.setRelatedRatio(relatedRatio);
-                    savePattern(childDFScode,childInstance);
+                    savePattern(childDFScode, childInstance);
                 }
                 continue;
             }
@@ -242,7 +203,7 @@ public class NAryRelationMiner {
                 //continue;
             }
             childDFScode.setRelatedRatio(relatedRatio);
-            savePattern(childDFScode,childInstance);
+            savePattern(childDFScode, childInstance);
             mineCore(childDFScode, childInstance);
         }
     }
@@ -253,13 +214,10 @@ public class NAryRelationMiner {
         while (iterator.hasNext()) {
             Map<DFScode, DFScodeInstance> map = iterator.next();
             for (Map.Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
-/*                if (this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(0)) ||
-                        this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(1))) {*/
-                if (entry.getKey().getNodeLabel(0).equals(Integer.MIN_VALUE) ||
-                        entry.getKey().getNodeLabel(1).equals(Integer.MIN_VALUE)) {
+                if (entry.getKey().getNodeLabel(0).equals(this.dataGraph.getReplacedTypeId())) {
                     // 仅从当前 typeId 作为根节点 出发 拓展
                     mineCore(entry.getKey(), entry.getValue());
-                    System.out.println("finish the " + (i++) + "nd edge");
+                    System.out.println("finish the " + (++i) + "nd edge");
                 }
             }
         }
@@ -267,13 +225,13 @@ public class NAryRelationMiner {
 
 
     public static void main(String[] args) throws Exception {
-/*        String filePath = args[0];
-        Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
-        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        String filePath = args[0];
+        Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
+        int maxDepth = Integer.parseInt(args[2]);
+        double relatedRatioThreshold = Double.parseDouble(args[3]);
+        //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        double dataSetSizeRelatedthreshold = 0.1;
-        int maxDepth = 2;
-        double relatedRatioThreshold = 0.001;
+        //double dataSetSizeRelatedthreshold = 0.1;
         try {
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
             System.out.println("finish read file");
