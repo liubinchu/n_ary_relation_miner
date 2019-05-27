@@ -69,7 +69,7 @@ public class MLDFScode {
         }
         this.edgeSeq.add(new MLGSpanEdge(edge));
         this.nodeLabelMap.put(edge.getNodeA(), edge.getLabelA());
-        this.nodeLabelMap.put(edge.getNodeA(), edge.getLabelB());
+        this.nodeLabelMap.put(edge.getNodeB(), edge.getLabelB());
         this.maxNodeId = edge.getNodeA() > edge.getNodeB() ? edge.getNodeA() : edge.getNodeB();
         return this;
     }
@@ -77,7 +77,7 @@ public class MLDFScode {
     public MLDFScode(MLGSpanEdge edge) {
         this.edgeSeq.add(new MLGSpanEdge(edge));
         this.nodeLabelMap.put(edge.getNodeA(), edge.getLabelA());
-        this.nodeLabelMap.put(edge.getNodeA(), edge.getLabelB());
+        this.nodeLabelMap.put(edge.getNodeB(), edge.getLabelB());
         this.maxNodeId = edge.getNodeA() > edge.getNodeB() ? edge.getNodeA() : edge.getNodeB();
         if (edge.getLabelA().size() == 1) {
             this.rootNodeId = (Integer) edge.getLabelA().getFirst();
@@ -146,8 +146,12 @@ public class MLDFScode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MLDFScode mldfScode = (MLDFScode) o;
         return Objects.equal(rootNodeId, mldfScode.rootNodeId) &&
                 Objects.equal(MNI, mldfScode.MNI) &&
@@ -161,6 +165,10 @@ public class MLDFScode {
     @Override
     public int hashCode() {
         return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, edgeSeq, nodeLabelMap);
+    }
+
+    public Set<Integer> getNodes(){
+        return nodeLabelMap.keySet();
     }
 
     public Integer getRootNodeId() {
@@ -255,7 +263,12 @@ public class MLDFScode {
         }*/
         System.out.println(" ");
         // MLDFScode(ArrayList<MLGSpanEdge> edgeSeq) test
-        MLDFScode dfScode = new MLDFScode(edgeSeq);
+
+        MLDFScode dfScode = new MLDFScode(edgeSeq.get(0));
+        dfScode.addEdge(edgeSeq.get(1));
+
+        dfScode = new MLDFScode(edgeSeq);
+        System.out.println(dfScode.getRightMostPath());
         System.out.println(" ");
     }
 
