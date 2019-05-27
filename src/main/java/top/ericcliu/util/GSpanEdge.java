@@ -24,12 +24,18 @@ import java.util.LinkedList;
 public class GSpanEdge<NodeType, EdgeType> implements
 		Comparable<GSpanEdge<NodeType, EdgeType>>,
 		Serializable {
-
-	private int nodeA, nodeB;  // nodeId
-
-	private int labelA, labelB; // label of node
-
-	private int edgeLabel, direction; // edgeLabel ; direction of edge
+	/**
+	 * nodeId
+	 */
+	private int nodeA, nodeB;
+	/**
+	 * label of node
+	 */
+	private int labelA, labelB;
+	/**
+	 * edgeLabel ; direction of edge
+	 */
+	private int edgeLabel, direction;
 
 
     public GSpanEdge(){

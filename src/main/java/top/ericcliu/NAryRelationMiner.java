@@ -81,7 +81,7 @@ public class NAryRelationMiner {
         int maxSizeRMP = this.maxDepth + 1;
         boolean extendOnNode = true;
         if (rightMostPath.size() >= maxSizeRMP) {
-            // 超过最大深度
+            // 超过最大深度,则跳过最右节点
             extendOnNode = false;
         }
         // forward extend
@@ -105,8 +105,7 @@ public class NAryRelationMiner {
                 int node2 = parent.getMaxNodeId() + 1;
                 int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelB();
                 int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 0);
-                childrenEdge.add(possibleEdge);
+                childrenEdge.add(new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 0));
             }
         }
         return childrenEdge;

@@ -93,8 +93,8 @@ public class DFScode implements Cloneable {
 
         int minNodeId = Integer.MAX_VALUE;
         for (GSpanEdge edge : edgeSeq) {
-            Integer nodeA = edge.getNodeA();
-            Integer nodeB = edge.getNodeB();
+            int nodeA = edge.getNodeA();
+            int nodeB = edge.getNodeB();
             this.nodeLabelMap.put(nodeA, edge.getLabelA());
             this.nodeLabelMap.put(nodeB, edge.getLabelB());
             this.maxNodeId = Math.max(this.maxNodeId, nodeA);
@@ -345,6 +345,17 @@ public class DFScode implements Cloneable {
         }
     }
 
+    /**
+     * 获得DFScode中 节点的标签
+     *
+     * @param nodeId DFScode 中 节点id
+     * @return
+     */
+    public Integer getNodeLabel(Integer nodeId) {
+        return this.nodeLabelMap.get(nodeId);
+    }
+
+
     public void setMaxNodeId(Integer maxNodeId) {
         this.maxNodeId = maxNodeId;
     }
@@ -395,16 +406,6 @@ public class DFScode implements Cloneable {
 
     public Integer getMaxNodeId() {
         return maxNodeId;
-    }
-
-    /**
-     * 获得DFScode中 节点的标签
-     *
-     * @param nodeId DFScode 中 节点id
-     * @return
-     */
-    public Integer getNodeLabel(Integer nodeId) {
-        return this.nodeLabelMap.get(nodeId);
     }
 
     public Map<Integer, Integer> getNodeLabelMap() {
