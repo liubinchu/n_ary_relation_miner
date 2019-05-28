@@ -16,9 +16,9 @@ public class NaryMDCJustifier {
     }
 
     public boolean justify() throws Exception {
-        Integer edgeIndex = 0;
+        int edgeIndex = 0;
         // 标记待判断的DFScode边 id
-        Integer maxTurn = this.dFScode.getEdgeSeq().size();
+        int maxTurn = this.dFScode.getEdgeSeq().size();
         DFScode minDFScode = new DFScode();
         DFScodeInstance minDFSCodeInstance = null;
         // 选取最小边
@@ -50,13 +50,13 @@ public class NaryMDCJustifier {
             //对最小边进行最右拓展
             ArrayList<GSpanEdge> childrenEdge = rightMostPathExtension(minDFScode);
             Map<GSpanEdge, DFScodeInstance> childrenEdgeInstanceMap = new HashMap<>(childrenEdge.size());
-            minEdge = null;
             Iterator<GSpanEdge> edgeIt = childrenEdge.iterator();
             while (edgeIt.hasNext()) {
                 GSpanEdge childEdge = edgeIt.next();
                 DFScodeInstance childInstace = subGraphIsomorphism(minDFScode, minDFSCodeInstance, childEdge);
                 childrenEdgeInstanceMap.put(childEdge,childInstace);
             }
+            minEdge = null;
             for(Map.Entry<GSpanEdge, DFScodeInstance> entry : childrenEdgeInstanceMap.entrySet()){
                 if (entry.getValue().calMNI() > 0) {
                     if (minEdge == null || minEdge.compareTo(entry.getKey()) > 0) {

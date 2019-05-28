@@ -69,7 +69,7 @@ public class NAryRelationMiner {
      * @return
      * @throws Exception
      */
-    public ArrayList<GSpanEdge> nAryRelationExtension(DFScode parent) throws Exception {
+    private ArrayList<GSpanEdge> nAryRelationExtension(DFScode parent) throws Exception {
         ArrayList<GSpanEdge> childrenEdge = new ArrayList<>();
         LinkedList<Integer> rightMostPath = parent.getRightMostPath();
         if (rightMostPath.size() == 0 || rightMostPath.size() == 1) {
@@ -120,13 +120,13 @@ public class NAryRelationMiner {
         int labelB = childernEdge.getLabelB();
         int edgeLabel = childernEdge.getEdgeLabel();
 
-        // forward edge
+        //forward edge
         Map<Integer, Integer> nodeAIdsDSMap = parentInstances.fetchInstanceNode(nodeA);
         // key : instance id , value : node id in data set
         Collection<Integer> possNodeBIds = this.dataGraph.getLabelNodes().get(labelB);
         // possible node B id in data set
         for (Map.Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
-            Integer instanceId = nodeAIdDSMap.getKey();
+            int instanceId = nodeAIdDSMap.getKey();
             Set<Integer> appearedNodes = new HashSet<>();
             for (Integer node : parentInstances.getInstances().get(instanceId)) {
                 appearedNodes.add(node);
@@ -136,7 +136,6 @@ public class NAryRelationMiner {
                 if (appearedNodes.contains(possNodeBId)) {
                     continue;
                 }
-
                 if (!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdDS, possNodeBId)) {
                     continue;
                 }
@@ -153,14 +152,14 @@ public class NAryRelationMiner {
         return childInstance;
     }
 
-    private double calRelatedRatio(int MNI, DFScode childDFScode) throws Exception {
-        Double relatedRatio = 0d;
-        for (GSpanEdge edge : childDFScode.getEdgeSeq()) {
+    private double calRelatedRatio(int MNI, DFScode dFScode) throws Exception {
+        double relatedRatio = 0d;
+        for (GSpanEdge edge : dFScode.getEdgeSeq()) {
             Map<DFScode, DFScodeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
-            DFScode dfScode = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
-            relatedRatio += map.get(dfScode).calMNI();
+            DFScode dfScodeEdge = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
+            relatedRatio += map.get(dfScodeEdge).calMNI();
         }
-        relatedRatio = MNI * childDFScode.getEdgeSeq().size() / relatedRatio;
+        relatedRatio = MNI * dFScode.getEdgeSeq().size() / relatedRatio;
         System.out.println("relatedRatio" + relatedRatio);
         return relatedRatio;
     }

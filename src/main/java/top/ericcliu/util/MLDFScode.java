@@ -1,6 +1,8 @@
 package top.ericcliu.util;
 
 import com.google.common.base.Objects;
+import org.omg.PortableInterceptor.INACTIVE;
+import sun.awt.image.ImageWatched;
 
 import java.util.*;
 
@@ -12,11 +14,15 @@ public class MLDFScode {
     /**
      * -1 未计算
      */
-    private Integer rootNodeId = -1;
-    private Integer MNI = -1;
-    private Double relatedRatio = -1.0;
-    private Integer instanceNum = -1;
-    private Integer maxNodeId = -1;
+    private int rootNodeId = -1;
+    private int MNI = -1;
+    private double relatedRatio = -1.0;
+    private int instanceNum = -1;
+    private int maxNodeId = -1;
+    /**
+     * 经过增长的轮数
+     */
+    private int turn = 0;
     /**
      * 边的集合，边的排序代表着边的添加次序
      */
@@ -28,6 +34,7 @@ public class MLDFScode {
     private Map<Integer, LinkedList<Integer>> nodeLabelMap = new HashMap<>();
 
     public MLDFScode addEdge(MLGSpanEdge edge) throws Exception {
+        this.turn++;
         boolean first = false;
         if (edgeSeq.size() == 0 && nodeLabelMap.size() == 0) {
             //在空的DFScode中加入一条边
@@ -37,8 +44,7 @@ public class MLDFScode {
         }
         if (first) {
             this.rootNodeId = (Integer) edge.getLabelA().getFirst();
-        }
-        else {
+        } else {
             LinkedList<Integer> RMP = this.getRightMostPath();
             // 合法性检查
             if (RMP.size() < 2) {
@@ -74,7 +80,25 @@ public class MLDFScode {
         return this;
     }
 
+    public MLDFScode addLabel(MLGSpanEdge edge) throws Exception {
+        this.turn++;
+        MLGSpanEdge lastEdge = this.edgeSeq.get(this.edgeSeq.size() - 1);
+        // 因为不存在后向边，边集的最有一个边，一定是最右边
+        if (edge.getNodeA() != lastEdge.getNodeA()
+                || edge.getNodeB() != lastEdge.getNodeB()
+                || !edge.getLabelA().equals(lastEdge.getLabelA())
+                || edge.getEdgeLabel() != lastEdge.getEdgeLabel()) {
+            throw new IllegalArgumentException("非法传入参数 edge");
+        }
+        int nodeB = lastEdge.getNodeB();
+        int labelBNew = (int) edge.getLabelB().getFirst();
+        lastEdge.addLabelToNodeB(labelBNew);
+        this.nodeLabelMap.get(nodeB).add(labelBNew);
+        return this;
+    }
+
     public MLDFScode(MLGSpanEdge edge) {
+        this.turn++;
         this.edgeSeq.add(new MLGSpanEdge(edge));
         this.nodeLabelMap.put(edge.getNodeA(), edge.getLabelA());
         this.nodeLabelMap.put(edge.getNodeB(), edge.getLabelB());
@@ -88,8 +112,58 @@ public class MLDFScode {
     }
 
     public MLDFScode(ArrayList<MLGSpanEdge> edgeSeq) throws Exception {
+        int lastNodeA = Integer.MAX_VALUE;
+        int lastNodeB = Integer.MAX_VALUE;
+        boolean first = true;
         for (MLGSpanEdge edge : edgeSeq) {
-            this.addEdge(edge);
+            int nodeA = edge.getNodeA();
+            int nodeB = edge.getNodeB();
+            if (!first&&lastNodeB==nodeB&&lastNodeA==nodeA) {
+                this.addLabel(edge);
+            } else  {
+                first = false;
+                this.addEdge(edge);
+            }
+            lastNodeA = nodeA;
+            lastNodeB = nodeB;
+        }
+    }
+
+    public MLDFScode(MLDFScode mldfScode) {
+        this.rootNodeId = mldfScode.rootNodeId;
+        this.MNI = mldfScode.MNI;
+        this.relatedRatio = mldfScode.relatedRatio;
+        this.instanceNum = mldfScode.instanceNum;
+        this.maxNodeId = mldfScode.maxNodeId;
+        this.turn = mldfScode.turn;
+
+        this.edgeSeq = new ArrayList<>(mldfScode.edgeSeq.size());
+        for (MLGSpanEdge edge : mldfScode.edgeSeq) {
+            this.edgeSeq.add(new MLGSpanEdge(edge));
+        }
+
+        this.nodeLabelMap = new HashMap<>(mldfScode.nodeLabelMap.size());
+        for (Map.Entry<Integer, LinkedList<Integer>> entry : mldfScode.nodeLabelMap.entrySet()) {
+            this.nodeLabelMap.put(entry.getKey(), new LinkedList<>(entry.getValue()));
+        }
+
+    }
+
+    public MLDFScode(DFScode dfScode){
+        this.rootNodeId = dfScode.getRootNodeId();
+        this.MNI = dfScode.getMNI();
+        this.relatedRatio = dfScode.getRelatedRatio();
+        this.instanceNum = dfScode.getInstanceNum();
+        this.maxNodeId = dfScode.getMaxNodeId();
+        this.turn = dfScode.getEdgeSeq().size();
+
+        for(GSpanEdge edge : dfScode.getEdgeSeq()) {
+            this.edgeSeq.add(new MLGSpanEdge(edge));
+        }
+        for(Map.Entry<Integer, Integer> entry: dfScode.getNodeLabelMap().entrySet()){
+            LinkedList<Integer> labels = new LinkedList<>();
+            labels.add(entry.getValue());
+            this.nodeLabelMap.put(entry.getKey(),labels);
         }
     }
 
@@ -146,28 +220,25 @@ public class MLDFScode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         MLDFScode mldfScode = (MLDFScode) o;
-        return Objects.equal(rootNodeId, mldfScode.rootNodeId) &&
-                Objects.equal(MNI, mldfScode.MNI) &&
-                Objects.equal(relatedRatio, mldfScode.relatedRatio) &&
-                Objects.equal(instanceNum, mldfScode.instanceNum) &&
-                Objects.equal(maxNodeId, mldfScode.maxNodeId) &&
+        return rootNodeId == mldfScode.rootNodeId &&
+                MNI == mldfScode.MNI &&
+                Double.compare(mldfScode.relatedRatio, relatedRatio) == 0 &&
+                instanceNum == mldfScode.instanceNum &&
+                maxNodeId == mldfScode.maxNodeId &&
+                turn == mldfScode.turn &&
                 Objects.equal(edgeSeq, mldfScode.edgeSeq) &&
                 Objects.equal(nodeLabelMap, mldfScode.nodeLabelMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, edgeSeq, nodeLabelMap);
+        return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, turn, edgeSeq, nodeLabelMap);
     }
 
-    public Set<Integer> getNodes(){
+    public Set<Integer> getNodes() {
         return nodeLabelMap.keySet();
     }
 
@@ -227,17 +298,18 @@ public class MLDFScode {
         this.nodeLabelMap = nodeLabelMap;
     }
 
+    public int getTurn() {
+        return turn;
+    }
+
     public static void main(String[] args) throws Exception {
-        LinkedList<Integer> label1 = new LinkedList<Integer>();
+        LinkedList<Integer> label1 = new LinkedList<>();
         label1.add(1);
-
-        LinkedList<Integer> label2 = new LinkedList<Integer>();
+        LinkedList<Integer> label2 = new LinkedList<>();
         label2.add(2);
-
-        LinkedList<Integer> label3 = new LinkedList<Integer>();
+        LinkedList<Integer> label3 = new LinkedList<>();
         label3.add(3);
-
-        LinkedList<Integer> label4 = new LinkedList<Integer>();
+        LinkedList<Integer> label4 = new LinkedList<>();
         label4.add(4);
 
         ArrayList<MLGSpanEdge> edgeSeq = new ArrayList<>(7);
@@ -245,30 +317,26 @@ public class MLDFScode {
         //1
         edgeSeq.add(new MLGSpanEdge(2, 3, label1, label2, 1, 1));
         //2
-        edgeSeq.add(new MLGSpanEdge(3, 1, label2, label1, 1, 1));
-        //3
         edgeSeq.add(new MLGSpanEdge(2, 4, label1, label3, 1, 1));
+        //3
+        edgeSeq.add(new MLGSpanEdge(4, 5, label3, label1, 1, 1));
         //4
-        edgeSeq.add(new MLGSpanEdge(4, 1, label3, label1, 1, 1));
-        //5
         edgeSeq.add(new MLGSpanEdge(1, 5, label1, label3, 1, 1));
-        //6
+        //5
         edgeSeq.add(new MLGSpanEdge(5, 6, label3, label4, 1, 1));
-        //7
-
-        // addEdge() test
-        //MLDFScode dfScode = new MLDFScode();
-/*        for (MLGSpanEdge edge : edgeSeq) {
-            dfScode.addEdge(edge);
-        }*/
-        System.out.println(" ");
-        // MLDFScode(ArrayList<MLGSpanEdge> edgeSeq) test
-
-        MLDFScode dfScode = new MLDFScode(edgeSeq.get(0));
-        dfScode.addEdge(edgeSeq.get(1));
-
-        dfScode = new MLDFScode(edgeSeq);
+        //6
+        edgeSeq.add(new MLGSpanEdge(5, 6, label3, label2, 1, 1));
+        MLDFScode dfScode = null;
+        for(MLGSpanEdge edge : edgeSeq){
+            if (dfScode ==null){
+                dfScode = new MLDFScode(edge);
+            }
+            else {
+                dfScode.addEdge(edge);
+            }
+        }
         System.out.println(dfScode.getRightMostPath());
+        dfScode.addLabel(new MLGSpanEdge(5, 6, label3, label1, 1, 1));
         System.out.println(" ");
     }
 

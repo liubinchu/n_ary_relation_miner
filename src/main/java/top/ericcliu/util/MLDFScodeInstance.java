@@ -23,6 +23,11 @@ public class MLDFScodeInstance implements SaveToFile{
 
     public MLDFScodeInstance(MLDFScode mldfScode) { this.mldfScode = mldfScode; }
 
+    public MLDFScodeInstance(DFScodeInstance dfScodeInstance){
+        this.mldfScode = new MLDFScode(dfScodeInstance.getDfScode());
+        this.instances = new ArrayList<>(dfScodeInstance.getInstances());
+    }
+
     public ArrayList<int[]> getInstances() {
         return instances;
     }

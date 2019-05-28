@@ -64,9 +64,12 @@ public class GSpanEdge<NodeType, EdgeType> implements
 	 * compares this edge with the given <code>other</code> one,
 	 *
 	 * @param other
-	 * @param nodeB
-	 *            thid node is used as the second node for the other edge
-	 * @return <0; 0; or >0
+	 * @param nodeB  thid node is used as the second node for the other edge
+	 * @return <0: this < other
+	 * 			0: this = other
+	 * 		   >0: this > other
+	 * 实际上 后向边 应该 小于 前向边， 但是目前版本 前向边direction为0，导致后向边大于前向边
+	 * 后期只需修改 前向边的direction
 	 */
 	public final int compareTo(final GSpanEdge<NodeType, EdgeType> other,
 			final int nodeB) {
@@ -87,6 +90,7 @@ public class GSpanEdge<NodeType, EdgeType> implements
 		} else { // TODO: das laesst sich bestimmt noch irgendwie schoener
 		    // schreiben
 			if (this.nodeA < this.nodeB) {
+				// 前向边
 				if (this.nodeB == other.nodeA) {
 					return -1;
 					// see paper
@@ -217,17 +221,9 @@ public class GSpanEdge<NodeType, EdgeType> implements
 	}
 
 	public static void main(String[] args){
-		LinkedList<Integer> linkedList = new LinkedList<>();
-		for(int i =0; i<100;i++){
-			linkedList.add(i);
-		}
-		Iterator<Integer> itDesc = linkedList.descendingIterator();
-		while (itDesc.hasNext()){
-			System.out.println(itDesc.next());
-		}
-	    GSpanEdge edge1 = new GSpanEdge(1,2,3,4,5,1);
+	    GSpanEdge edge1 = new GSpanEdge(1,2,3,4,5,0);
 	    System.out.println(edge1.toString());
-	    GSpanEdge edge2 = new GSpanEdge(2,3,3,4,5,1);
+	    GSpanEdge edge2 = new GSpanEdge(1,2,3,4,5,1);
         System.out.println(edge2.toString());
         System.out.println(edge1.compareTo(edge2));
     }

@@ -12,15 +12,14 @@ import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author liubi
  * @date 2018-12-04 13:27
  **/
 public class MultiLabelGraph {
+    private final Integer replacedTypeId = Integer.MIN_VALUE;
     /**
      * valueGraph: graph
      * nodeLabels: key: nodeId Value: labelId of corresponding node
@@ -35,7 +34,6 @@ public class MultiLabelGraph {
      * typeId ie. root node id
      */
     private Integer typeId;
-    private final Integer replacedTypeId = Integer.MIN_VALUE;
     /**
      * key1 : labelA , key2 : labelB
      * value: Map<DFScode,DFScodeInstance> using one edge DFS code to represent edge
@@ -48,6 +46,14 @@ public class MultiLabelGraph {
 
     public Integer getTypeId() {
         return typeId;
+    }
+
+    public Set<Integer> queryNodesByLabel(int label){
+        return new HashSet<>(this.labelNodes.get(label));
+    }
+
+    public Set<Integer> queryLabelsByNode(int nodeId){
+        return new HashSet<>(this.nodeLabels.get(nodeId));
     }
 
     public MultiLabelGraph(Boolean small) throws Exception {
@@ -250,6 +256,43 @@ public class MultiLabelGraph {
 
         Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
         for (GSpanEdge edge : dfScode.getEdgeSeq()) {
+            addEdgeToGraph(graph, edge.getNodeA(), edge.getNodeB(), edge.getEdgeLabel(), nodeLabels, graphEdge);
+        }
+        this.valueGraph = ImmutableValueGraph.copyOf(graph);
+        this.graphEdge = graphEdge;
+    }
+
+    /**
+     * initiate from DFS code
+     *
+     * @param dfScode
+     * @throws Exception
+     */
+    public MultiLabelGraph(MLDFScode mldfScode) throws Exception {
+        this.graphName = "mldfScode";
+        assert mldfScode.getEdgeSeq().get(0).getLabelA().size()==1:"非法参数 mldfScode";
+        this.typeId = (Integer) mldfScode.getEdgeSeq().get(0).getLabelA().getFirst();
+        MutableValueGraph graph = ValueGraphBuilder
+                .directed()
+                .expectedNodeCount(mldfScode.getNodes().size())
+                .build();
+        for (Integer nodeId : mldfScode.getNodes()) {
+            graph.addNode(nodeId);
+        }
+        Multimap<Integer, Integer> nodeLabels = MultimapBuilder.hashKeys().hashSetValues().build();
+        Multimap<Integer, Integer> labelNodes = MultimapBuilder.hashKeys().hashSetValues().build();
+        for (Map.Entry<Integer, LinkedList<Integer>> nodeLabel : mldfScode.getNodeLabelMap().entrySet()) {
+            int node = nodeLabel.getKey();
+            for (int label : nodeLabel.getValue()){
+                nodeLabels.put(node,label);
+                labelNodes.put(label,node);
+            }
+        }
+        this.nodeLabels = nodeLabels;
+        this.labelNodes = labelNodes;
+
+        Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
+        for (MLGSpanEdge edge : mldfScode.getEdgeSeq()) {
             addEdgeToGraph(graph, edge.getNodeA(), edge.getNodeB(), edge.getEdgeLabel(), nodeLabels, graphEdge);
         }
         this.valueGraph = ImmutableValueGraph.copyOf(graph);

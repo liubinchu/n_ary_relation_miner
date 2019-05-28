@@ -42,11 +42,26 @@ public class MLGSpanEdge <NodeType, EdgeType> {
         this.direction = direction;
     }
 
+    public MLGSpanEdge(GSpanEdge edge){
+        this.nodeA = edge.getNodeA();
+        this.nodeB = edge.getNodeB();
+        this.labelA = new LinkedList<>();
+        this.labelA.add(edge.getLabelA());
+        this.labelB = new LinkedList<>();
+        this.labelB.add(edge.getLabelB());
+        this.edgeLabel = edge.getEdgeLabel();
+        this.direction = edge.getDirection();
+    }
+
     public MLGSpanEdge(MLGSpanEdge edge){
         this(edge.nodeA,edge.nodeB,
                 new LinkedList<>(edge.labelA),
                 new LinkedList<>(edge.labelB),
                 edge.edgeLabel,edge.direction);
+    }
+
+    public void addLabelToNodeB(int edgeLabel){
+        this.labelB.add(edgeLabel);
     }
 
     @Override

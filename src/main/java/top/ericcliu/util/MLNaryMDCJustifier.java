@@ -1,54 +1,97 @@
-package top.ericcliu;
+package top.ericcliu.util;
 
 import javafx.util.Pair;
-import top.ericcliu.util.*;
 
 import java.util.*;
 
 /**
  * @author liubi
- * @date 2019-05-27 10:10
+ * @date 2019-05-28 09:41
  **/
-public class MLNAryRelationMiner {
-    private MultiLabelGraph dataGraph;
-    private Double threshold;
-    /**
-     * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
-     */
-    private Integer support;
-    /**
-     * 模式扩展的最大深度 <= maxDepth
-     */
-    private int maxDepth;
-    private Double relatedRatio;
-    private int resultSize = 0;
+public class MLNaryMDCJustifier {
+    private MultiLabelGraph mlDFSCodeGraph;
+    private MLDFScode mlDFSCode;
 
-    public MLNAryRelationMiner(MultiLabelGraph dataGraph, double thresh, int maxDepth, double relatedRatio) throws Exception {
-        this.dataGraph = dataGraph;
-        this.threshold = thresh;
-        this.support = Math.max(2, ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
-        this.maxDepth = maxDepth;
-        this.relatedRatio = relatedRatio;
-        //清洗不频繁的边
-        for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
-            for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
-                Map<DFScode, DFScodeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
-                if (map != null) {
-                    boolean changed = false;
-                    Iterator<Map.Entry<DFScode, DFScodeInstance>> it = map.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry<DFScode, DFScodeInstance> entry = it.next();
-                        if (entry.getValue().calMNI() < this.support) {
-                            it.remove();
-                            changed = true;
-                        }
-                    }
-                    if (changed) {
-                        this.dataGraph.getGraphEdge().put(labelA, labelB, map);
-                    }
+    public MLNaryMDCJustifier(MLDFScode mlDFSCode) throws Exception {
+        this.mlDFSCode = mlDFSCode;
+        this.mlDFSCodeGraph = new MultiLabelGraph(this.mlDFSCode);
+    }
+
+    public boolean justify() throws Exception {
+        int edgeIndex = -1;
+        // 标记待判断的DFS code 边 id
+        int maxTurn = this.mlDFSCode.getTurn();
+        MLDFScode minDFScode = new MLDFScode();
+        MLDFScodeInstance minDFSCodeInstance = null;
+        // 选取最小边
+        GSpanEdge minEdge = null;
+        Iterator<Map<DFScode, DFScodeInstance>> mapIt = this.mlDFSCodeGraph.getGraphEdge().values().iterator();
+        while (mapIt.hasNext()) {
+            for (Map.Entry<DFScode, DFScodeInstance> entry : mapIt.next().entrySet()) {
+                ArrayList<GSpanEdge> edgeSeq = entry.getKey().getEdgeSeq();
+                DFScodeInstance currentInstance = entry.getValue();
+                GSpanEdge currentEdge = null;
+                if (edgeSeq.size() != 1) {
+                    throw new Exception("dFSCodeGraph 初始化 存在问题");
+                } else {
+                    currentEdge = edgeSeq.get(0);
+                }
+                if (minEdge == null || minEdge.compareTo(currentEdge) > 0) {
+                    minEdge = currentEdge;
+                    minDFSCodeInstance = new MLDFScodeInstance(currentInstance);
                 }
             }
         }
+        MLGSpanEdge minMLEdge = new MLGSpanEdge(minEdge);
+        if(!compare(new Pair(false,minMLEdge),++edgeIndex)){
+            // 生成的DFScode 更小， 给定dfs code不是最小DFScode
+            return false;
+        }else {
+            minDFScode.addEdge(minMLEdge);
+            // 向最小DFScode添加最小边，若当前多标签边标签已扩展完，则更新index
+        }
+        minMLEdge = null;
+
+        while (edgeIndex < maxTurn) {
+            //对最小DFS code 进行最右拓展
+            ArrayList<Pair<Boolean,MLGSpanEdge>> childrenEdge = nAryRelationExtension(minDFScode);
+            Map<Pair<Boolean,MLGSpanEdge>, MLDFScodeInstance> childrenEdgeInstanceMap = new HashMap<>(childrenEdge.size());
+            Pair<Boolean,MLGSpanEdge> minMLEdgePair = null;
+            Iterator<Pair<Boolean,MLGSpanEdge>> edgeIt = childrenEdge.iterator();
+            while (edgeIt.hasNext()) {
+                Pair<Boolean,MLGSpanEdge> childEdgePair = edgeIt.next();
+                MLDFScodeInstance childInstace = subGraphIsomorphism(minDFScode, minDFSCodeInstance, childEdgePair);
+                childrenEdgeInstanceMap.put(childEdgePair, childInstace);
+            }
+            for (Map.Entry<Pair<Boolean,MLGSpanEdge>, MLDFScodeInstance> entry : childrenEdgeInstanceMap.entrySet()) {
+                if (entry.getValue().calMNI() > 0) {
+                    if (minMLEdgePair == null || compare(minMLEdgePair.getValue(),entry.getKey().getValue()) > 0) {
+                        minMLEdgePair = entry.getKey();
+                        minDFSCodeInstance = entry.getValue();
+                    }
+                }
+            }
+            if (minMLEdgePair == null) {
+                System.err.println("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                return false;
+                //  应该不会出现这种情况 bug 待解决
+            }else {
+                if(minMLEdgePair.getKey()){
+                    // add label
+                    if(!compare(minMLEdgePair,edgeIndex)){
+                        return false;
+                    }
+                }
+                else {
+                    // add forward edge
+                    if(!compare(minMLEdgePair,++edgeIndex)){
+                        return false;
+                    }
+                }
+            }
+            minDFScode.addEdge(minMLEdgePair.getValue());
+        }
+        return true;
     }
 
     /**
@@ -68,15 +111,6 @@ public class MLNAryRelationMiner {
         if (RMP.size() == 0 || RMP.size() == 1) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         }
-        if (this.maxDepth < 1) {
-            throw new Exception("maxDepth must > 0, ERROR");
-        }
-        int maxSizeRMP = this.maxDepth + 1;
-        boolean extendOnNode = true;
-        if (RMP.size() >= maxSizeRMP) {
-            // 超过最大深度,则跳过最右节点
-            extendOnNode = false;
-        }
         // extend a new label on right most node
         Iterator<Integer> descRMPit = RMP.descendingIterator();
         int RMNode = descRMPit.next(); // last Edge end node
@@ -92,12 +126,12 @@ public class MLNAryRelationMiner {
         // 所有标签能够拓展出的边
         for(int RMNodeFLabel :RMNodeFLabels){
             Set<DFScode> childrenTemp = new HashSet<>();
-            for (Map<DFScode,DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMNodeFLabel).values()){
+            for (Map<DFScode,DFScodeInstance> map : this.mlDFSCodeGraph.getGraphEdge().row(RMNodeFLabel).values()){
                 // 单个其实节点标签相同
                 for(DFScode dfScode : map.keySet()){
                     GSpanEdge edge = dfScode.getEdgeSeq().get(0);
                     if(edge.getEdgeLabel()==edgeLabel
-                    && !RMNodeLabels.contains(edge.getLabelB())){
+                            && !RMNodeLabels.contains(edge.getLabelB())){
                         // 边标签相同,且 最右节点上 不包含 新扩展的标签
                         childrenTemp.add(dfScode);
                     }
@@ -127,17 +161,12 @@ public class MLNAryRelationMiner {
         while (descRMPit.hasNext()) {
             int RMPNode = descRMPit.next();
             LinkedList<Integer> RMPNodeLabels = parent.getNodeLabel(RMPNode);
-            if (!extendOnNode) {
-                // 跳过最右节点
-                extendOnNode = true;
-                continue;
-            }
             // 多标签，所有标签都能够扩展出的边
             children = new HashSet<>();
             for(Integer RMPNodeLabel : RMPNodeLabels){
                 Set<DFScode> childrenTemp = new HashSet<>();
                 // 单个标签能够扩展出的边
-                for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMPNodeLabel).values()) {
+                for (Map<DFScode, DFScodeInstance> map : this.mlDFSCodeGraph.getGraphEdge().row(RMPNodeLabel).values()) {
                     childrenTemp.addAll(map.keySet());
                 }
                 if (children.isEmpty()){
@@ -169,7 +198,7 @@ public class MLNAryRelationMiner {
             //true: 在最右节点上添加新的标签
             int RMNode = childEdge.getValue().getNodeB();
             int newLabel = (int) childEdge.getValue().getLabelB().get(0);
-            Set<Integer> newLabelNode = this.dataGraph.queryNodesByLabel(newLabel);
+            Set<Integer> newLabelNode = this.mlDFSCodeGraph.queryNodesByLabel(newLabel);
             // newLabelNode 中的实力节点包含 newLabel标签
             assert RMNode==parent.getRightMostPath().get(parent.getRightMostPath().size()-1)
                     :"新增的标签不在最右节点上";
@@ -196,7 +225,7 @@ public class MLNAryRelationMiner {
             int edgeLabel = childEdge.getValue().getEdgeLabel();
             int nodeBLabel = (int) childEdge.getValue().getLabelB().getFirst();
             Map<Integer, Integer> nodeAIdMap = parentInstances.fetchInstanceNode(nodeA);
-            Set<Integer> posNodeBIds = this.dataGraph.queryNodesByLabel(nodeB);
+            Set<Integer> posNodeBIds = this.mlDFSCodeGraph.queryNodesByLabel(nodeB);
             for(Map.Entry<Integer,Integer> nodeAIdEntry : nodeAIdMap.entrySet()){
                 int instanceId = nodeAIdEntry.getKey();
                 Set<Integer> appearedNodes = new HashSet<>();
@@ -208,10 +237,10 @@ public class MLNAryRelationMiner {
                     if(appearedNodes.contains(posNodeBId)){
                         continue;
                     }
-                    if(!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAId,posNodeBId)){
+                    if(!this.mlDFSCodeGraph.getValueGraph().hasEdgeConnecting(nodeAId,posNodeBId)){
                         continue;
                     }
-                    int edgeValue = ((int) this.dataGraph.getValueGraph().edgeValue(nodeAId, posNodeBId).get());
+                    int edgeValue = ((int) this.mlDFSCodeGraph.getValueGraph().edgeValue(nodeAId, posNodeBId).get());
                     if (edgeLabel!=edgeValue){
                         continue;
                     }
@@ -226,11 +255,68 @@ public class MLNAryRelationMiner {
         return childInstance;
     }
 
-    private void mineCore(MLDFScode parent, MLDFScodeInstance parentInstances) throws Exception {
-        ArrayList<Pair<Boolean,MLGSpanEdge>> childEdgePairs = nAryRelationExtension(parent);
-        for(Pair<Boolean,MLGSpanEdge> childEdgePair: childEdgePairs){
 
+
+    /**
+     * 判断给定的minEdgePair 和  index 指定的this.mlDFSCode 中的边的大小
+     * @param minEdgePair
+     * @param index
+     * @return true: minEdgePair 是该步需要扩展的最小边
+     *          false: minEdgePair 不是该步需要扩展的最小边
+     */
+    private boolean compare(Pair<Boolean, MLGSpanEdge> minEdgePair, int index) {
+        MLGSpanEdge minEdge = minEdgePair.getValue();
+        MLGSpanEdge dfScodeEdge = this.mlDFSCode.getEdgeSeq().get(index);
+        {
+            assert minEdge.getNodeA() == dfScodeEdge.getNodeA()
+                    && minEdge.getNodeB() == dfScodeEdge.getNodeB()
+                    && minEdge.getDirection() == dfScodeEdge.getDirection()
+                    && minEdge.getEdgeLabel() == dfScodeEdge.getEdgeLabel()
+                    : "非法输入1";
+            assert minEdge.getLabelB().size()==1:"非法输入2";
+        }
+        int minEdgeLabelB = (int) minEdge.getLabelB().getFirst();
+        Set<Integer> dfScodeEdgeLabelB = new HashSet<>(dfScodeEdge.getLabelB());
+        Set<Integer> minEdgeLabelA = new HashSet<>(minEdge.getLabelA());
+        Set<Integer> dfScodeEdgeLabelA = new HashSet<>(dfScodeEdge.getLabelA());
+        if (minEdgePair.getKey()) {
+            // add label
+            assert minEdgeLabelA.equals(dfScodeEdgeLabelA) : "非法输入3";
+            return dfScodeEdgeLabelB.contains(minEdgeLabelB);
+        } else {
+            // add a forward edge
+            Set<Integer> temp = new HashSet<>(minEdgeLabelA);
+            temp.retainAll(dfScodeEdgeLabelA);
+            assert temp.isEmpty(): "非法输入4";
+            if(!minEdgeLabelA.equals(dfScodeEdgeLabelA)){
+                return false;
+            }
+            return dfScodeEdgeLabelB.contains(minEdgeLabelB);
         }
     }
 
+    /**
+     * 判断两个给定的MLGSpanEdge 的大小
+     * 除了 labelB之外 其他元素都应该相同
+     * labelB 应该只有一个
+     * @param edgeA
+     * @param edgeB
+     * @return
+     */
+    private int compare(MLGSpanEdge edgeA, MLGSpanEdge edgeB){
+        {
+            assert edgeA.getNodeA()==edgeB.getNodeA() &&
+                    edgeA.getNodeB()==edgeB.getNodeB()&&
+                    edgeA.getDirection()==edgeB.getDirection()&&
+                    edgeA.getEdgeLabel()==edgeB.getEdgeLabel()&&
+                    edgeA.getLabelB().size()==1&&
+                    edgeB.getLabelB().size()==1:
+                    "非法参数";
+            Set<Integer> edgeALabelA = new HashSet<>(edgeA.getLabelA());
+            Set<Integer> edgeBLabelA = new HashSet<>(edgeB.getLabelA());
+            assert edgeALabelA.equals(edgeBLabelA):
+                    "非法参数";
+        }
+        return (int) edgeA.getLabelB().getFirst()-(int) edgeB.getLabelB().getFirst();
+    }
 }

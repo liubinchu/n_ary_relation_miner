@@ -22,6 +22,10 @@ public class DFScodeInstance implements SaveToFile{
         this.dfScode = dfScode;
     }
 
+    public DFScode getDfScode() {
+        return dfScode;
+    }
+
     public ArrayList<int[]> getInstances() {
         return instances;
     }
