@@ -317,6 +317,7 @@ public class MLNaryMDCJustifier {
             assert edgeALabelA.equals(edgeBLabelA):
                     "非法参数";
         }
+
         return (int) edgeA.getLabelB().getFirst()-(int) edgeB.getLabelB().getFirst();
     }
 }
