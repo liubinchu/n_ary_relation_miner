@@ -1,16 +1,16 @@
 package top.ericcliu.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
-import org.omg.PortableInterceptor.INACTIVE;
-import sun.awt.image.ImageWatched;
 
+import java.io.File;
 import java.util.*;
 
 /**
  * @author liubi
  * @date 2019-05-26 21:39
  **/
-public class MLDFScode {
+public class MLDFScode implements SaveToFile{
     /**
      * -1 未计算
      */
@@ -33,6 +33,22 @@ public class MLDFScode {
      */
     private Map<Integer, LinkedList<Integer>> nodeLabelMap = new HashMap<>();
 
+
+
+    public static MLDFScode readFromFile(String filePath) throws Exception {
+        File file = new File(filePath);
+        //MLDFScodeJson dfScodeJson;
+        MLDFScode mldfScode ;
+        if (file.exists()) {
+            // 增加jackson 对google guava的支持
+            ObjectMapper mapper = new ObjectMapper();
+            mldfScode = mapper.readValue(file, MLDFScode.class);
+        } else {
+            throw new Exception("file does not exist");
+        }
+        return mldfScode;
+    }
+
     public MLDFScode addEdge(MLGSpanEdge edge) throws Exception {
         this.turn++;
         boolean first = false;
@@ -45,7 +61,7 @@ public class MLDFScode {
         if (first) {
             this.rootNodeId = (Integer) edge.getLabelA().getFirst();
         } else {
-            LinkedList<Integer> RMP = this.getRightMostPath();
+            LinkedList<Integer> RMP = this.fatchRightMostPath();
             // 合法性检查
             if (RMP.size() < 2) {
                 throw new IllegalArgumentException("illegal multi label DFS code");
@@ -167,7 +183,8 @@ public class MLDFScode {
         }
     }
 
-    public LinkedList<Integer> getRightMostPath() throws Exception {
+
+    public LinkedList<Integer> fatchRightMostPath() throws Exception {
         LinkedList<Integer> rightMostPath = new LinkedList<>();
         for (MLGSpanEdge edge : this.edgeSeq) {
             int nodeA = edge.getNodeA();
@@ -220,8 +237,12 @@ public class MLDFScode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MLDFScode mldfScode = (MLDFScode) o;
         return rootNodeId == mldfScode.rootNodeId &&
                 MNI == mldfScode.MNI &&
@@ -238,7 +259,7 @@ public class MLDFScode {
         return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, turn, edgeSeq, nodeLabelMap);
     }
 
-    public Set<Integer> getNodes() {
+    public Set<Integer> fatchNodes() {
         return nodeLabelMap.keySet();
     }
 
@@ -326,18 +347,11 @@ public class MLDFScode {
         edgeSeq.add(new MLGSpanEdge(5, 6, label3, label4, 1, 1));
         //6
         edgeSeq.add(new MLGSpanEdge(5, 6, label3, label2, 1, 1));
-        MLDFScode dfScode = null;
-        for(MLGSpanEdge edge : edgeSeq){
-            if (dfScode ==null){
-                dfScode = new MLDFScode(edge);
-            }
-            else {
-                dfScode.addEdge(edge);
-            }
-        }
-        System.out.println(dfScode.getRightMostPath());
-        dfScode.addLabel(new MLGSpanEdge(5, 6, label3, label1, 1, 1));
-        System.out.println(" ");
+        MLDFScode dfScode = new MLDFScode(edgeSeq);
+
+        dfScode.saveToFile("mlDFScode.json",false);
+        dfScode = MLDFScode.readFromFile("mlDFScode.json");
+        System.out.println(dfScode);
     }
 
 }

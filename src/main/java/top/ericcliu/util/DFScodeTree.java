@@ -1,8 +1,5 @@
 package top.ericcliu.util;
 
-import org.apache.jena.base.Sys;
-import sun.reflect.generics.tree.Tree;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

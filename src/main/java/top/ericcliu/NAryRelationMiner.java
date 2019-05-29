@@ -165,13 +165,13 @@ public class NAryRelationMiner {
     }
 
     private void savePattern(DFScode childDFScode, DFScodeInstance childInstance) throws Exception {
-        File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
+        File dir = new File(this.dataGraph.graphName + "MNI_" + threshold);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         childDFScode.setInstanceNum(childInstance.getInstances().size());
-        childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
-        childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+        childDFScode.saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "RE_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
+        childInstance.sample(1, 10, 10).saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "IN_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
     }
 
     private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {

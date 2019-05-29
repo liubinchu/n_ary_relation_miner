@@ -1,8 +1,5 @@
 package top.ericcliu.util;
 
-import com.sun.scenario.effect.impl.state.LinearConvolveKernel;
-import sun.awt.image.ImageWatched;
-
 import java.util.*;
 
 /**
@@ -46,8 +43,8 @@ public class MLDFScodeInstance implements SaveToFile{
         if (!this.mldfScode.equals(mldfScode)) {
             throw new Exception("illegal Multi label DFS code");
         }
-        int size = mldfScode.getNodes().size();
-        if (instance.length != mldfScode.getNodes().size()) {
+        int size = mldfScode.fatchNodes().size();
+        if (instance.length != mldfScode.fatchNodes().size()) {
             throw new Exception("illegal instance");
         }
         this.instances.add(instance);
@@ -60,7 +57,7 @@ public class MLDFScodeInstance implements SaveToFile{
             // 当前模式 在图中 不存在 实例
         }
         int MNI = Integer.MAX_VALUE;
-        for (int i = 0; i < this.mldfScode.getNodes().size(); i++) {
+        for (int i = 0; i < this.mldfScode.fatchNodes().size(); i++) {
             Set<Integer> nodeSet = new HashSet<>(this.instances.size());
             for (int[] instance : this.instances){
                 nodeSet.add(instance[i]);
@@ -77,7 +74,7 @@ public class MLDFScodeInstance implements SaveToFile{
      * @throws Exception
      */
     public Map<Integer,Integer> fetchInstanceNode(Integer nodeId) throws Exception {
-        if(!this.mldfScode.getNodes().contains(nodeId)){
+        if(!this.mldfScode.fatchNodes().contains(nodeId)){
             throw new Exception("illeagl para");
         }
         Map<Integer,Integer> instanceNodeMap = new HashMap<>(this.instances.size());

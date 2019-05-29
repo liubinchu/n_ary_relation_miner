@@ -3,6 +3,7 @@ package top.ericcliu;
 import javafx.util.Pair;
 import top.ericcliu.util.*;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -56,15 +57,16 @@ public class MLNAryRelationMiner {
      * 去除后向扩展，具有前向扩展的深度限制
      * 1. 首先尝试在最右节点上 扩展一个标签
      * 2. 其次尝试在最右路径上 前向扩展
+     *
      * @param parent
-     * @return ArrayList<Pair<Boolean,MLGSpanEdge>>:
+     * @return ArrayList<Pair < Boolean, MLGSpanEdge>>:
      * true: 在最右节点上添加新的标签
      * false: 在最右路径上扩展边
      * @throws Exception
      */
-    private ArrayList<Pair<Boolean,MLGSpanEdge>> nAryRelationExtension(MLDFScode parent) throws Exception {
-        ArrayList<Pair<Boolean,MLGSpanEdge>> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> RMP = parent.getRightMostPath();
+    private ArrayList<Pair<Boolean, MLGSpanEdge>> nAryRelationExtension(MLDFScode parent) throws Exception {
+        ArrayList<Pair<Boolean, MLGSpanEdge>> childrenEdge = new ArrayList<>();
+        LinkedList<Integer> RMP = parent.fatchRightMostPath();
         if (RMP.size() == 0 || RMP.size() == 1) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         }
@@ -80,32 +82,31 @@ public class MLNAryRelationMiner {
         // extend a new label on right most node
         Iterator<Integer> descRMPit = RMP.descendingIterator();
         int RMNode = descRMPit.next(); // last Edge end node
-        int RMNodeF =descRMPit.next(); // last Edge start node
+        int RMNodeF = descRMPit.next(); // last Edge start node
         Set<Integer> RMNodeLabels = new HashSet<>(parent.getNodeLabel(RMNode));
         LinkedList<Integer> RMNodeFLabels = parent.getNodeLabel(RMNodeF);
-        MLGSpanEdge lastEdge = parent.getEdgeSeq().get(parent.getEdgeSeq().size()-1);
+        MLGSpanEdge lastEdge = parent.getEdgeSeq().get(parent.getEdgeSeq().size() - 1);
         int edgeLabel = lastEdge.getEdgeLabel();
         assert parent.getNodeLabel(RMNode).equals(lastEdge.getLabelB()) : "最右节点 没有出现在 最后一个边上";
-        assert RMNodeFLabels.equals(lastEdge.getLabelA()): "最右节点的签一个节点 没有出现在 最后一个边上";
+        assert RMNodeFLabels.equals(lastEdge.getLabelA()) : "最右节点的签一个节点 没有出现在 最后一个边上";
 
         Set<DFScode> children = new HashSet<>();
         // 所有标签能够拓展出的边
-        for(int RMNodeFLabel :RMNodeFLabels){
+        for (int RMNodeFLabel : RMNodeFLabels) {
             Set<DFScode> childrenTemp = new HashSet<>();
-            for (Map<DFScode,DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMNodeFLabel).values()){
+            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMNodeFLabel).values()) {
                 // 单个其实节点标签相同
-                for(DFScode dfScode : map.keySet()){
+                for (DFScode dfScode : map.keySet()) {
                     GSpanEdge edge = dfScode.getEdgeSeq().get(0);
-                    if(edge.getEdgeLabel()==edgeLabel
-                    && !RMNodeLabels.contains(edge.getLabelB())){
+                    if (edge.getEdgeLabel() == edgeLabel
+                            && !RMNodeLabels.contains(edge.getLabelB())) {
                         // 边标签相同,且 最右节点上 不包含 新扩展的标签
                         childrenTemp.add(dfScode);
                     }
                 }
-                if(children.isEmpty()){
+                if (children.isEmpty()) {
                     children.addAll(childrenTemp);
-                }
-                else {
+                } else {
                     children.retainAll(childrenTemp);
                 }
             }
@@ -117,9 +118,9 @@ public class MLNAryRelationMiner {
             LinkedList<Integer> RMNodeNewLabel = new LinkedList<>();
             RMNodeNewLabel.add(child.getEdgeSeq().get(0).getLabelB());
             int newEdgeLabel = child.getEdgeSeq().get(0).getEdgeLabel();
-            assert newEdgeLabel==edgeLabel:"wrong edge label";
+            assert newEdgeLabel == edgeLabel : "wrong edge label";
             childrenEdge.add(new Pair<>(true,
-                    new MLGSpanEdge<>(RMNodeF,RMNode,RMNodeFLabels,RMNodeNewLabel,newEdgeLabel,0)));
+                    new MLGSpanEdge<>(RMNodeF, RMNode, RMNodeFLabels, RMNodeNewLabel, newEdgeLabel, 0)));
         }
 
         // forward extend
@@ -134,16 +135,15 @@ public class MLNAryRelationMiner {
             }
             // 多标签，所有标签都能够扩展出的边
             children = new HashSet<>();
-            for(Integer RMPNodeLabel : RMPNodeLabels){
+            for (Integer RMPNodeLabel : RMPNodeLabels) {
                 Set<DFScode> childrenTemp = new HashSet<>();
                 // 单个标签能够扩展出的边
                 for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMPNodeLabel).values()) {
                     childrenTemp.addAll(map.keySet());
                 }
-                if (children.isEmpty()){
+                if (children.isEmpty()) {
                     children.addAll(childrenTemp);
-                }
-                else {
+                } else {
                     children.retainAll(childrenTemp);
                 }
             }
@@ -156,69 +156,69 @@ public class MLNAryRelationMiner {
                 node2Labels.add(child.getEdgeSeq().get(0).getLabelB());
                 int newEdgeLabel = child.getEdgeSeq().get(0).getEdgeLabel();
                 childrenEdge.add(new Pair<>(false,
-                        new MLGSpanEdge<>(RMPNode,node2,RMPNodeLabels,node2Labels,newEdgeLabel,0)));
+                        new MLGSpanEdge<>(RMPNode, node2, RMPNodeLabels, node2Labels, newEdgeLabel, 0)));
             }
         }
         return childrenEdge;
     }
 
-    private MLDFScodeInstance subGraphIsomorphism(MLDFScode parent, MLDFScodeInstance parentInstances, Pair<Boolean,MLGSpanEdge> childEdge) throws Exception {
+    private MLDFScodeInstance subGraphIsomorphism(MLDFScode parent, MLDFScodeInstance parentInstances, Pair<Boolean, MLGSpanEdge> childEdge) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
         MLDFScodeInstance childInstance = new MLDFScodeInstance();
-        if(childEdge.getKey()){
+        if (childEdge.getKey()) {
             //true: 在最右节点上添加新的标签
             int RMNode = childEdge.getValue().getNodeB();
             int newLabel = (int) childEdge.getValue().getLabelB().get(0);
             Set<Integer> newLabelNode = this.dataGraph.queryNodesByLabel(newLabel);
             // newLabelNode 中的实力节点包含 newLabel标签
-            assert RMNode==parent.getRightMostPath().get(parent.getRightMostPath().size()-1)
-                    :"新增的标签不在最右节点上";
+            assert RMNode == parent.fatchRightMostPath().get(parent.fatchRightMostPath().size() - 1)
+                    : "新增的标签不在最右节点上";
             MLDFScode child = new MLDFScode(parent).addLabel(childEdge.getValue());
-            for(int[]parentInstance: parentInstances.getInstances()){
-                if(newLabelNode.contains(parentInstance[RMNode])){
+            for (int[] parentInstance : parentInstances.getInstances()) {
+                if (newLabelNode.contains(parentInstance[RMNode])) {
                     // 最右节点的实例节点，包含newLabel标签
-                    childInstance.addInstance(child,parentInstance);
+                    childInstance.addInstance(child, parentInstance);
                 }
             }
-        }
-        else {
+        } else {
             //false: 在最右路径上扩展前向边，拓展的边 nodeB上只具有一个标签（增加标签的工作在上面的if条件完成）
             MLDFScode child = new MLDFScode(parent).addEdge(childEdge.getValue());
             int nodeA = childEdge.getValue().getNodeA();
             int nodeB = childEdge.getValue().getNodeB();
-            {            assert nodeB==nodeA+1
-                    :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
-                assert nodeA==parent.getRightMostPath().get(parent.getRightMostPath().size()-1)
-                        :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
-                assert childEdge.getValue().getLabelB().size()==1
-                        :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
+            {
+                assert nodeB == nodeA + 1
+                        : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
+                assert nodeA == parent.fatchRightMostPath().get(parent.fatchRightMostPath().size() - 1)
+                        : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
+                assert childEdge.getValue().getLabelB().size() == 1
+                        : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
             }
             int edgeLabel = childEdge.getValue().getEdgeLabel();
             int nodeBLabel = (int) childEdge.getValue().getLabelB().getFirst();
             Map<Integer, Integer> nodeAIdMap = parentInstances.fetchInstanceNode(nodeA);
             Set<Integer> posNodeBIds = this.dataGraph.queryNodesByLabel(nodeB);
-            for(Map.Entry<Integer,Integer> nodeAIdEntry : nodeAIdMap.entrySet()){
+            for (Map.Entry<Integer, Integer> nodeAIdEntry : nodeAIdMap.entrySet()) {
                 int instanceId = nodeAIdEntry.getKey();
                 Set<Integer> appearedNodes = new HashSet<>();
                 for (Integer node : parentInstances.getInstances().get(instanceId)) {
                     appearedNodes.add(node);
                 }
                 int nodeAId = nodeAIdEntry.getValue();
-                for(int posNodeBId: posNodeBIds ){
-                    if(appearedNodes.contains(posNodeBId)){
+                for (int posNodeBId : posNodeBIds) {
+                    if (appearedNodes.contains(posNodeBId)) {
                         continue;
                     }
-                    if(!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAId,posNodeBId)){
+                    if (!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAId, posNodeBId)) {
                         continue;
                     }
                     int edgeValue = ((int) this.dataGraph.getValueGraph().edgeValue(nodeAId, posNodeBId).get());
-                    if (edgeLabel!=edgeValue){
+                    if (edgeLabel != edgeValue) {
                         continue;
                     }
-                    int newLength = parentInstances.getInstances().get(instanceId).length+1;
-                    int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId),newLength);
-                    newInstance[newLength-1] = posNodeBId;
-                    childInstance.addInstance(child,newInstance);
+                    int newLength = parentInstances.getInstances().get(instanceId).length + 1;
+                    int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId), newLength);
+                    newInstance[newLength - 1] = posNodeBId;
+                    childInstance.addInstance(child, newInstance);
                 }
             }
 
@@ -226,10 +226,81 @@ public class MLNAryRelationMiner {
         return childInstance;
     }
 
-    private void mineCore(MLDFScode parent, MLDFScodeInstance parentInstances) throws Exception {
-        ArrayList<Pair<Boolean,MLGSpanEdge>> childEdgePairs = nAryRelationExtension(parent);
-        for(Pair<Boolean,MLGSpanEdge> childEdgePair: childEdgePairs){
+    private void savePattern(MLDFScode childDFScode, MLDFScodeInstance childInstance) throws Exception {
+        File dir = new File(this.dataGraph.graphName + "MNI_" + threshold);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        childDFScode.setInstanceNum(childInstance.getInstances().size());
+        childDFScode.saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "RE_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
+        childInstance.sample(1, 10, 10).saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "IN_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+    }
 
+    private void mineCore(MLDFScode parent, MLDFScodeInstance parentInstances) throws Exception {
+        ArrayList<Pair<Boolean, MLGSpanEdge>> childEdgePairs = nAryRelationExtension(parent);
+        for (Pair<Boolean, MLGSpanEdge> childEdgePair : childEdgePairs) {
+            MLDFScode childDFScode = new MLDFScode(parent);
+            if (childEdgePair.getKey()) {
+                // add label
+                childDFScode.addLabel(childEdgePair.getValue());
+            } else {
+                //add forward edge
+                childDFScode.addEdge(childEdgePair.getValue());
+            }
+            if (!new MLNaryMDCJustifier(childDFScode).justify()) {
+                continue;
+            }
+            MLDFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdgePair);
+            int MNI = childInstance.calMNI();
+            if (MNI < this.support) {
+                //频繁度剪枝
+                if (childInstance.getInstances().size() >= this.support) {
+                    // 如果 MNI 不频繁 但是 instance Num 频繁，需要输出模式 但是 不扩展
+                    //double relatedRatio = calRelatedRatio(MNI, childDFScode);
+                    //childDFScode.setRelatedRatio(relatedRatio);
+                    savePattern(childDFScode, childInstance);
+                }
+                continue;
+            }
+            savePattern(childDFScode, childInstance);
+            mineCore(childDFScode, childInstance);
+        }
+    }
+    public void mine() throws Exception {
+        Iterator<Map<DFScode, DFScodeInstance>> iterator = this.dataGraph.getGraphEdge().values().iterator();
+        int i = 0;
+        while (iterator.hasNext()) {
+            Map<DFScode, DFScodeInstance> map = iterator.next();
+            for (Map.Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
+                if (entry.getKey().getNodeLabel(0).equals(this.dataGraph.getReplacedTypeId())) {
+                    // 仅从当前 typeId 作为根节点 出发 拓展
+                    mineCore(new MLDFScode(entry.getKey()), new MLDFScodeInstance(entry.getValue()));
+                    System.out.println("finish the " + (++i) + "nd edge");
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        //String filePath = args[0];
+        //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
+        //int maxDepth = Integer.parseInt(args[2]);
+        //double relatedRatioThreshold = Double.parseDouble(args[3]);
+        //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
+        double relatedRatioThreshold = 0.0001;
+        int maxDepth =10;
+        double dataSetSizeRelatedthreshold = 0.0001;
+        try {
+            MultiLabelGraph graph = new MultiLabelGraph(true);
+            System.out.println("finish read file");
+            MLNAryRelationMiner miner = new MLNAryRelationMiner(graph, dataSetSizeRelatedthreshold, maxDepth,relatedRatioThreshold );
+            System.out.println(miner.dataGraph.graphName);
+            System.out.println(graph.getGraphEdge());
+            System.out.println("SupportThreshold" + miner.support);
+            miner.mine();
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
         }
     }
 

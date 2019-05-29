@@ -107,7 +107,7 @@ public class MLNaryMDCJustifier {
      */
     private ArrayList<Pair<Boolean,MLGSpanEdge>> nAryRelationExtension(MLDFScode parent) throws Exception {
         ArrayList<Pair<Boolean,MLGSpanEdge>> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> RMP = parent.getRightMostPath();
+        LinkedList<Integer> RMP = parent.fatchRightMostPath();
         if (RMP.size() == 0 || RMP.size() == 1) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         }
@@ -200,7 +200,7 @@ public class MLNaryMDCJustifier {
             int newLabel = (int) childEdge.getValue().getLabelB().get(0);
             Set<Integer> newLabelNode = this.mlDFSCodeGraph.queryNodesByLabel(newLabel);
             // newLabelNode 中的实力节点包含 newLabel标签
-            assert RMNode==parent.getRightMostPath().get(parent.getRightMostPath().size()-1)
+            assert RMNode==parent.fatchRightMostPath().get(parent.fatchRightMostPath().size()-1)
                     :"新增的标签不在最右节点上";
             MLDFScode child = new MLDFScode(parent).addLabel(childEdge.getValue());
             for(int[]parentInstance: parentInstances.getInstances()){
@@ -217,7 +217,7 @@ public class MLNaryMDCJustifier {
             int nodeB = childEdge.getValue().getNodeB();
             {            assert nodeB==nodeA+1
                     :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
-                assert nodeA==parent.getRightMostPath().get(parent.getRightMostPath().size()-1)
+                assert nodeA==parent.fatchRightMostPath().get(parent.fatchRightMostPath().size()-1)
                         :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
                 assert childEdge.getValue().getLabelB().size()==1
                         :"非法参数 Pair<Boolean,MLGSpanEdge> childEdge";

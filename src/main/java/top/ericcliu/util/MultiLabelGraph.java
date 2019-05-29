@@ -265,7 +265,7 @@ public class MultiLabelGraph {
     /**
      * initiate from DFS code
      *
-     * @param dfScode
+     * @param mldfScode
      * @throws Exception
      */
     public MultiLabelGraph(MLDFScode mldfScode) throws Exception {
@@ -274,9 +274,9 @@ public class MultiLabelGraph {
         this.typeId = (Integer) mldfScode.getEdgeSeq().get(0).getLabelA().getFirst();
         MutableValueGraph graph = ValueGraphBuilder
                 .directed()
-                .expectedNodeCount(mldfScode.getNodes().size())
+                .expectedNodeCount(mldfScode.fatchNodes().size())
                 .build();
-        for (Integer nodeId : mldfScode.getNodes()) {
+        for (Integer nodeId : mldfScode.fatchNodes()) {
             graph.addNode(nodeId);
         }
         Multimap<Integer, Integer> nodeLabels = MultimapBuilder.hashKeys().hashSetValues().build();
