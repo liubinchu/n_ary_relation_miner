@@ -50,6 +50,23 @@ public class MLNAryRelationMiner {
                 }
             }
         }
+        {
+            for (Integer row : this.dataGraph.getGraphEdge().rowKeySet()) {
+                Set<Map.Entry<Integer, Map<DFScode, DFScodeInstance>>> entrySet = this.dataGraph.getGraphEdge().row(row).entrySet();
+                Collection<Map<DFScode, DFScodeInstance>> collection = this.dataGraph.getGraphEdge().row(row).values();
+                for (Map.Entry<Integer, Map<DFScode, DFScodeInstance>> entry :entrySet ) {
+                    for (Map.Entry<DFScode, DFScodeInstance> entry1 : entry.getValue().entrySet()) {
+                        if (entry1.getValue().calMNI() > 0) {
+                            System.out.println("labelA : " + row);
+                            System.out.println("labelB: " + entry.getKey());
+                            System.out.println("DFS code " + entry1.getKey());
+                            System.out.println("DFS code MNI " + entry1.getValue().calMNI());
+                            System.out.println("____________________________________________________________________________________________________________________________");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -94,8 +111,9 @@ public class MLNAryRelationMiner {
         // 所有标签能够拓展出的边
         for (int RMNodeFLabel : RMNodeFLabels) {
             Set<DFScode> childrenTemp = new HashSet<>();
+            Collection<Map<DFScode, DFScodeInstance>> collection = this.dataGraph.getGraphEdge().row(RMNodeFLabel).values();
             for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(RMNodeFLabel).values()) {
-                // 单个其实节点标签相同
+                // 单个起始节点标签相同
                 for (DFScode dfScode : map.keySet()) {
                     GSpanEdge edge = dfScode.getEdgeSeq().get(0);
                     if (edge.getEdgeLabel() == edgeLabel
@@ -186,17 +204,13 @@ public class MLNAryRelationMiner {
             int nodeA = childEdge.getValue().getNodeA();
             int nodeB = childEdge.getValue().getNodeB();
             {
-                assert nodeB == nodeA + 1
-                        : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
-                assert nodeA == parent.fatchRightMostPath().get(parent.fatchRightMostPath().size() - 1)
-                        : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
                 assert childEdge.getValue().getLabelB().size() == 1
                         : "非法参数 Pair<Boolean,MLGSpanEdge> childEdge";
             }
             int edgeLabel = childEdge.getValue().getEdgeLabel();
             int nodeBLabel = (int) childEdge.getValue().getLabelB().getFirst();
             Map<Integer, Integer> nodeAIdMap = parentInstances.fetchInstanceNode(nodeA);
-            Set<Integer> posNodeBIds = this.dataGraph.queryNodesByLabel(nodeB);
+            Set<Integer> posNodeBIds = this.dataGraph.queryNodesByLabel(nodeBLabel);
             for (Map.Entry<Integer, Integer> nodeAIdEntry : nodeAIdMap.entrySet()) {
                 int instanceId = nodeAIdEntry.getKey();
                 Set<Integer> appearedNodes = new HashSet<>();
@@ -233,6 +247,7 @@ public class MLNAryRelationMiner {
         }
         childDFScode.setInstanceNum(childInstance.getInstances().size());
         childDFScode.saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "RE_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
+        System.out.println(childDFScode);
         childInstance.sample(1, 10, 10).saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "IN_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
     }
 
@@ -274,7 +289,9 @@ public class MLNAryRelationMiner {
             for (Map.Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
                 if (entry.getKey().getNodeLabel(0).equals(this.dataGraph.getReplacedTypeId())) {
                     // 仅从当前 typeId 作为根节点 出发 拓展
-                    mineCore(new MLDFScode(entry.getKey()), new MLDFScodeInstance(entry.getValue()));
+                    MLDFScode mldfScode = new MLDFScode(entry.getKey());
+                    MLDFScodeInstance mldfScodeInstance = new MLDFScodeInstance(entry.getValue());
+                    mineCore(mldfScode,mldfScodeInstance);
                     System.out.println("finish the " + (++i) + "nd edge");
                 }
             }
@@ -288,11 +305,12 @@ public class MLNAryRelationMiner {
         //double relatedRatioThreshold = Double.parseDouble(args[3]);
         //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        double relatedRatioThreshold = 0.0001;
+        double relatedRatioThreshold = 0.001;
         int maxDepth =10;
-        double dataSetSizeRelatedthreshold = 0.0001;
+        double dataSetSizeRelatedthreshold = 0.001;
         try {
-            MultiLabelGraph graph = new MultiLabelGraph(true);
+            MultiLabelGraph graph = new MultiLabelGraph("D_10P_0.7378246753246751R_1.0T_11260.json");
+            //MultiLabelGraph graph = new MultiLabelGraph(false);
             System.out.println("finish read file");
             MLNAryRelationMiner miner = new MLNAryRelationMiner(graph, dataSetSizeRelatedthreshold, maxDepth,relatedRatioThreshold );
             System.out.println(miner.dataGraph.graphName);

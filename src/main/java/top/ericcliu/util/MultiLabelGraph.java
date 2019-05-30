@@ -19,7 +19,7 @@ import java.util.*;
  * @date 2018-12-04 13:27
  **/
 public class MultiLabelGraph {
-    private final Integer replacedTypeId = Integer.MIN_VALUE;
+    private final Integer replacedTypeId = -24;
     /**
      * valueGraph: graph
      * nodeLabels: key: nodeId Value: labelId of corresponding node
@@ -76,11 +76,13 @@ public class MultiLabelGraph {
             //nodeLabels.put(2, 3);
             nodeLabels.put(2, this.replacedTypeId);
             nodeLabels.put(3, 5);
+            nodeLabels.put(3, 6);
             //nodeLabels.put(4, 3);
             nodeLabels.put(4, this.replacedTypeId);
             nodeLabels.put(4, 6);
             nodeLabels.put(5, 4);
             nodeLabels.put(5, 5);
+            nodeLabels.put(5, 6);
             this.nodeLabels = nodeLabels;
 
             Multimap<Integer, Integer> labelNodes = MultimapBuilder.hashKeys().hashSetValues().build();
@@ -91,20 +93,22 @@ public class MultiLabelGraph {
             labelNodes.put(this.replacedTypeId, 2);
             labelNodes.put(2, 2);
             labelNodes.put(5, 3);
+            labelNodes.put(6, 3);
             //labelNodes.put(3, 4);
             labelNodes.put(this.replacedTypeId, 4);
             labelNodes.put(6, 4);
             labelNodes.put(4, 5);
             labelNodes.put(5, 5);
+            labelNodes.put(6, 5);
             this.labelNodes = labelNodes;
 
             Table<Integer, Integer, Map<DFScode, DFScodeInstance>> graphEdge = HashBasedTable.create();
-            addEdgeToGraph(graph, 0, 2, 1, nodeLabels, graphEdge);
-            addEdgeToGraph(graph, 3, 2, 2, nodeLabels, graphEdge);
-            addEdgeToGraph(graph, 3, 4, 2, nodeLabels, graphEdge);
-            addEdgeToGraph(graph, 1, 4, 1, nodeLabels, graphEdge);
+            addEdgeToGraph(graph, 2, 0, 1, nodeLabels, graphEdge);
+            addEdgeToGraph(graph, 2, 3, 2, nodeLabels, graphEdge);
+            addEdgeToGraph(graph, 4, 3, 2, nodeLabels, graphEdge);
+            addEdgeToGraph(graph, 4, 1, 1, nodeLabels, graphEdge);
             addEdgeToGraph(graph, 2, 5, 3, nodeLabels, graphEdge);
-            addEdgeToGraph(graph, 5, 4, 2, nodeLabels, graphEdge);
+            addEdgeToGraph(graph, 4, 5, 2, nodeLabels, graphEdge);
 
             this.valueGraph = ImmutableValueGraph.copyOf(graph);
             this.graphEdge = graphEdge;
@@ -439,7 +443,7 @@ public class MultiLabelGraph {
 
         //MultiLabelGraph graphBig = new MultiLabelGraph("D_10P_0.7378246753246751R_1.0T_11260.json");
         MultiLabelGraph graphBig = new MultiLabelGraph(true);
-        System.out.println("graphBig.labelNodes.size() == graphBig.nodeLabels.size()");
+/*        System.out.println("graphBig.labelNodes.size() == graphBig.nodeLabels.size()");
         System.out.println(graphBig.labelNodes.size() == graphBig.nodeLabels.size());
         System.out.println("graphBig.labelNodes");
         System.out.println(graphBig.labelNodes.keySet().size());
@@ -450,10 +454,12 @@ public class MultiLabelGraph {
         System.out.println("graphBig.valueGraph.nodes()");
         System.out.println(graphBig.valueGraph.nodes().size());
         System.out.println("graphBig.valueGraph");
-        System.out.println(graphBig.valueGraph);
+        System.out.println(graphBig.valueGraph);*/
 
         for (Integer row : graphBig.graphEdge.rowKeySet()) {
-            for (Map.Entry<Integer, Map<DFScode, DFScodeInstance>> entry : graphBig.graphEdge.row(row).entrySet()) {
+            Set<Map.Entry<Integer, Map<DFScode, DFScodeInstance>>> entrySet = graphBig.graphEdge.row(row).entrySet();
+            Collection<Map<DFScode, DFScodeInstance>> collection = graphBig.graphEdge.row(row).values();
+            for (Map.Entry<Integer, Map<DFScode, DFScodeInstance>> entry :entrySet ) {
                 for (Map.Entry<DFScode, DFScodeInstance> entry1 : entry.getValue().entrySet()) {
                     if (entry1.getValue().calMNI() > 0) {
                         System.out.println("labelA : " + row);

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 /**
  * @author liubi
+ * id <0 时
+ *         -24 < id < 0 其对应正数，为 types_strings 表的内容
+ *         id = -24 时 表示 replaced id
  */
 public class DataBaseTools {
     public Connection sqliteConect(String databasePath) {

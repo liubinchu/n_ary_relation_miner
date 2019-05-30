@@ -2,8 +2,6 @@ package top.ericcliu.util;
 
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Represents the edge tuples used in gSpan to represent one edge in

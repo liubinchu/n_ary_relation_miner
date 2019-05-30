@@ -2,8 +2,7 @@ package top.ericcliu.util;
 
 import com.google.common.base.Objects;
 
-import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @author liubi
@@ -64,10 +63,136 @@ public class MLGSpanEdge <NodeType, EdgeType> {
         this.labelB.add(edgeLabel);
     }
 
+    /**
+     * compares this edge with the given <code>other</code> one,
+     *
+     * @param other
+     * @return <0: this < other
+     * 			0: this = other
+     * 		   >0: this > other
+     * 实际上 后向边 应该 小于 前向边， 但是目前版本 前向边direction为0，导致后向边大于前向边
+     * 后期只需修改 前向边的direction
+     */
+    public final int compareTo(final MLGSpanEdge<NodeType, EdgeType> other) throws Exception {
+        if (this.nodeA == other.nodeA) {
+            if (this.nodeB != other.nodeB) {
+                return this.nodeB - other.nodeB;
+            }
+            if (this.direction != other.direction) {
+                return other.direction - this.direction;
+            }
+            {
+                // nodeA labels
+                List<Integer> thisLabels = new ArrayList<>(this.getLabelA());
+                List<Integer> otherLabels = new ArrayList<>(other.getLabelA());
+                Collections.sort(thisLabels);
+                Collections.sort(otherLabels);
+                Iterator<Integer> thisIt = thisLabels.iterator();
+                Iterator<Integer> otherIt = otherLabels.iterator();
+                while (thisIt.hasNext()&&otherIt.hasNext()){
+                    int thisLabel = thisIt.next();
+                    int otherLabel = otherIt.next();
+                    if(thisLabel!=otherLabel){
+                        return thisLabel - otherLabel;
+                    }
+                }
+                if(thisIt.hasNext()){
+                    // condition1 eg. this label [1,3,5] other label [1,3]; other should < this
+                    return 1;
+                }
+                else if(otherIt.hasNext()){
+                    // condition2 eg. this label [1,3] other label [1,3,5]; this should < other
+                    return -1;
+                }
+                // condition3 eg. this label [1,3,5] other label [1,3,5];  use other node label to justify
+            }
+            if (this.edgeLabel != other.edgeLabel) {
+                return this.edgeLabel - other.edgeLabel;
+            }
+            {
+                // nodeB labels
+                List<Integer> thisLabels = new ArrayList<>(this.getLabelB());
+                List<Integer> otherLabels = new ArrayList<>(other.getLabelB());
+                Collections.sort(thisLabels);
+                Collections.sort(otherLabels);
+                Iterator<Integer> thisIt = thisLabels.iterator();
+                Iterator<Integer> otherIt = otherLabels.iterator();
+                while (thisIt.hasNext()&&otherIt.hasNext()){
+                    int thisLabel = thisIt.next();
+                    int otherLabel = otherIt.next();
+                    if(thisLabel!=otherLabel){
+                        return thisLabel - otherLabel;
+                    }
+                }
+                if(thisIt.hasNext()){
+                    // condition1 eg. this label [1,3,5] other label [1,3]; other should < this
+                    return 1;
+                }
+                else if(otherIt.hasNext()){
+                    // condition2 eg. this label [1,3] other label [1,3,5]; this should < other
+                    return -1;
+                }
+                else {
+                    // condition3 eg. this label [1,3,5] other label [1,3,5];  use other node label to justify
+                    return 0;
+                }
+            }
+
+        } else { // TODO: das laesst sich bestimmt noch irgendwie schoener
+            // schreiben
+            if (this.nodeA < this.nodeB) {
+                // 前向边
+                if (this.nodeB == other.nodeA) {
+                    return -1;
+                    // see paper
+                } else {
+                    if (other.nodeA > this.nodeA) {
+                        if (other.nodeA > this.nodeB) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (this.nodeA >= other.nodeB) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            } else if (other.nodeA < other.nodeB) {
+                if (other.nodeB == this.nodeA) {
+                    return 1;
+                    // see paper
+                } else {
+                    if (other.nodeA > this.nodeA) {
+                        if (other.nodeA >= this.nodeB) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    } else {
+                        if (this.nodeA > other.nodeB) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    }
+                }
+            } else { // compare two backwards edges with different nodeA
+                return this.nodeA - other.nodeA;
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         MLGSpanEdge<?, ?> that = (MLGSpanEdge<?, ?>) o;
         return nodeA == that.nodeA &&
                 nodeB == that.nodeB &&
