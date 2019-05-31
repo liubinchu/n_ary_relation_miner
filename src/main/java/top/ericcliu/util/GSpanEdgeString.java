@@ -11,6 +11,8 @@ import java.util.LinkedList;
  **/
 public class GSpanEdgeString implements Serializable {
 
+    private final static int replacedTypeId  = -24;
+
     private Integer nodeA, nodeB;
 
     private String labelA, labelB;
@@ -27,13 +29,13 @@ public class GSpanEdgeString implements Serializable {
             Connection db =dataBaseTools.sqliteConect(databasePath);
             this.nodeA = gSpanEdge.getNodeA();
             this.nodeB = gSpanEdge.getNodeB();
-            if(gSpanEdge.getLabelA()==Integer.MIN_VALUE){
+            if(gSpanEdge.getLabelA()==replacedTypeId){
                 this.labelA = dataBaseTools.printer(db,relationId);
             }
             else {
                 this.labelA = dataBaseTools.printer(db,gSpanEdge.getLabelA());
             }
-            if(gSpanEdge.getLabelB()==Integer.MIN_VALUE){
+            if(gSpanEdge.getLabelB()==replacedTypeId){
                 this.labelB = dataBaseTools.printer(db,relationId);
             }
             else {

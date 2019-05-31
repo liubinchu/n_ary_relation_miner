@@ -118,14 +118,6 @@ public class DFScode implements Cloneable {
             return -1;
         } else {
             return DFScodeTree.isParentOf(new DFScodeTree(this), new DFScodeTree(possibleChild));
-/*            for (int i = 0; i < this.getEdgeSeq().size(); i++) {
-                GSpanEdge parentEdge = this.getEdgeSeq().get(i);
-                GSpanEdge childEdge = possibleChild.getEdgeSeq().get(i);
-                if (!parentEdge.equals(childEdge)) {
-                    return false;
-                }
-            }
-            return true;*/
         }
     }
 
@@ -210,7 +202,8 @@ public class DFScode implements Cloneable {
                             }
                             DFScode nextDFScode = map.get(j);
                             int mode = currentDFScode.isParentOf(nextDFScode);
-                            if (mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI && i>j)) {
+                            if (mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI )) {
+                                // mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI && i>j )
                                 flag = false;
                                 break;
                             }

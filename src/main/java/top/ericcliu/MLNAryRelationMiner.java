@@ -83,7 +83,7 @@ public class MLNAryRelationMiner {
      */
     private ArrayList<Pair<Boolean, MLGSpanEdge>> nAryRelationExtension(MLDFScode parent) throws Exception {
         ArrayList<Pair<Boolean, MLGSpanEdge>> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> RMP = parent.fatchRightMostPath();
+        LinkedList<Integer> RMP = parent.fetchRightMostPath();
         if (RMP.size() == 0 || RMP.size() == 1) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         }
@@ -100,11 +100,11 @@ public class MLNAryRelationMiner {
         Iterator<Integer> descRMPit = RMP.descendingIterator();
         int RMNode = descRMPit.next(); // last Edge end node
         int RMNodeF = descRMPit.next(); // last Edge start node
-        Set<Integer> RMNodeLabels = new HashSet<>(parent.getNodeLabel(RMNode));
-        LinkedList<Integer> RMNodeFLabels = parent.getNodeLabel(RMNodeF);
+        Set<Integer> RMNodeLabels = new HashSet<>(parent.fetchNodeLabel(RMNode));
+        LinkedList<Integer> RMNodeFLabels = parent.fetchNodeLabel(RMNodeF);
         MLGSpanEdge lastEdge = parent.getEdgeSeq().get(parent.getEdgeSeq().size() - 1);
         int edgeLabel = lastEdge.getEdgeLabel();
-        assert parent.getNodeLabel(RMNode).equals(lastEdge.getLabelB()) : "最右节点 没有出现在 最后一个边上";
+        assert parent.fetchNodeLabel(RMNode).equals(lastEdge.getLabelB()) : "最右节点 没有出现在 最后一个边上";
         assert RMNodeFLabels.equals(lastEdge.getLabelA()) : "最右节点的签一个节点 没有出现在 最后一个边上";
 
         Set<DFScode> children = new HashSet<>();
@@ -145,7 +145,7 @@ public class MLNAryRelationMiner {
         descRMPit = RMP.descendingIterator();
         while (descRMPit.hasNext()) {
             int RMPNode = descRMPit.next();
-            LinkedList<Integer> RMPNodeLabels = parent.getNodeLabel(RMPNode);
+            LinkedList<Integer> RMPNodeLabels = parent.fetchNodeLabel(RMPNode);
             if (!extendOnNode) {
                 // 跳过最右节点
                 extendOnNode = true;
@@ -189,7 +189,7 @@ public class MLNAryRelationMiner {
             int newLabel = (int) childEdge.getValue().getLabelB().get(0);
             Set<Integer> newLabelNode = this.dataGraph.queryNodesByLabel(newLabel);
             // newLabelNode 中的实力节点包含 newLabel标签
-            assert RMNode == parent.fatchRightMostPath().get(parent.fatchRightMostPath().size() - 1)
+            assert RMNode == parent.fetchRightMostPath().get(parent.fetchRightMostPath().size() - 1)
                     : "新增的标签不在最右节点上";
             MLDFScode child = new MLDFScode(parent).addLabel(childEdge.getValue());
             for (int[] parentInstance : parentInstances.getInstances()) {

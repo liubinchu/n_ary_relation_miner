@@ -52,6 +52,7 @@ public class DFScodeTree {
     public static int isParentOf(DFScodeTree treeA, DFScodeTree treeB){
         return TreeNode.isParent(treeA.root,treeB.root);
     }
+
     public static void main(String[] args) throws Exception {
         DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
         //1
@@ -77,7 +78,8 @@ public class DFScodeTree {
         //5
         DFScodeTree dfScodeTree1 = new DFScodeTree(dfScode1);
 
-        int f = DFScodeTree.isParentOf(dfScodeTree1,dfScodeTree);
+        int f = DFScodeTree.isParentOf(dfScodeTree,dfScodeTree1);
+
         System.out.println(f);
     }
 }

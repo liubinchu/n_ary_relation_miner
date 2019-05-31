@@ -53,7 +53,6 @@ public class DFScodeString implements Cloneable , SaveToFile{
             }catch (Exception e){
                 e.printStackTrace();
             }
-
             if(dfScode.getEdgeSeq()!=null&&!dfScode.getEdgeSeq().isEmpty()){
                 for(GSpanEdge edge : dfScode.getEdgeSeq()){
                     this.edgeSeq.add(new GSpanEdgeString(edge,databasePath,relationId));

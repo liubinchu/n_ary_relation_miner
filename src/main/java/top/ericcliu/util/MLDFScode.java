@@ -2,6 +2,7 @@ package top.ericcliu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
+import javafx.util.Pair;
 
 import java.io.File;
 import java.util.*;
@@ -33,20 +34,94 @@ public class MLDFScode implements SaveToFile{
      */
     private Map<Integer, LinkedList<Integer>> nodeLabelMap = new HashMap<>();
 
-
-
     public static MLDFScode readFromFile(String filePath) throws Exception {
         File file = new File(filePath);
-        //MLDFScodeJson dfScodeJson;
-        MLDFScode mldfScode ;
         if (file.exists()) {
             // 增加jackson 对google guava的支持
             ObjectMapper mapper = new ObjectMapper();
-            mldfScode = mapper.readValue(file, MLDFScode.class);
+            return mapper.readValue(file, MLDFScode.class);
         } else {
             throw new Exception("file does not exist");
         }
-        return mldfScode;
+    }
+    /**
+     * if this dfsCode is parent of  possibleChild return true else return false
+     *
+     * @param other
+     * @return 1 equal, 0 parent -1 not parent(child/no relation)
+     */
+    private int isParentOf(MLDFScode other) throws Exception {
+        if (other.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
+            throw new Exception("illegal DFS code");
+        } else if (other.getEdgeSeq().size() < this.getEdgeSeq().size()) {
+            return -1;
+        } else {
+            return MLDFScodeTree.isParentOf(new MLDFScodeTree(this), new MLDFScodeTree(other));
+        }
+    }
+
+    public static void removeDupDumpReadable(String dirPath, String dataBasePath) throws Exception {
+        //结果保存在第二级目录中
+        try {
+            File dirFile = new File(dirPath);
+            File[] files;
+            if (dirFile.isDirectory()) {
+                files = dirFile.listFiles();
+            } else {
+                throw new Exception("dirPath must be a dir");
+            }
+            ArrayList<Pair<File, Map<Integer, MLDFScode>>> mlDFScodes = new ArrayList<>();
+            for (File dir : files) {
+                if (!dir.isDirectory()) {
+                    continue;
+                }
+                File[] reFiles = dir.listFiles();
+                Map<Integer, MLDFScode> currentMap = new HashMap<>();
+                for (File reFile : reFiles) {
+                    String fileName = reFile.getName();
+                    if (fileName.length() >= 2 && fileName.charAt(0) == 'R' && fileName.charAt(1) == 'E' && reFile.length() > 1) {
+                        int relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json", ""));
+                        System.out.println(dir.getAbsolutePath() + File.separator + fileName);
+                        MLDFScode mldfScode = MLDFScode.readFromFile(dir.getAbsolutePath() + File.separator + fileName);
+                        currentMap.put(relationId, mldfScode);
+                    }
+                }
+                mlDFScodes.add(new Pair<>(dir, currentMap));
+            }
+            for (Pair<File, Map<Integer, MLDFScode>> dFScodeOfFile : mlDFScodes) {
+                File graphFile = dFScodeOfFile.getKey();
+                int typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
+                Map<Integer, MLDFScode> map = dFScodeOfFile.getValue();
+                if (map.isEmpty()) {
+                    continue;
+                } else if (map.size() == 1) {
+                    new MLDFScodeString(map.get(1), dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
+                    );
+                    // id start from 1
+                } else {
+                    for (int i = 1; i < map.size() + 1; i++) {
+                        boolean flag = true;
+                        MLDFScode currentDFScode = map.get(i);
+                        for (int j = 1; j < map.size() + 1; j++) {
+                            if (i == j) {
+                                continue;
+                            }
+                            MLDFScode nextDFScode = map.get(j);
+                            int mode = currentDFScode.isParentOf(nextDFScode);
+                            if (mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI )) {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        if (flag) {
+                            new MLDFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_" + i + ".json", false);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
     }
 
     public MLDFScode addEdge(MLGSpanEdge edge) throws Exception {
@@ -61,7 +136,7 @@ public class MLDFScode implements SaveToFile{
         if (first) {
             this.rootNodeId = (Integer) edge.getLabelA().getFirst();
         } else {
-            LinkedList<Integer> RMP = this.fatchRightMostPath();
+            LinkedList<Integer> RMP = this.fetchRightMostPath();
             // 合法性检查
             if (RMP.size() < 2) {
                 throw new IllegalArgumentException("illegal multi label DFS code");
@@ -184,7 +259,7 @@ public class MLDFScode implements SaveToFile{
     }
 
 
-    public LinkedList<Integer> fatchRightMostPath() throws Exception {
+    public LinkedList<Integer> fetchRightMostPath() throws Exception {
         LinkedList<Integer> rightMostPath = new LinkedList<>();
         for (MLGSpanEdge edge : this.edgeSeq) {
             int nodeA = edge.getNodeA();
@@ -212,13 +287,17 @@ public class MLDFScode implements SaveToFile{
         return rightMostPath;
     }
 
+    public Set<Integer> fetchNodes() {
+        return nodeLabelMap.keySet();
+    }
+
     /**
      * 获得DFScode中 节点的标签
      *
      * @param nodeId DFScode 中 节点id
      * @return
      */
-    public LinkedList<Integer> getNodeLabel(Integer nodeId) {
+    public LinkedList<Integer> fetchNodeLabel(Integer nodeId) {
         return this.nodeLabelMap.get(nodeId);
     }
 
@@ -257,10 +336,6 @@ public class MLDFScode implements SaveToFile{
     @Override
     public int hashCode() {
         return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, turn, edgeSeq, nodeLabelMap);
-    }
-
-    public Set<Integer> fatchNodes() {
-        return nodeLabelMap.keySet();
     }
 
     public Integer getRootNodeId() {
@@ -324,7 +399,7 @@ public class MLDFScode implements SaveToFile{
     }
 
     public static void main(String[] args) throws Exception {
-        LinkedList<Integer> label1 = new LinkedList<>();
+/*        LinkedList<Integer> label1 = new LinkedList<>();
         label1.add(1);
         LinkedList<Integer> label2 = new LinkedList<>();
         label2.add(2);
@@ -351,7 +426,10 @@ public class MLDFScode implements SaveToFile{
 
         dfScode.saveToFile("mlDFScode.json",false);
         dfScode = MLDFScode.readFromFile("mlDFScode.json");
-        System.out.println(dfScode);
+        System.out.println(dfScode);*/
+
+        String dirPath = "D:\\New folder\\";
+        MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 
 }

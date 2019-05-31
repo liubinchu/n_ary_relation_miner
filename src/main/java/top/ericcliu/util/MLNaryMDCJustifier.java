@@ -105,15 +105,15 @@ public class MLNaryMDCJustifier {
      */
     private ArrayList<Pair<Boolean, MLGSpanEdge>> nAryRelationExtension(MLDFScode parent) throws Exception {
         ArrayList<Pair<Boolean, MLGSpanEdge>> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> RMP = parent.fatchRightMostPath();
+        LinkedList<Integer> RMP = parent.fetchRightMostPath();
         Iterator<Integer> descRMPit = RMP.descendingIterator();
         int RMNode = descRMPit.next(); // last Edge end node
         int RMNodeF = descRMPit.next(); // last Edge start node
-        Set<Integer> RMNodeLabels = new HashSet<>(parent.getNodeLabel(RMNode));
-        LinkedList<Integer> RMNodeFLabels = parent.getNodeLabel(RMNodeF);
+        Set<Integer> RMNodeLabels = new HashSet<>(parent.fetchNodeLabel(RMNode));
+        LinkedList<Integer> RMNodeFLabels = parent.fetchNodeLabel(RMNodeF);
         MLGSpanEdge lastEdge = parent.getEdgeSeq().get(parent.getEdgeSeq().size() - 1);
         int edgeLabel = lastEdge.getEdgeLabel();
-        assert parent.getNodeLabel(RMNode).equals(lastEdge.getLabelB()) : "最右节点 没有出现在 最后一个边上";
+        assert parent.fetchNodeLabel(RMNode).equals(lastEdge.getLabelB()) : "最右节点 没有出现在 最后一个边上";
         assert RMNodeFLabels.equals(lastEdge.getLabelA()) : "最右节点的签一个节点 没有出现在 最后一个边上";
 
         Set<DFScode> children = new HashSet<>();
@@ -154,7 +154,7 @@ public class MLNaryMDCJustifier {
         descRMPit = RMP.descendingIterator();
         while (descRMPit.hasNext()) {
             int RMPNode = descRMPit.next();
-            LinkedList<Integer> RMPNodeLabels = parent.getNodeLabel(RMPNode);
+            LinkedList<Integer> RMPNodeLabels = parent.fetchNodeLabel(RMPNode);
             // 多标签，所有标签都能够扩展出的边
             children = new HashSet<>();
             for (Integer RMPNodeLabel : RMPNodeLabels) {
@@ -193,7 +193,7 @@ public class MLNaryMDCJustifier {
             int newLabel = (int) childEdge.getValue().getLabelB().get(0);
             Set<Integer> newLabelNode = this.mlDFSCodeGraph.queryNodesByLabel(newLabel);
             // newLabelNode 中的实力节点包含 newLabel标签
-            assert RMNode == parent.fatchRightMostPath().get(parent.fatchRightMostPath().size() - 1)
+            assert RMNode == parent.fetchRightMostPath().get(parent.fetchRightMostPath().size() - 1)
                     : "新增的标签不在最右节点上";
             MLDFScode child = new MLDFScode(parent).addLabel(childEdge.getValue());
             for (int[] parentInstance : parentInstances.getInstances()) {
@@ -280,7 +280,7 @@ public class MLNaryMDCJustifier {
             if (minEdge.getEdgeLabel() != dfScodeEdge.getEdgeLabel()) {
                 return false;
             }
-            int labelIndex = minDFScode.getNodeLabel(minDFScode.getMaxNodeId()).size();
+            int labelIndex = minDFScode.fetchNodeLabel(minDFScode.getMaxNodeId()).size();
             return dfScodeEdge.getLabelB().get(labelIndex).equals(minEdgeLabelB);
         } else {
             // add a forward edge

@@ -9,10 +9,8 @@ import java.util.*;
  * @date 2019-05-26 21:18
  * multi label gSpan Edge, 边上的节点 具有多个标签
  * 未实现 Comparable
- *
  **/
-public class MLGSpanEdge <NodeType, EdgeType> {
-        //implements  Comparable<MLGSpanEdge<NodeType, EdgeType>>, Serializable {
+public class MLGSpanEdge<NodeType, EdgeType> {
     /**
      * nodeId
      */
@@ -26,7 +24,7 @@ public class MLGSpanEdge <NodeType, EdgeType> {
      */
     private int edgeLabel, direction;
 
-    public MLGSpanEdge(){
+    public MLGSpanEdge() {
     }
 
     public MLGSpanEdge(int nodeA, int nodeB,
@@ -35,13 +33,13 @@ public class MLGSpanEdge <NodeType, EdgeType> {
                        int edgeLabel, int direction) {
         this.nodeA = nodeA;
         this.nodeB = nodeB;
-        this.labelA = labelA;
-        this.labelB = labelB;
+        this.labelA = new LinkedList<>(labelA);
+        this.labelB = new LinkedList<>(labelB);
         this.edgeLabel = edgeLabel;
         this.direction = direction;
     }
 
-    public MLGSpanEdge(GSpanEdge edge){
+    public MLGSpanEdge(GSpanEdge edge) {
         this.nodeA = edge.getNodeA();
         this.nodeB = edge.getNodeB();
         this.labelA = new LinkedList<>();
@@ -52,14 +50,13 @@ public class MLGSpanEdge <NodeType, EdgeType> {
         this.direction = edge.getDirection();
     }
 
-    public MLGSpanEdge(MLGSpanEdge edge){
-        this(edge.nodeA,edge.nodeB,
-                new LinkedList<>(edge.labelA),
-                new LinkedList<>(edge.labelB),
-                edge.edgeLabel,edge.direction);
+    public MLGSpanEdge(MLGSpanEdge edge) {
+        this(edge.nodeA, edge.nodeB,
+                edge.labelA, edge.labelB,
+                edge.edgeLabel, edge.direction);
     }
 
-    public void addLabelToNodeB(int edgeLabel){
+    public void addLabelToNodeB(int edgeLabel) {
         this.labelB.add(edgeLabel);
     }
 
@@ -68,8 +65,8 @@ public class MLGSpanEdge <NodeType, EdgeType> {
      *
      * @param other
      * @return <0: this < other
-     * 			0: this = other
-     * 		   >0: this > other
+     * 0: this = other
+     * >0: this > other
      * 实际上 后向边 应该 小于 前向边， 但是目前版本 前向边direction为0，导致后向边大于前向边
      * 后期只需修改 前向边的direction
      */
@@ -89,18 +86,17 @@ public class MLGSpanEdge <NodeType, EdgeType> {
                 Collections.sort(otherLabels);
                 Iterator<Integer> thisIt = thisLabels.iterator();
                 Iterator<Integer> otherIt = otherLabels.iterator();
-                while (thisIt.hasNext()&&otherIt.hasNext()){
+                while (thisIt.hasNext() && otherIt.hasNext()) {
                     int thisLabel = thisIt.next();
                     int otherLabel = otherIt.next();
-                    if(thisLabel!=otherLabel){
+                    if (thisLabel != otherLabel) {
                         return thisLabel - otherLabel;
                     }
                 }
-                if(thisIt.hasNext()){
+                if (thisIt.hasNext()) {
                     // condition1 eg. this label [1,3,5] other label [1,3]; other should < this
                     return 1;
-                }
-                else if(otherIt.hasNext()){
+                } else if (otherIt.hasNext()) {
                     // condition2 eg. this label [1,3] other label [1,3,5]; this should < other
                     return -1;
                 }
@@ -117,22 +113,20 @@ public class MLGSpanEdge <NodeType, EdgeType> {
                 Collections.sort(otherLabels);
                 Iterator<Integer> thisIt = thisLabels.iterator();
                 Iterator<Integer> otherIt = otherLabels.iterator();
-                while (thisIt.hasNext()&&otherIt.hasNext()){
+                while (thisIt.hasNext() && otherIt.hasNext()) {
                     int thisLabel = thisIt.next();
                     int otherLabel = otherIt.next();
-                    if(thisLabel!=otherLabel){
+                    if (thisLabel != otherLabel) {
                         return thisLabel - otherLabel;
                     }
                 }
-                if(thisIt.hasNext()){
+                if (thisIt.hasNext()) {
                     // condition1 eg. this label [1,3,5] other label [1,3]; other should < this
                     return 1;
-                }
-                else if(otherIt.hasNext()){
+                } else if (otherIt.hasNext()) {
                     // condition2 eg. this label [1,3] other label [1,3,5]; this should < other
                     return -1;
-                }
-                else {
+                } else {
                     // condition3 eg. this label [1,3,5] other label [1,3,5];  use other node label to justify
                     return 0;
                 }

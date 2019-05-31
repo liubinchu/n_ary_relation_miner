@@ -278,9 +278,9 @@ public class MultiLabelGraph {
         this.typeId = (Integer) mldfScode.getEdgeSeq().get(0).getLabelA().getFirst();
         MutableValueGraph graph = ValueGraphBuilder
                 .directed()
-                .expectedNodeCount(mldfScode.fatchNodes().size())
+                .expectedNodeCount(mldfScode.fetchNodes().size())
                 .build();
-        for (Integer nodeId : mldfScode.fatchNodes()) {
+        for (Integer nodeId : mldfScode.fetchNodes()) {
             graph.addNode(nodeId);
         }
         Multimap<Integer, Integer> nodeLabels = MultimapBuilder.hashKeys().hashSetValues().build();
