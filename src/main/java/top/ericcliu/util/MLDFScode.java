@@ -21,6 +21,15 @@ public class MLDFScode implements SaveToFile{
     private int instanceNum = -1;
     private int maxNodeId = -1;
     /**
+     * 不重复的根节点的个数
+     */
+    private Integer rootNodeNum = -1;
+    /**
+     * 数据图共具有n个不同的rootNode，该模式具有m个不同的rootNode
+     * rootNodeRatio = m/n
+     */
+    private Double rootNodeRatio = -1.0;
+    /**
      * 经过增长的轮数
      */
     private int turn = 0;
@@ -70,6 +79,11 @@ public class MLDFScode implements SaveToFile{
             } else {
                 throw new Exception("dirPath must be a dir");
             }
+            String noDupDirPath = dirPath+File.separator+"noDup";
+            File noDupDir = new File(noDupDirPath);
+            if(!noDupDir.exists()){
+                noDupDir.mkdirs();
+            }
             ArrayList<Pair<File, Map<Integer, MLDFScode>>> mlDFScodes = new ArrayList<>();
             for (File dir : files) {
                 if (!dir.isDirectory()) {
@@ -95,7 +109,7 @@ public class MLDFScode implements SaveToFile{
                 if (map.isEmpty()) {
                     continue;
                 } else if (map.size() == 1) {
-                    new MLDFScodeString(map.get(1), dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
+                    new MLDFScodeString(map.get(1), dataBasePath, typeId).saveToFile(noDupDirPath+ File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
                     );
                     // id start from 1
                 } else {
@@ -114,7 +128,7 @@ public class MLDFScode implements SaveToFile{
                             }
                         }
                         if (flag) {
-                            new MLDFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_" + i + ".json", false);
+                            new MLDFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(noDupDirPath + File.separator + "READRE_" + graphFile.getName() + "Id_" + i + ".json", false);
                         }
                     }
                 }
@@ -237,7 +251,8 @@ public class MLDFScode implements SaveToFile{
         for (Map.Entry<Integer, LinkedList<Integer>> entry : mldfScode.nodeLabelMap.entrySet()) {
             this.nodeLabelMap.put(entry.getKey(), new LinkedList<>(entry.getValue()));
         }
-
+        this.rootNodeNum = mldfScode.getRootNodeNum();
+        this.rootNodeRatio = mldfScode.getRootNodeRatio();
     }
 
     public MLDFScode(DFScode dfScode){
@@ -256,6 +271,8 @@ public class MLDFScode implements SaveToFile{
             labels.add(entry.getValue());
             this.nodeLabelMap.put(entry.getKey(),labels);
         }
+        this.rootNodeNum = dfScode.getRootNodeNum();
+        this.rootNodeRatio = dfScode.getRootNodeRatio();
     }
 
 
@@ -293,7 +310,6 @@ public class MLDFScode implements SaveToFile{
 
     /**
      * 获得DFScode中 节点的标签
-     *
      * @param nodeId DFScode 中 节点id
      * @return
      */
@@ -309,6 +325,9 @@ public class MLDFScode implements SaveToFile{
                 ", relatedRatio=" + relatedRatio +
                 ", instanceNum=" + instanceNum +
                 ", maxNodeId=" + maxNodeId +
+                ", rootNodeNum=" + rootNodeNum +
+                ", rootNodeRatio=" + rootNodeRatio +
+                ", turn=" + turn +
                 ", edgeSeq=" + edgeSeq +
                 ", nodeLabelMap=" + nodeLabelMap +
                 '}';
@@ -329,53 +348,79 @@ public class MLDFScode implements SaveToFile{
                 instanceNum == mldfScode.instanceNum &&
                 maxNodeId == mldfScode.maxNodeId &&
                 turn == mldfScode.turn &&
+                Objects.equal(rootNodeNum, mldfScode.rootNodeNum) &&
+                Objects.equal(rootNodeRatio, mldfScode.rootNodeRatio) &&
                 Objects.equal(edgeSeq, mldfScode.edgeSeq) &&
                 Objects.equal(nodeLabelMap, mldfScode.nodeLabelMap);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, turn, edgeSeq, nodeLabelMap);
+        return Objects.hashCode(rootNodeId, MNI, relatedRatio, instanceNum, maxNodeId, rootNodeNum, rootNodeRatio, turn, edgeSeq, nodeLabelMap);
     }
 
-    public Integer getRootNodeId() {
+    public int getRootNodeId() {
         return rootNodeId;
     }
 
-    public void setRootNodeId(Integer rootNodeId) {
+    public void setRootNodeId(int rootNodeId) {
         this.rootNodeId = rootNodeId;
     }
 
-    public Integer getMNI() {
+    public int getMNI() {
         return MNI;
     }
 
-    public void setMNI(Integer MNI) {
+    public void setMNI(int MNI) {
         this.MNI = MNI;
     }
 
-    public Double getRelatedRatio() {
+    public double getRelatedRatio() {
         return relatedRatio;
     }
 
-    public void setRelatedRatio(Double relatedRatio) {
+    public void setRelatedRatio(double relatedRatio) {
         this.relatedRatio = relatedRatio;
     }
 
-    public Integer getInstanceNum() {
+    public int getInstanceNum() {
         return instanceNum;
     }
 
-    public void setInstanceNum(Integer instanceNum) {
+    public void setInstanceNum(int instanceNum) {
         this.instanceNum = instanceNum;
     }
 
-    public Integer getMaxNodeId() {
+    public int getMaxNodeId() {
         return maxNodeId;
     }
 
-    public void setMaxNodeId(Integer maxNodeId) {
+    public void setMaxNodeId(int maxNodeId) {
         this.maxNodeId = maxNodeId;
+    }
+
+    public Integer getRootNodeNum() {
+        return rootNodeNum;
+    }
+
+    public void setRootNodeNum(Integer rootNodeNum) {
+        this.rootNodeNum = rootNodeNum;
+    }
+
+    public Double getRootNodeRatio() {
+        return rootNodeRatio;
+    }
+
+    public void setRootNodeRatio(Double rootNodeRatio) {
+        this.rootNodeRatio = rootNodeRatio;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
     }
 
     public ArrayList<MLGSpanEdge> getEdgeSeq() {
@@ -392,10 +437,6 @@ public class MLDFScode implements SaveToFile{
 
     public void setNodeLabelMap(Map<Integer, LinkedList<Integer>> nodeLabelMap) {
         this.nodeLabelMap = nodeLabelMap;
-    }
-
-    public int getTurn() {
-        return turn;
     }
 
     public static void main(String[] args) throws Exception {
@@ -428,7 +469,7 @@ public class MLDFScode implements SaveToFile{
         dfScode = MLDFScode.readFromFile("mlDFScode.json");
         System.out.println(dfScode);*/
 
-        String dirPath = "D:\\New folder\\";
+        String dirPath = "D:\\New folder";
         MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 

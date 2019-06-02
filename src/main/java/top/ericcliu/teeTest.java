@@ -1,11 +1,11 @@
 package top.ericcliu;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.jena.base.Sys;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * @author liubi

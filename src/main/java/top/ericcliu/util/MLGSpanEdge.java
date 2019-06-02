@@ -56,6 +56,43 @@ public class MLGSpanEdge<NodeType, EdgeType> {
                 edge.edgeLabel, edge.direction);
     }
 
+    public int calMNI(MultiLabelGraph dataGraph) {
+        ArrayList<int[]> instances = new ArrayList<>();
+        Set<Integer> possibleNodeA = null;
+        for (int labela : labelA) {
+            if (possibleNodeA == null) {
+                possibleNodeA = new HashSet<>(dataGraph.queryNodesByLabel(labela));
+            } else {
+                possibleNodeA.retainAll(dataGraph.queryNodesByLabel(labela));
+            }
+        }
+        Set<Integer> possibleNodeB = null;
+        for (int labelb : labelB) {
+            if (possibleNodeB == null) {
+                possibleNodeB = new HashSet<>(dataGraph.queryNodesByLabel(labelb));
+            } else {
+                possibleNodeB.retainAll(dataGraph.queryNodesByLabel(labelb));
+            }
+        }
+        for (int nodeA : possibleNodeA) {
+            for (int nodeB : possibleNodeB) {
+                if (dataGraph.getValueGraph().hasEdgeConnecting(nodeA, nodeB)
+                        && dataGraph.getValueGraph().edgeValue(nodeA, nodeB).get().equals(this.edgeLabel)) {
+                    instances.add(new int[]{nodeA, nodeB});
+                }
+            }
+        }
+        int MNI = Integer.MAX_VALUE;
+        for (int i = 0; i < 2; i++) {
+            Set<Integer> nodeSet = new HashSet<>(instances.size());
+            for (int[] instance : instances) {
+                nodeSet.add(instance[i]);
+            }
+            MNI = Math.min(MNI, nodeSet.size());
+        }
+        return MNI;
+    }
+
     public void addLabelToNodeB(int edgeLabel) {
         this.labelB.add(edgeLabel);
     }
@@ -260,8 +297,37 @@ public class MLGSpanEdge<NodeType, EdgeType> {
                 ", direction=" + direction +
                 '}';
     }
-    /*    @Override
-    public int compareTo(MLGSpanEdge<NodeType, EdgeType> o) {
-        return 0;
-    }*/
+
+    public static void main(String[] args) throws Exception {
+        MultiLabelGraph graphSmall = new MultiLabelGraph(true);
+        LinkedList<Integer> label01 = new LinkedList<>();
+        label01.add(0);
+        label01.add(1);
+        LinkedList<Integer> label5 = new LinkedList<>();
+        label5.add(5);
+        LinkedList<Integer> label1 = new LinkedList<>();
+        label1.add(1);
+        LinkedList<Integer> label23 = new LinkedList<>();
+        label23.add(2);
+        label23.add(-24);
+        LinkedList<Integer> label36 = new LinkedList<>();
+        label36.add(-24);
+        label36.add(6);
+        LinkedList<Integer> label456 = new LinkedList<>();
+        label456.add(4);
+        label456.add(5);
+        label456.add(6);
+        MLGSpanEdge edge1 = new MLGSpanEdge(1,2,label23,label01,1,1);
+        edge1.calMNI(graphSmall);
+        MLGSpanEdge edge2 = new MLGSpanEdge(1,2,label23,label5,2,1);
+        edge2.calMNI(graphSmall);
+        MLGSpanEdge edge3 = new MLGSpanEdge(1,2,label36,label5,2,1);
+        edge3.calMNI(graphSmall);
+        MLGSpanEdge edge4 = new MLGSpanEdge(1,2,label36,label1,1,1);
+        edge4.calMNI(graphSmall);
+        MLGSpanEdge edge5 = new MLGSpanEdge(1,2,label23,label456,3,1);
+        edge5.calMNI(graphSmall);
+        MLGSpanEdge edge6 = new MLGSpanEdge(1,2,label36,label456,2,1);
+        edge6.calMNI(graphSmall);
+    }
 }

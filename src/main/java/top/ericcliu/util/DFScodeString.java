@@ -1,18 +1,28 @@
 package top.ericcliu.util;
 
-import java.sql.Connection;
-import java.util.*;
+import com.google.common.base.Objects;
+
+import java.util.ArrayList;
 
 /**
  * @author liubi
  * @date 2019-04-09 14:51
  **/
 public class DFScodeString implements Cloneable , SaveToFile{
-    private Integer rootNodeId = -1;
+    private String relationNode ;
     private Integer MNI = -1;
     private Double relatedRatio = -1.0;
     private Integer instanceNum = -1;
-    private Integer maxNodeId = -1;
+    /**
+     * 不重复的根节点的个数
+     */
+    private Integer rootNodeNum = -1;
+    /**
+     * 数据图共具有n个不同的rootNode，该模式具有m个不同的rootNode
+     * rootNodeRatio = m/n
+     */
+    private Double rootNodeRatio = -1.0;
+
     /**
      * 边的集合，边的排序代表着边的添加次序
      */
@@ -21,7 +31,6 @@ public class DFScodeString implements Cloneable , SaveToFile{
      * key : nodes appeared in this DFS code, ie nodeId in DFScode, having no relation with dataGraph
      * value : node label of this node in DFS code
      */
-    private Map<Integer, String> nodeLabelMap = new HashMap<>();
 
     public DFScodeString() {
     }
@@ -30,71 +39,49 @@ public class DFScodeString implements Cloneable , SaveToFile{
             throw new Exception("DFScode is null");
         }
         else {
-            this.rootNodeId = dfScode.getRootNodeId();
             this.MNI = dfScode.getMNI();
             this.relatedRatio = dfScode.getRelatedRatio();
             this.instanceNum = dfScode.getInstanceNum();
-            this.maxNodeId  = dfScode.getMaxNodeId();
-            DataBaseTools dataBaseTools = new DataBaseTools();
-            try {
-                Connection db =dataBaseTools.sqliteConect(databasePath);
-                if(dfScode.getNodeLabelMap()!=null&&!dfScode.getNodeLabelMap().isEmpty()){
-                    Set<Map.Entry<Integer,Integer>> nodeLabelMapEntrySet = dfScode.getNodeLabelMap().entrySet();
-                    for(Map.Entry<Integer,Integer> entry : nodeLabelMapEntrySet){
-                        if(entry.getValue().equals(Integer.MIN_VALUE)){
-                            this.nodeLabelMap.put(entry.getKey(),dataBaseTools.printer(db,relationId));
-                        }
-                        else {
-                            this.nodeLabelMap.put(entry.getKey(),dataBaseTools.printer(db,entry.getValue()));
-                        }
-                    }
-                }
-                db.close();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
             if(dfScode.getEdgeSeq()!=null&&!dfScode.getEdgeSeq().isEmpty()){
                 for(GSpanEdge edge : dfScode.getEdgeSeq()){
                     this.edgeSeq.add(new GSpanEdgeString(edge,databasePath,relationId));
                 }
             }
+            this.relationNode = this.edgeSeq.get(0).getLabelA();
+            this.rootNodeNum = dfScode.getRootNodeNum();
+            this.relatedRatio = dfScode.getRelatedRatio();
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         DFScodeString that = (DFScodeString) o;
-
-        if (!Objects.equals(edgeSeq, that.edgeSeq)) {
-            return false;
-        }
-        if (!Objects.equals(maxNodeId, that.maxNodeId)) {
-            return false;
-        }
-        return Objects.equals(nodeLabelMap, that.nodeLabelMap);
+        return Objects.equal(relationNode, that.relationNode) &&
+                Objects.equal(MNI, that.MNI) &&
+                Objects.equal(relatedRatio, that.relatedRatio) &&
+                Objects.equal(instanceNum, that.instanceNum) &&
+                Objects.equal(rootNodeNum, that.rootNodeNum) &&
+                Objects.equal(rootNodeRatio, that.rootNodeRatio) &&
+                Objects.equal(edgeSeq, that.edgeSeq);
     }
 
     @Override
     public int hashCode() {
-        int result = edgeSeq != null ? edgeSeq.hashCode() : 0;
-        result = 31 * result + (maxNodeId != null ? maxNodeId.hashCode() : 0);
-        result = 31 * result + (nodeLabelMap != null ? nodeLabelMap.hashCode() : 0);
-        return result;
+        return Objects.hashCode(relationNode, MNI, relatedRatio, instanceNum, rootNodeNum, rootNodeRatio, edgeSeq);
     }
 
     @Override
     public String toString() {
         return "DFScodeString{" +
-                "edgeSeq=" + edgeSeq +
-                ", maxNodeId=" + maxNodeId +
-                ", nodeLabelMap=" + nodeLabelMap +
+                "relationNode='" + relationNode + '\'' +
+                ", MNI=" + MNI +
+                ", relatedRatio=" + relatedRatio +
+                ", instanceNum=" + instanceNum +
+                ", rootNodeNum=" + rootNodeNum +
+                ", rootNodeRatio=" + rootNodeRatio +
+                ", edgeSeq=" + edgeSeq +
                 '}';
     }
 
@@ -106,28 +93,12 @@ public class DFScodeString implements Cloneable , SaveToFile{
         this.edgeSeq = edgeSeq;
     }
 
-    public Integer getMaxNodeId() {
-        return maxNodeId;
+    public String getRelationNode() {
+        return relationNode;
     }
 
-    public void setMaxNodeId(Integer maxNodeId) {
-        this.maxNodeId = maxNodeId;
-    }
-
-    public Map<Integer, String> getNodeLabelMap() {
-        return nodeLabelMap;
-    }
-
-    public void setNodeLabelMap(Map<Integer, String> nodeLabelMap) {
-        this.nodeLabelMap = nodeLabelMap;
-    }
-
-    public Integer getRootNodeId() {
-        return rootNodeId;
-    }
-
-    public void setRootNodeId(Integer rootNodeId) {
-        this.rootNodeId = rootNodeId;
+    public void setRelationNode(String relationNode) {
+        this.relationNode = relationNode;
     }
 
     public Integer getMNI() {
@@ -152,6 +123,22 @@ public class DFScodeString implements Cloneable , SaveToFile{
 
     public void setInstanceNum(Integer instanceNum) {
         this.instanceNum = instanceNum;
+    }
+
+    public Integer getRootNodeNum() {
+        return rootNodeNum;
+    }
+
+    public void setRootNodeNum(Integer rootNodeNum) {
+        this.rootNodeNum = rootNodeNum;
+    }
+
+    public Double getRootNodeRatio() {
+        return rootNodeRatio;
+    }
+
+    public void setRootNodeRatio(Double rootNodeRatio) {
+        this.rootNodeRatio = rootNodeRatio;
     }
 
     public static void main(String[] args)  {

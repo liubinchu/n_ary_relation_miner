@@ -1,7 +1,5 @@
 package top.ericcliu.util;
 
-import org.apache.jena.base.Sys;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

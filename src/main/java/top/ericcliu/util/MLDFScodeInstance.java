@@ -6,7 +6,7 @@ import java.util.*;
  * @author liubi
  * @date 2019-04-15 20:24
  **/
-public class MLDFScodeInstance implements SaveToFile{
+public class MLDFScodeInstance implements SaveToFile {
     /**
      * instances 中每个元素 为一个 instance
      * instance[nodeId] 表示 dfsCode 中 指定nodeId节点 在 数据中的实例节点
@@ -18,9 +18,11 @@ public class MLDFScodeInstance implements SaveToFile{
     public MLDFScodeInstance() {
     }
 
-    public MLDFScodeInstance(MLDFScode mldfScode) { this.mldfScode = mldfScode; }
+    public MLDFScodeInstance(MLDFScode mldfScode) {
+        this.mldfScode = mldfScode;
+    }
 
-    public MLDFScodeInstance(DFScodeInstance dfScodeInstance){
+    public MLDFScodeInstance(DFScodeInstance dfScodeInstance) {
         this.mldfScode = new MLDFScode(dfScodeInstance.getDfScode());
         this.instances = new ArrayList<>(dfScodeInstance.getInstances());
     }
@@ -52,48 +54,58 @@ public class MLDFScodeInstance implements SaveToFile{
     }
 
     public int calMNI() throws Exception {
-        if(this.mldfScode == null && this.instances.size()==0){
+        if (this.mldfScode == null && this.instances.size() == 0) {
             return 0;
             // 当前模式 在图中 不存在 实例
         }
         int MNI = Integer.MAX_VALUE;
         for (int i = 0; i < this.mldfScode.fetchNodes().size(); i++) {
             Set<Integer> nodeSet = new HashSet<>(this.instances.size());
-            for (int[] instance : this.instances){
+            for (int[] instance : this.instances) {
                 nodeSet.add(instance[i]);
             }
-            MNI = Math.min(MNI,nodeSet.size());
+            MNI = Math.min(MNI, nodeSet.size());
         }
         return MNI;
     }
 
     /**
      * 给定 DFS code 中的 node， 给出 实力层 的 instance node
-     * @param nodeId   nodeId in DFS code
+     *
+     * @param nodeId nodeId in DFS code
      * @return Map key instanceId, value instanceNodeId in Data Graph
      * @throws Exception
      */
-    public Map<Integer,Integer> fetchInstanceNode(Integer nodeId) throws Exception {
-        if(!this.mldfScode.fetchNodes().contains(nodeId)){
+    public Map<Integer, Integer> fetchInstanceNode(Integer nodeId) throws Exception {
+        if (!this.mldfScode.fetchNodes().contains(nodeId)) {
             throw new Exception("illeagl para");
         }
-        Map<Integer,Integer> instanceNodeMap = new HashMap<>(this.instances.size());
+        Map<Integer, Integer> instanceNodeMap = new HashMap<>(this.instances.size());
         int index = 0;
-        for(int[]instance : this.instances){
-            instanceNodeMap.put(index++,instance[nodeId]);
+        for (int[] instance : this.instances) {
+            instanceNodeMap.put(index++, instance[nodeId]);
         }
         return instanceNodeMap;
     }
 
-    public MLDFScodeInstance sample(double ratio, int upperBound, int bottomBound ) throws Exception {
+    public int calRootNodeNum() throws Exception {
+        if (this.mldfScode == null && this.instances.size() == 0) {
+            return 0;
+            // 当前模式 在图中 不存在 实例
+        } else {
+            return this.fetchInstanceNode(0).entrySet().size();
+        }
+    }
+
+    public MLDFScodeInstance sample(double ratio, int upperBound, int bottomBound) throws Exception {
         int sampleNum = (int) (this.instances.size() * ratio);
-        if(sampleNum> upperBound) {
+        if (sampleNum > upperBound) {
             sampleNum = upperBound;
         }
-        if(bottomBound>this.instances.size()) {
+        if (bottomBound > this.instances.size()) {
             bottomBound = this.instances.size();
         }
-        if(sampleNum<bottomBound) {
+        if (sampleNum < bottomBound) {
             sampleNum = bottomBound;
         }
 
@@ -111,11 +123,12 @@ public class MLDFScodeInstance implements SaveToFile{
             instanceIds.add(nextInstanceId);
         }
 
-        for(int instanceId : instanceIds){
-            sampled.addInstance(this.mldfScode,this.instances.get(instanceId));
+        for (int instanceId : instanceIds) {
+            sampled.addInstance(this.mldfScode, this.instances.get(instanceId));
         }
         return sampled;
     }
+
     public static void main(String[] args) throws Exception {
         LinkedList<Integer> label1 = new LinkedList<>();
         label1.add(1);
@@ -129,7 +142,7 @@ public class MLDFScodeInstance implements SaveToFile{
         DFScodeInstance.addInstance(dfScode, new int[]{3, 2, 4});
         DFScodeInstance.addInstance(dfScode, new int[]{1, 4, 4});
 
-        MLDFScodeInstance newInstance = DFScodeInstance.sample(1,2,2);
+        MLDFScodeInstance newInstance = DFScodeInstance.sample(1, 2, 2);
         System.out.println(newInstance.fetchInstanceNode(1));
     }
 }

@@ -20,6 +20,15 @@ public class DFScode implements Cloneable {
     private Integer MNI = -1;
     private Double relatedRatio = -1.0;
     private Integer instanceNum = -1;
+    /**
+     * 不重复的根节点的个数
+     */
+    private Integer rootNodeNum = -1;
+    /**
+     * 数据图共具有n个不同的rootNode，该模式具有m个不同的rootNode
+     * rootNodeRatio = m/n
+     */
+    private Double rootNodeRatio = -1.0;
     private Integer maxNodeId = -1;
     /**
      * 边的集合，边的排序代表着边的添加次序
@@ -60,9 +69,6 @@ public class DFScode implements Cloneable {
         this.nodeLabelMap.put(nodeB, edge.getLabelB());
         this.maxNodeId = nodeA > nodeB ? nodeA : nodeB;
         this.rootNodeId = edge.getLabelA();
-        this.MNI = -1;
-        this.relatedRatio = -1.0;
-        this.instanceNum = -1;
     }
 
     public DFScode(DFScodeJson dfScodeJson) {
@@ -78,8 +84,9 @@ public class DFScode implements Cloneable {
         for (Object object : dfScodeJson.getEdgeSeq()) {
             this.edgeSeq.add(mapper.convertValue(object, GSpanEdge.class));
         }
-
         this.nodeLabelMap = new TreeMap<>(dfScodeJson.getNodeLabelMap());
+        this.rootNodeNum = dfScodeJson.getRootNodeNum();
+        this.rootNodeRatio = dfScodeJson.getRootNodeRatio();
     }
 
     public DFScode() {
@@ -348,6 +355,21 @@ public class DFScode implements Cloneable {
         return this.nodeLabelMap.get(nodeId);
     }
 
+    public Integer getRootNodeNum() {
+        return rootNodeNum;
+    }
+
+    public void setRootNodeNum(Integer rootNodeNum) {
+        this.rootNodeNum = rootNodeNum;
+    }
+
+    public Double getRootNodeRatio() {
+        return rootNodeRatio;
+    }
+
+    public void setRootNodeRatio(Double rootNodeRatio) {
+        this.rootNodeRatio = rootNodeRatio;
+    }
 
     public void setMaxNodeId(Integer maxNodeId) {
         this.maxNodeId = maxNodeId;

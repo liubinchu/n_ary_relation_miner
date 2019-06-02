@@ -1,10 +1,9 @@
-package top.ericcliu;
+package top.ericcliu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
-import top.ericcliu.util.*;
 
 import java.io.File;
 import java.sql.Connection;

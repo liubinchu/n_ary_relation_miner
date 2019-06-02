@@ -195,7 +195,7 @@ public class GSpanMiner {
     }
 
 
-    private void gspanCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
+    private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
         int resultSize = 0;
         ArrayList<GSpanEdge> childrenEdges = rightMostPathExtension(parent);
         for (GSpanEdge childEdge : childrenEdges) {
@@ -214,7 +214,7 @@ public class GSpanMiner {
                     childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
                     System.out.println("instance num:" + childInstance.getInstances().size());
                     childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
-                    gspanCore(childDFScode, childInstance);
+                    mineCore(childDFScode, childInstance);
                 }
                 childInstance = null;
                 System.gc();
@@ -222,7 +222,7 @@ public class GSpanMiner {
         }
     }
 
-    public void mineGSpan() throws Exception {
+    public void mine() throws Exception {
         Iterator<Map<DFScode, DFScodeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
         int i = 0;
         while (iterator.hasNext()) {
@@ -233,7 +233,7 @@ public class GSpanMiner {
                 if (entry.getKey().getNodeLabel(0).equals(Integer.MIN_VALUE) ||
                         entry.getKey().getNodeLabel(1).equals(Integer.MIN_VALUE)) {
                     // 仅从当前 typeId 作为根节点 出发 拓展
-                    gspanCore(entry.getKey(), entry.getValue());
+                    mineCore(entry.getKey(), entry.getValue());
                     System.out.println("finish the " + (i++) + "nd edge");
                 }
             }
@@ -253,7 +253,7 @@ public class GSpanMiner {
             System.out.println(miner.getDataGraph().graphName);
             System.out.println(graph.getGraphEdge());
             System.out.println("    MNISupportThreshold" + miner.MNIThreshold);
-            miner.mineGSpan();
+            miner.mine();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }

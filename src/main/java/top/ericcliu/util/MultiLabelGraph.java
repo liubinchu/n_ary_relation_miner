@@ -60,6 +60,7 @@ public class MultiLabelGraph {
         if (small) {
             this.graphName = "small";
             this.typeId = 3;
+            this.typeRelatedNum = 2;
             Integer nodeCount = 6;
             MutableValueGraph graph = ValueGraphBuilder
                     .directed()
@@ -116,6 +117,7 @@ public class MultiLabelGraph {
         } else {
             this.graphName = "big";
             this.typeId = 1;
+            this.typeRelatedNum = 2;
             Integer nodeCount = 17;
             MutableValueGraph graph = ValueGraphBuilder
                     .directed()

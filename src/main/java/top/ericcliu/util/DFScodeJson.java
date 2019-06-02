@@ -15,6 +15,8 @@ public class DFScodeJson implements Cloneable{
     private Integer maxNodeId = -1;
     private ArrayList<Object> edgeSeq;
     private Map<Integer, Integer> nodeLabelMap;
+    private Integer rootNodeNum = -1;
+    private Double rootNodeRatio = -1.0;
 
 
     public DFScodeJson(DFScode dfScode){
@@ -28,23 +30,23 @@ public class DFScodeJson implements Cloneable{
             this.edgeSeq.add( (Object) edge);
         }
         this.nodeLabelMap = new TreeMap<>(dfScode.getNodeLabelMap());
+        this.rootNodeNum = dfScode.getRootNodeNum();
+        this.rootNodeRatio = dfScode.getRootNodeRatio();
     }
 
-    public DFScodeJson(Integer rootNodeId,
-                       Integer MNI,
-                       Double relatedRatio,
-                       Integer instanceNum,
-                       Integer maxNodeId,
-                       ArrayList<Object> edgeSeq,
-                       Map<Integer, Integer> nodeLabelMap) {
+    public DFScodeJson(Integer rootNodeId, Integer MNI, Double relatedRatio,
+                       Integer instanceNum, Integer maxNodeId, ArrayList<Object> edgeSeq,
+                       Map<Integer, Integer> nodeLabelMap, Integer rootNodeNum,
+                       Double rootNodeRatio) {
         this.rootNodeId = rootNodeId;
         this.MNI = MNI;
         this.relatedRatio = relatedRatio;
         this.instanceNum = instanceNum;
         this.maxNodeId = maxNodeId;
-        this.edgeSeq = new ArrayList<>(edgeSeq.size());
-        this.edgeSeq.addAll(edgeSeq);
+        this.edgeSeq = edgeSeq;
         this.nodeLabelMap = nodeLabelMap;
+        this.rootNodeNum = rootNodeNum;
+        this.rootNodeRatio = rootNodeRatio;
     }
 
     public DFScodeJson() {
@@ -64,6 +66,22 @@ public class DFScodeJson implements Cloneable{
 
     public void setMNI(Integer MNI) {
         this.MNI = MNI;
+    }
+
+    public Integer getRootNodeNum() {
+        return rootNodeNum;
+    }
+
+    public void setRootNodeNum(Integer rootNodeNum) {
+        this.rootNodeNum = rootNodeNum;
+    }
+
+    public Double getRootNodeRatio() {
+        return rootNodeRatio;
+    }
+
+    public void setRootNodeRatio(Double rootNodeRatio) {
+        this.rootNodeRatio = rootNodeRatio;
     }
 
     public Double getRelatedRatio() {

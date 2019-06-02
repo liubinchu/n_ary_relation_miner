@@ -24,9 +24,9 @@ public class MLNAryRelationMiner {
     private Double relatedRatio;
     private int resultSize = 0;
 
-    public MLNAryRelationMiner(MultiLabelGraph dataGraph, double thresh, int maxDepth, double relatedRatio) throws Exception {
+    public MLNAryRelationMiner(MultiLabelGraph dataGraph, double threshold, int maxDepth, double relatedRatio) throws Exception {
         this.dataGraph = dataGraph;
-        this.threshold = thresh;
+        this.threshold = threshold;
         this.support = Math.max(2, ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
         this.maxDepth = maxDepth;
         this.relatedRatio = relatedRatio;
@@ -46,23 +46,6 @@ public class MLNAryRelationMiner {
                     }
                     if (changed) {
                         this.dataGraph.getGraphEdge().put(labelA, labelB, map);
-                    }
-                }
-            }
-        }
-        {
-            for (Integer row : this.dataGraph.getGraphEdge().rowKeySet()) {
-                Set<Map.Entry<Integer, Map<DFScode, DFScodeInstance>>> entrySet = this.dataGraph.getGraphEdge().row(row).entrySet();
-                Collection<Map<DFScode, DFScodeInstance>> collection = this.dataGraph.getGraphEdge().row(row).values();
-                for (Map.Entry<Integer, Map<DFScode, DFScodeInstance>> entry :entrySet ) {
-                    for (Map.Entry<DFScode, DFScodeInstance> entry1 : entry.getValue().entrySet()) {
-                        if (entry1.getValue().calMNI() > 0) {
-                            System.out.println("labelA : " + row);
-                            System.out.println("labelB: " + entry.getKey());
-                            System.out.println("DFS code " + entry1.getKey());
-                            System.out.println("DFS code MNI " + entry1.getValue().calMNI());
-                            System.out.println("____________________________________________________________________________________________________________________________");
-                        }
                     }
                 }
             }
@@ -240,15 +223,26 @@ public class MLNAryRelationMiner {
         return childInstance;
     }
 
+    private double calRelatedRatio(MLDFScode mldfScode) {
+        double relatedRatio = 0d;
+        for (MLGSpanEdge edge : mldfScode.getEdgeSeq()) {
+            relatedRatio += edge.calMNI(this.dataGraph);
+        }
+        relatedRatio = mldfScode.getMNI() * mldfScode.getEdgeSeq().size() / relatedRatio;
+        return relatedRatio;
+    }
+
     private void savePattern(MLDFScode childDFScode, MLDFScodeInstance childInstance) throws Exception {
-        File dir = new File(this.dataGraph.graphName + "MNI_" + threshold);
+        String dirPath = "result_Thresh_"+this.threshold+"D_"+this.maxDepth+"related_ratio_"+this.relatedRatio+
+                File.separator + this.dataGraph.graphName + "MNI_" + threshold;
+        String fileName = this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json";
+        File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        childDFScode.setInstanceNum(childInstance.getInstances().size());
-        childDFScode.saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "RE_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
-        System.out.println(childDFScode);
-        childInstance.sample(1, 10, 10).saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "IN_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+        childDFScode.saveToFile(dirPath + File.separator + "RE_" + fileName, false);
+        childInstance.sample(1, 10, 10).
+                saveToFile(dirPath + File.separator + "IN_" + fileName, false);
     }
 
     private void mineCore(MLDFScode parent, MLDFScodeInstance parentInstances) throws Exception {
@@ -266,24 +260,25 @@ public class MLNAryRelationMiner {
                 continue;
             }
             MLDFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdgePair);
-            int MNI = childInstance.calMNI();
-            if (MNI < this.support) {
+            childDFScode.setRootNodeNum(childInstance.calRootNodeNum());
+            if (childDFScode.getRootNodeNum() < this.support) {
                 //频繁度剪枝
-                if (childInstance.getInstances().size() >= this.support) {
-                    // 如果 MNI 不频繁 但是 instance Num 频繁，需要输出模式 但是 不扩展
-                    //double relatedRatio = calRelatedRatio(MNI, childDFScode);
-                    //childDFScode.setRelatedRatio(relatedRatio);
-                    savePattern(childDFScode, childInstance);
-                }
                 continue;
             }
+            {
+                childDFScode.setInstanceNum(childInstance.getInstances().size());
+                childDFScode.setMNI(childInstance.calMNI());
+                childDFScode.setRootNodeRatio(((double) childDFScode.getRootNodeNum() / (double) this.dataGraph.getTypeRelatedNum()));
+                childDFScode.setRelatedRatio(calRelatedRatio(childDFScode));
+            }
+
             savePattern(childDFScode, childInstance);
             mineCore(childDFScode, childInstance);
         }
     }
+
     public void mine() throws Exception {
         Iterator<Map<DFScode, DFScodeInstance>> iterator = this.dataGraph.getGraphEdge().values().iterator();
-        int i = 0;
         while (iterator.hasNext()) {
             Map<DFScode, DFScodeInstance> map = iterator.next();
             for (Map.Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
@@ -291,35 +286,30 @@ public class MLNAryRelationMiner {
                     // 仅从当前 typeId 作为根节点 出发 拓展
                     MLDFScode mldfScode = new MLDFScode(entry.getKey());
                     MLDFScodeInstance mldfScodeInstance = new MLDFScodeInstance(entry.getValue());
-                    mineCore(mldfScode,mldfScodeInstance);
-                    System.out.println("finish the " + (++i) + "nd edge");
+                    mineCore(mldfScode, mldfScodeInstance);
                 }
             }
         }
     }
 
     public static void main(String[] args) throws Exception {
-        //String filePath = args[0];
-        //Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
-        //int maxDepth = Integer.parseInt(args[2]);
-        //double relatedRatioThreshold = Double.parseDouble(args[3]);
+        String filePath = args[0];
+        double threshold = Double.parseDouble(args[1]);
+        int maxDepth = Integer.parseInt(args[2]);
+        double relatedRatio = Double.parseDouble(args[3]);
         //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
-        //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        double relatedRatioThreshold = 0.001;
-        int maxDepth =10;
-        double dataSetSizeRelatedthreshold = 0.001;
+/*        String filePath = "D_10P_0.8351461857952731R_1.0T_8980466.json";
+        double threshold = 0.001;
+        int maxDepth = 10;
+        double relatedRatio = 0.001;*/
         try {
-            MultiLabelGraph graph = new MultiLabelGraph("D_10P_0.7378246753246751R_1.0T_11260.json");
-            //MultiLabelGraph graph = new MultiLabelGraph(false);
-            System.out.println("finish read file");
-            MLNAryRelationMiner miner = new MLNAryRelationMiner(graph, dataSetSizeRelatedthreshold, maxDepth,relatedRatioThreshold );
-            System.out.println(miner.dataGraph.graphName);
-            System.out.println(graph.getGraphEdge());
-            System.out.println("SupportThreshold" + miner.support);
+            MLNAryRelationMiner miner = new MLNAryRelationMiner(new MultiLabelGraph(filePath),
+                    threshold, maxDepth, relatedRatio);
+            long startTime = System.currentTimeMillis();
             miner.mine();
+            System.out.println(filePath+","+ (System.currentTimeMillis() - startTime) + "," + miner.support);
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
     }
-
 }

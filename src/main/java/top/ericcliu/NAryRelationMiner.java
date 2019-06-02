@@ -152,26 +152,27 @@ public class NAryRelationMiner {
         return childInstance;
     }
 
-    private double calRelatedRatio(int MNI, DFScode dFScode) throws Exception {
+    private double calRelatedRatio(DFScode dFScode) throws Exception {
         double relatedRatio = 0d;
         for (GSpanEdge edge : dFScode.getEdgeSeq()) {
             Map<DFScode, DFScodeInstance> map = this.getDataGraph().getGraphEdge().get(edge.getLabelA(), edge.getLabelB());
             DFScode dfScodeEdge = new DFScode(new GSpanEdge(0, 1, edge.getLabelA(), edge.getLabelB(), edge.getEdgeLabel(), edge.getDirection()));
             relatedRatio += map.get(dfScodeEdge).calMNI();
         }
-        relatedRatio = MNI * dFScode.getEdgeSeq().size() / relatedRatio;
-        System.out.println("relatedRatio" + relatedRatio);
+        relatedRatio = dFScode.getMNI() * dFScode.getEdgeSeq().size() / relatedRatio;
         return relatedRatio;
     }
 
     private void savePattern(DFScode childDFScode, DFScodeInstance childInstance) throws Exception {
-        File dir = new File(this.dataGraph.graphName + "MNI_" + threshold);
+        String dirPath = "result"+File.separator+this.dataGraph.graphName + "MNI_" + threshold;
+        File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        childDFScode.setInstanceNum(childInstance.getInstances().size());
-        childDFScode.saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "RE_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
-        childInstance.sample(1, 10, 10).saveToFile(this.dataGraph.graphName + "MNI_" + threshold + File.separator + "IN_" + this.dataGraph.graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
+        String fileName = this.dataGraph.graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json";
+        childDFScode.saveToFile(dirPath + File.separator + "RE_" +fileName, false);
+        childInstance.sample(1, 10, 10).
+                saveToFile(dirPath + File.separator + "IN_" + fileName, false);
     }
 
     private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
@@ -183,24 +184,27 @@ public class NAryRelationMiner {
                 continue;
             }
             DFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
-            int MNI = childInstance.calMNI();
-            childDFScode.setMNI(MNI);
-            if (MNI < this.support) {
+            {
+                childDFScode.setMNI(childInstance.calMNI());
+                childDFScode.setInstanceNum(childInstance.getInstances().size());
+                childDFScode.setRootNodeNum(childInstance.calRootNodeNum());
+                childDFScode.setRootNodeRatio((double) (childDFScode.getRootNodeNum()/this.dataGraph.getTypeRelatedNum()));
+            }
+
+            if (childDFScode.getMNI() < this.support) {
                 //频繁度剪枝
-                if (childInstance.getInstances().size() >= this.support) {
-                    // 如果 MNI 不频繁 但是 instance Num 频繁，需要输出模式 但是 不扩展
-                    double relatedRatio = calRelatedRatio(MNI, childDFScode);
-                    childDFScode.setRelatedRatio(relatedRatio);
+                if (childDFScode.getRootNodeNum() >= this.support) {
+                    // 如果 MNI 不频繁 但是 RootNodeNum频繁，需要输出模式 但是 不扩展
+                    childDFScode.setRelatedRatio(calRelatedRatio(childDFScode));
                     savePattern(childDFScode, childInstance);
                 }
                 continue;
             }
-            double relatedRatio = calRelatedRatio(MNI, childDFScode);
-            if (relatedRatio < this.relatedRatio) {
+            childDFScode.setRelatedRatio(calRelatedRatio(childDFScode));
+/*            if (childDFScode.getRelatedRatio() < this.relatedRatio) {
                 //相关度剪枝
-                //continue;
-            }
-            childDFScode.setRelatedRatio(relatedRatio);
+                continue;
+            }*/
             savePattern(childDFScode, childInstance);
             mineCore(childDFScode, childInstance);
         }
