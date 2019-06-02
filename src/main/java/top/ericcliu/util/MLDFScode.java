@@ -469,7 +469,7 @@ public class MLDFScode implements SaveToFile{
         dfScode = MLDFScode.readFromFile("mlDFScode.json");
         System.out.println(dfScode);*/
 
-        String dirPath = "D:\\New folder";
+        String dirPath = "D:\\ml_result_part";
         MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 
