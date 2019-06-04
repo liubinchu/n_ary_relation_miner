@@ -1,7 +1,6 @@
 package top.ericcliu.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Table;
 import javafx.util.Pair;
 
 import java.io.File;
@@ -20,6 +19,7 @@ public class DFScode implements Cloneable {
     private Integer MNI = -1;
     private Double relatedRatio = -1.0;
     private Integer instanceNum = -1;
+    private Integer maxNodeId = -1;
     /**
      * 不重复的根节点的个数
      */
@@ -29,7 +29,7 @@ public class DFScode implements Cloneable {
      * rootNodeRatio = m/n
      */
     private Double rootNodeRatio = -1.0;
-    private Integer maxNodeId = -1;
+
     /**
      * 边的集合，边的排序代表着边的添加次序
      */
@@ -109,7 +109,25 @@ public class DFScode implements Cloneable {
             minNodeId = Math.min(minNodeId, nodeA);
             minNodeId = Math.min(minNodeId, nodeB);
         }
-        this.rootNodeId = getNodeLabel(minNodeId);
+        this.rootNodeId = fetchNodeLabel(minNodeId);
+    }
+
+    public DFScode (DFScode dfScode){
+        this.rootNodeId = dfScode.rootNodeId;
+        this.MNI = dfScode.MNI;
+        this.relatedRatio = dfScode.relatedRatio;
+        this.instanceNum = dfScode.instanceNum;
+        this.maxNodeId = dfScode.maxNodeId;
+        this.edgeSeq = new ArrayList<>(dfScode.edgeSeq.size());
+        for (GSpanEdge edge : dfScode.edgeSeq) {
+            this.edgeSeq.add(new GSpanEdge(edge));
+        }
+        this.nodeLabelMap = new HashMap<>(dfScode.nodeLabelMap.size());
+        for (Map.Entry<Integer, Integer> entry : dfScode.nodeLabelMap.entrySet()) {
+            this.nodeLabelMap.put(entry.getKey(), entry.getValue());
+        }
+        this.rootNodeNum = dfScode.getRootNodeNum();
+        this.rootNodeRatio = dfScode.getRootNodeRatio();
     }
 
     /**
@@ -227,7 +245,7 @@ public class DFScode implements Cloneable {
     }
 
 
-    public LinkedList<Integer> getRightMostPath() throws Exception {
+    public LinkedList<Integer> fetchRightMostPath() throws Exception {
         LinkedList<Integer> rightMostPath = new LinkedList<>();
         for (GSpanEdge edge : this.edgeSeq) {
             int nodeA = edge.getNodeA();
@@ -254,8 +272,20 @@ public class DFScode implements Cloneable {
         }
         return rightMostPath;
     }
+    /**
+     * 获得DFScode中 节点的标签
+     * @param nodeId DFScode 中 节点id
+     * @return
+     */
+    public Integer fetchNodeLabel(Integer nodeId) {
+        return this.nodeLabelMap.get(nodeId);
+    }
 
-    private GSpanEdge minRightMostPathExtension(DFScode minDFSCode, Table<Integer, Integer, Set<GSpanEdge>> blocks) throws Exception {
+    public Set<Integer> fetchNodes() {
+        return nodeLabelMap.keySet();
+    }
+
+/*    private GSpanEdge minRightMostPathExtension(DFScode minDFSCode, Table<Integer, Integer, Set<GSpanEdge>> blocks) throws Exception {
         GSpanEdge minEdge = null;
         Set<GSpanEdge> childrenEdge = new LinkedHashSet<>();
         if (minDFSCode.edgeSeq.size() == 0) {
@@ -343,17 +373,9 @@ public class DFScode implements Cloneable {
             }
             return minEdge;
         }
-    }
+    }*/
 
-    /**
-     * 获得DFScode中 节点的标签
-     *
-     * @param nodeId DFScode 中 节点id
-     * @return
-     */
-    public Integer getNodeLabel(Integer nodeId) {
-        return this.nodeLabelMap.get(nodeId);
-    }
+
 
     public Integer getRootNodeNum() {
         return rootNodeNum;
@@ -415,9 +437,7 @@ public class DFScode implements Cloneable {
         this.edgeSeq = edgeSeq;
     }
 
-    public Set<Integer> getNodes() {
-        return nodeLabelMap.keySet();
-    }
+
 
     public Integer getMaxNodeId() {
         return maxNodeId;
@@ -453,14 +473,6 @@ public class DFScode implements Cloneable {
         return "DFScode{" +
                 "edgeSeq=" + edgeSeq +
                 '}';
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        DFScode dfScodeCloned = (DFScode) super.clone();
-        dfScodeCloned.nodeLabelMap = new HashMap<>(this.nodeLabelMap);
-        dfScodeCloned.edgeSeq = new ArrayList<>(this.edgeSeq);
-        return dfScodeCloned;
     }
 
     public static void main(String[] args) throws Exception {

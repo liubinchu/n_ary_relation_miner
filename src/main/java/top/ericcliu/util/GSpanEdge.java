@@ -37,7 +37,25 @@ public class GSpanEdge<NodeType, EdgeType> implements
 
 
     public GSpanEdge(){
+	}
+
+	public GSpanEdge(GSpanEdgeModified gSpanEdgeModified){
+		this.nodeA = gSpanEdgeModified.getNodeA();
+		this.nodeB = gSpanEdgeModified.getNodeB();
+		this.labelA = gSpanEdgeModified.getLabelA();
+		this.labelB = gSpanEdgeModified.getLabelB();
+		this.edgeLabel = gSpanEdgeModified.getEdgeLabel();
+		this.direction = gSpanEdgeModified.getDirection();
     }
+
+	public GSpanEdge(GSpanEdge gSpanEdge){
+		this.nodeA = gSpanEdge.getNodeA();
+		this.nodeB = gSpanEdge.getNodeB();
+		this.labelA = gSpanEdge.getLabelA();
+		this.labelB = gSpanEdge.getLabelB();
+		this.edgeLabel = gSpanEdge.getEdgeLabel();
+		this.direction = gSpanEdge.getDirection();
+	}
 
     public GSpanEdge(int nodeA, int nodeB, int labelA, int labelB, int edgeLabel, int direction) {
         this.nodeA = nodeA;

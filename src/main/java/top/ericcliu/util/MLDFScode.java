@@ -468,9 +468,7 @@ public class MLDFScode implements SaveToFile{
         dfScode.saveToFile("mlDFScode.json",false);
         dfScode = MLDFScode.readFromFile("mlDFScode.json");
         System.out.println(dfScode);*/
-
-        String dirPath = "D:\\ml_result_part";
+        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\result_Thresh_0.1D_10related_ratio_0.001";
         MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
-
 }

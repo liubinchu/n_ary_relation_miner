@@ -1,9 +1,11 @@
 package top.ericcliu;
 
+import javafx.util.Pair;
 import top.ericcliu.util.*;
 
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -13,26 +15,17 @@ import java.util.Map.Entry;
 public class GSpanMiner {
     private MultiLabelGraph dataGraph;
     private Double threshold;
-    private Integer MNIThreshold;// >= 该阈值 则认为频繁
-
-
-    //private LinkedList<Integer> stepRecorder ;
-
-    public MultiLabelGraph getDataGraph() {
-        return dataGraph;
-    }
-
-    public void setDataGraph(MultiLabelGraph dataGraph) {
-        this.dataGraph = dataGraph;
-    }
+    /**
+     * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
+     */
+    private Integer support;
+    private double relatedRatio;
+    private int resultSize = 0;
 
     public GSpanMiner(MultiLabelGraph dataGraph, double thresh) throws Exception {
         this.dataGraph = dataGraph;
         this.threshold = thresh;
-        this.MNIThreshold = ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue();
-        if (this.MNIThreshold < 2) {
-            this.MNIThreshold = 2;
-        }
+        this.support = Math.max(2, ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
         //清洗不频繁的边
         for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
             for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
@@ -42,7 +35,7 @@ public class GSpanMiner {
                     Iterator<Entry<DFScode, DFScodeInstance>> iterator = map.entrySet().iterator();
                     while (iterator.hasNext()) {
                         Entry<DFScode, DFScodeInstance> entry = iterator.next();
-                        if (entry.getValue().calMNI() < this.MNIThreshold) {
+                        if (entry.getValue().calMNI() < this.support) {
                             iterator.remove();
                             changed = true;
                         }
@@ -55,186 +48,63 @@ public class GSpanMiner {
         }
     }
 
-    /**
-     * 模式拓展原则， 先从最右节点后向拓展，距离根节点近的节点优先
-     * 再 在最右路径上，前向拓展，距离根节点远的节点优先
-     *
-     * @param parent
-     * @return
-     * @throws Exception
-     */
-    public ArrayList<GSpanEdge> rightMostPathExtension(DFScode parent) throws Exception {
-        ArrayList<GSpanEdge> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> rightMostPath = parent.getRightMostPath();
-        Integer rightMostNode = rightMostPath.getLast();
-        if (rightMostPath.size() == 0 || rightMostPath.size() == 1) {
-            throw new Exception("right most path size is 0 or 1, ERROR");
-        } else if (rightMostPath.size() > 2) {
-            // backward extend, 最后1个节点，无需和最右节点组成边，也即最右节点 不允许和最右节点组成后向边，构成self looped edge
-            rightMostPath.removeLast();
-            int tempNode = rightMostPath.removeLast();
-            // 最后两个节点不参与后向拓展
-            ListIterator<Integer> rightMostPathIt = rightMostPath.listIterator();
-            int rightMostNodelabel = parent.getNodeLabel(rightMostNode);
-            while (rightMostPathIt.hasNext()) {
-                int node2 = rightMostPathIt.next();
-                int label2 = parent.getNodeLabel(node2);
-                Set<DFScode> possibleChildren = new HashSet<>();
-                if (this.dataGraph.getGraphEdge().get(rightMostNodelabel, label2) != null) {
-                    possibleChildren.addAll(this.dataGraph.getGraphEdge().get(rightMostNodelabel, label2).keySet());
-                }
-                if (this.dataGraph.getGraphEdge().get(label2, rightMostNodelabel) != null) {
-                    possibleChildren.addAll(this.dataGraph.getGraphEdge().get(label2, rightMostNodelabel).keySet());
-                }
-                for (DFScode possibleChild : possibleChildren) {
-                    if (possibleChild.getEdgeSeq().size() != 1) {
-                        throw new Exception("wrong edge");
-                    }
-                    GSpanEdge possibleEdge = new GSpanEdge(rightMostNode, node2, rightMostNodelabel, label2, possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
-                    GSpanEdge possibleEdgeReverse = new GSpanEdge(node2, rightMostNode, label2, rightMostNodelabel, possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
-                    if (!parent.getEdgeSeq().contains(possibleEdge) && !parent.getEdgeSeq().contains(possibleEdgeReverse)) {
-                        childrenEdge.add(possibleEdge);
-                    }
-                }
-            }
-            rightMostPath.addLast(tempNode);
-            rightMostPath.addLast(rightMostNode);
-            // 最后两个节点不参与后向拓展
-        }
-        // forward extend
-        Iterator<Integer> descRMPit = rightMostPath.descendingIterator();
-        while (descRMPit.hasNext()) {
-            Integer nodeInRMP = descRMPit.next();
-            Integer nodeInRMPLabel = parent.getNodeLabel(nodeInRMP);
-            Set<DFScode> possibleChildren = new HashSet<>();
-            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
-                possibleChildren.addAll(map.keySet());
-            }
-            for (DFScode possibleChild : possibleChildren) {
-                if (possibleChild.getEdgeSeq().size() != 1) {
-                    throw new Exception("wrong edge");
-                }
-                int node2 = parent.getMaxNodeId() + 1;
-                int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelB();
-                int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                childrenEdge.add(possibleEdge);
-            }
-            possibleChildren = new HashSet<>();
-            for (Map<DFScode, DFScodeInstance> map : this.dataGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
-                possibleChildren.addAll(map.keySet());
-            }
-            for (DFScode possibleChild : possibleChildren) {
-                if (possibleChild.getEdgeSeq().size() != 1) {
-                    throw new Exception("wrong edge");
-                }
-                int node2 = parent.getMaxNodeId() + 1;
-                int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelA();
-                int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                childrenEdge.add(possibleEdge);
-            }
-        }
-        return childrenEdge;
+    public MultiLabelGraph getDataGraph() {
+        return dataGraph;
     }
 
-    private DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
-        // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
-        DFScodeInstance childInstance = new DFScodeInstance();
-        DFScode child = ((DFScode) parent.clone()).addEdge(childernEdge);
-        int nodeA = childernEdge.getNodeA();
-        int nodeB = childernEdge.getNodeB();
-        int labelB = childernEdge.getLabelB();
-        int edgeLabel = childernEdge.getEdgeLabel();
-        if (nodeA < nodeB) {
-            // forward edge
-            Map<Integer, Integer> nodeAIdsDSMap = parentInstances.fetchInstanceNode(nodeA);
-            // key : instance id , value : node id in data set
-            Collection<Integer> possNodeBIds = this.dataGraph.getLabelNodes().get(labelB);
-            // possible node B id in data set
-            for (Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
-                Integer instanceId = nodeAIdDSMap.getKey();
-                Set<Integer> nodes = new HashSet<>();
-                for (Integer node : parentInstances.getInstances().get(instanceId)) {
-                    nodes.add(node);
-                }
-                Integer nodeAIdDS = nodeAIdDSMap.getValue();
-                for (Integer possNodeBId : possNodeBIds) {
-                    if (nodes.contains(possNodeBId)) {
-                        continue;
-                    }
-                    if (!this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdDS, possNodeBId)) {
-                        continue;
-                    }
-                    Integer edgeValue = ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
-                    if (!edgeValue.equals(edgeLabel)) {
-                        continue;
-                    }
-                    int newLength = parentInstances.getInstances().get(instanceId).length + 1;
-                    int[] newInstance = Arrays.copyOf(parentInstances.getInstances().get(instanceId), newLength);
-                    newInstance[newLength - 1] = possNodeBId;
-                    childInstance.addInstance(child, newInstance);
-                }
-            }
-        } else {
-            // backward edge
-            for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
-                Integer nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
-                Integer nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
-                boolean correctEdge = this.dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdsDS, nodeBIdsDS);
-                correctEdge = (correctEdge == false ? false : ((Integer) this.dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()).equals(edgeLabel));
-                // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
-                // 目前只考虑 两个节点之间只存在一条边
-                if (correctEdge) {
-                    int[] nodeInstanceMap = parentInstances.getInstances().get(instanceId);
-                    childInstance.addInstance(child, nodeInstanceMap);
-                }
-            }
-        }
-        return childInstance;
+    public void setDataGraph(MultiLabelGraph dataGraph) {
+        this.dataGraph = dataGraph;
     }
+
+
+
+
+
 
 
     private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
-        int resultSize = 0;
-        ArrayList<GSpanEdge> childrenEdges = rightMostPathExtension(parent);
+        ArrayList<GSpanEdge> childrenEdges = SingleLabelUtil.rightMostPathExtension(parent,this.dataGraph);
+        ArrayList<Pair<DFScode, DFScodeInstance>> children = new ArrayList<>(childrenEdges.size());
         for (GSpanEdge childEdge : childrenEdges) {
-            DFScode childDFScode = ((DFScode) parent.clone()).addEdge(childEdge);
-            // 最小DFScode剪枝
-            boolean isCannoical = new MinDFSCodeJustifier(childDFScode).justify();
-            if (isCannoical) {
-                //频繁度剪枝
-                DFScodeInstance childInstance = subGraphIsomorphism(parent, parentInstances, childEdge);
-                Integer MNI = childInstance.calMNI();
-                if (MNI >= this.MNIThreshold) {
-                    File dir = new File(this.getDataGraph().graphName + "MNI_" + threshold);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    childDFScode.saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "RE_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + (++resultSize) + ".json", false);
-                    System.out.println("instance num:" + childInstance.getInstances().size());
-                    childInstance.sample(1, 10, 10).saveToFile(this.getDataGraph().graphName + "MNI_" + threshold + File.separator + "IN_" + this.getDataGraph().graphName + "MNI_" + threshold + "Id_" + resultSize + ".json", false);
-                    mineCore(childDFScode, childInstance);
-                }
-                childInstance = null;
-                System.gc();
+            DFScode childDFScode = new DFScode(parent).addEdge(childEdge);
+            if (!new MinDFSCodeJustifier(childDFScode).justify()) {
+                continue;
+            }
+            DFScodeInstance childInstance = SingleLabelUtil.subGraphIsomorphism(parent, parentInstances, childEdge,
+                    true,this.dataGraph);
+            childDFScode.setRootNodeNum(childInstance.calRootNodeNum());
+            if (childDFScode.getRootNodeNum() < this.support) {
+                continue;
+            }
+            {
+                childDFScode.setMNI(childInstance.calMNI());
+                childDFScode.setInstanceNum(childInstance.getInstances().size());
+                childDFScode.setRootNodeRatio((double) (childDFScode.getRootNodeNum()
+                        / this.dataGraph.getTypeRelatedNum()));
+                childDFScode.setRelatedRatio(SingleLabelUtil.calRelatedRatio(childDFScode, this.dataGraph));
+            }
+            children.add(new Pair<>(childDFScode, childInstance));
+        }
+        if (children.isEmpty()) {
+            // 如果是叶子节点，保存
+            SingleLabelUtil.savePattern(parent, parentInstances, Integer.MAX_VALUE, this.threshold,
+                    this.relatedRatio, this.resultSize++, this.dataGraph);
+        } else {
+            // 如果不是叶子节点，向下递归
+            for (Pair<DFScode, DFScodeInstance> child : children) {
+                mineCore(child.getKey(), child.getValue());
             }
         }
     }
 
     public void mine() throws Exception {
         Iterator<Map<DFScode, DFScodeInstance>> iterator = this.getDataGraph().getGraphEdge().values().iterator();
-        int i = 0;
         while (iterator.hasNext()) {
             Map<DFScode, DFScodeInstance> map = iterator.next();
             for (Entry<DFScode, DFScodeInstance> entry : map.entrySet()) {
-/*                if (this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(0)) ||
-                        this.getDataGraph().getTypeId().equals(entry.getKey().getNodeLabel(1))) {*/
-                if (entry.getKey().getNodeLabel(0).equals(Integer.MIN_VALUE) ||
-                        entry.getKey().getNodeLabel(1).equals(Integer.MIN_VALUE)) {
+                if (entry.getKey().fetchNodeLabel(0).equals(this.dataGraph.getReplacedTypeId())) {
                     // 仅从当前 typeId 作为根节点 出发 拓展
                     mineCore(entry.getKey(), entry.getValue());
-                    System.out.println("finish the " + (i++) + "nd edge");
                 }
             }
         }
@@ -252,7 +122,7 @@ public class GSpanMiner {
             GSpanMiner miner = new GSpanMiner(graph, dataSetSizeRelatedthreshold);
             System.out.println(miner.getDataGraph().graphName);
             System.out.println(graph.getGraphEdge());
-            System.out.println("    MNISupportThreshold" + miner.MNIThreshold);
+            System.out.println("    MNISupportThreshold" + miner.support);
             miner.mine();
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -260,16 +130,4 @@ public class GSpanMiner {
     }
 }
 
-
-/*
-        MultiLabelGraph big = new MultiLabelGraph(false);
-
-
-        //GSpanMiner gSpanMinerbig = new GSpanMiner(big, 0.001);
-        //gSpanMinerbig.mine();
-
-        GSpanMiner gSpanMinerFromFile = new GSpanMiner(graphFromFile, 0.01);
-        gSpanMinerFromFile.mine();*/
-/*        GSpanMiner gSpanMinersmall = new GSpanMiner(small, 0.001);
-        gSpanMinersmall.mine();*/
 

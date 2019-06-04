@@ -89,7 +89,7 @@ public class MLDFScodeInstance implements SaveToFile {
     }
 
     public int calRootNodeNum() throws Exception {
-        if (this.mldfScode == null && this.instances.size() == 0) {
+        if (this.mldfScode == null && this.instances.isEmpty()) {
             return 0;
             // 当前模式 在图中 不存在 实例
         } else {

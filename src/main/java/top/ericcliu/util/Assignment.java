@@ -16,7 +16,6 @@ import java.util.LinkedList;
 public class Assignment {
     private static ArrayList<LinkedList<String>> assign(@Nonnull String csvFilePath, int currentLevel ,boolean balance) throws IOException {
         CSVReader csvReader = new CSVReader(new FileReader(csvFilePath));
-
         ArrayList<LinkedList<String>> fileLists = new ArrayList<>(currentLevel);
         for (int i=0;i<currentLevel;i++){
             fileLists.add(new LinkedList<>());
@@ -25,7 +24,7 @@ public class Assignment {
         String[] line ;
         int i=-1;
         while ((line = csvReader.readNext()) != null) {
-            fileLists.get((++i)%6).add(line[0]);
+            fileLists.get((++i)%currentLevel).add(line[0]);
         }
         int smallToBig = 1;
         // 1 true -1 false
@@ -52,6 +51,6 @@ public class Assignment {
         ArrayList<LinkedList<String>> fileLists = assign(
                 "D:\\D_10P\\fileListSortedBigToSmall.csv",
                 6,
-                true);
+                false);
     }
 }

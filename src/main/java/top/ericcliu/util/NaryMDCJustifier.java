@@ -83,7 +83,7 @@ public class NaryMDCJustifier {
     private DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances, GSpanEdge childernEdge) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
         DFScodeInstance childInstance = new DFScodeInstance();
-        DFScode child = ((DFScode) parent.clone()).addEdge(childernEdge);
+        DFScode child = new DFScode(parent).addEdge(childernEdge);
         int nodeA = childernEdge.getNodeA();
         int nodeB = childernEdge.getNodeB();
         int labelB = childernEdge.getLabelB();
@@ -133,7 +133,7 @@ public class NaryMDCJustifier {
      */
     public ArrayList<GSpanEdge> rightMostPathExtension(DFScode parent) throws Exception {
         ArrayList<GSpanEdge> childrenEdge = new ArrayList<>();
-        LinkedList<Integer> rightMostPath = parent.getRightMostPath();
+        LinkedList<Integer> rightMostPath = parent.fetchRightMostPath();
         if (rightMostPath.size() == 0) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         }
@@ -141,7 +141,7 @@ public class NaryMDCJustifier {
         Iterator<Integer> descRMPit = rightMostPath.descendingIterator();
         while (descRMPit.hasNext()) {
             Integer nodeInRMP = descRMPit.next();
-            Integer nodeInRMPLabel = parent.getNodeLabel(nodeInRMP);
+            Integer nodeInRMPLabel = parent.fetchNodeLabel(nodeInRMP);
             Set<DFScode> possibleChildren = new HashSet<>();
             for (Map<DFScode, DFScodeInstance> map : this.dFSCodeGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());

@@ -4,7 +4,10 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import javafx.util.Pair;
 
+import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -85,8 +88,7 @@ public class Evaluation {
      * @param judgements
      * @param conficence
      */
-    private static Map<String,MLDFScodeString> refineJudgements(List<Map<String,MLDFScodeString>> judgements,
-                                                                          double[] conficence ){
+    private static Map<String,MLDFScodeString> refineJudgements(List<Map<String,MLDFScodeString>> judgements, double[] conficence ){
         Map<String,MLDFScodeString> judgementsRefined = new HashMap<>(judgements.get(0));
         int judgeNum = judgements.size();
         for(Map.Entry<String,MLDFScodeString> judgement : judgementsRefined.entrySet()){
@@ -100,7 +102,6 @@ public class Evaluation {
         }
         return judgementsRefined;
     }
-
 
     private static  Map<Integer,double[]> countByArity(Map<String,MLDFScodeString> refinedJudgements){
         // can alse re returned
@@ -117,13 +118,11 @@ public class Evaluation {
             }else {
                 statistic = statistics.get(arity);
             }
-
             if(dfsCode.getNaryRelation()){ statistic[0]++; }
             statistic[1]++;
             statistic[2]+=dfsCode.getInstanceNum();
             statistic[3]+=dfsCode.getInstanceNum();
             statistic[4]+=dfsCode.getRelatedRatio();
-
             statistics.put(arity,statistic);
         }
 
@@ -142,11 +141,10 @@ public class Evaluation {
                     +"  Average Related Ratio:"+new DecimalFormat("00.0000%").format(statistic.getValue()[4])
                     +"  Precision:"+new DecimalFormat("00.0000%").format(statistic.getValue()[0]));
         }
-
         return statistics;
     }
 
-   private static  Map<Pair<Double,Double>,double[]> countByRelatedRatio(Map<String,MLDFScodeString> refinedJudgements, double[]ranges ){
+    private static  Map<Pair<Double,Double>,double[]> countByRelatedRatio(Map<String,MLDFScodeString> refinedJudgements, double[]ranges ){
         // range : (0,ranges[0]] (ranges[0],ranges[1]], ... ... , (ranges[n-1],1)
        Arrays.sort(ranges);
        if(ranges==null||ranges[0]<=0||ranges[ranges.length-1]>=1){
@@ -157,27 +155,7 @@ public class Evaluation {
         Map<Pair<Double,Double>,double[]> statistics = new HashMap<>();
         for(Map.Entry<String,MLDFScodeString> judgement : refinedJudgements.entrySet()){
             MLDFScodeString dfsCode = judgement.getValue();
-            int upperBoundIndex = ranges.length-1;
-            double relatedRatio = dfsCode.getRelatedRatio();
-            for (int i=0;i<ranges.length;i++){
-                upperBoundIndex = i;
-                if(ranges[i]>=relatedRatio){
-                    break;
-                }
-            }
-            double lowerBound, upperBound;
-            if(upperBoundIndex==0){
-                lowerBound = 0;
-                upperBound = ranges[upperBoundIndex];
-            }else if(ranges[upperBoundIndex]<relatedRatio){
-                lowerBound = ranges[upperBoundIndex];
-                upperBound = 1;
-            }else {
-                lowerBound = ranges[upperBoundIndex-1];
-                upperBound = ranges[upperBoundIndex];
-            }
-            Pair<Double,Double> range = new Pair<>(lowerBound,upperBound);
-
+            Pair<Double,Double> range = Evaluation.decideRange(dfsCode.getRelatedRatio(),ranges);
             judgementsByRelatedRatio.put(range,dfsCode);
             double[] statistic ;
             // precison; relationNum; average instanceNum per relation; total instanceNum
@@ -186,16 +164,13 @@ public class Evaluation {
             }else {
                 statistic = statistics.get(range);
             }
-
             if(dfsCode.getNaryRelation()){ statistic[0]++; }
             statistic[1]++;
             statistic[2]+=dfsCode.getInstanceNum();
             statistic[3]+=dfsCode.getInstanceNum();
             statistic[4]+=dfsCode.getRelatedRatio();
-
             statistics.put(range,statistic);
         }
-
         for(Map.Entry<Pair<Double,Double>,double[]> statisticRelatedRatio : statistics.entrySet()){
             double [] statistic = statisticRelatedRatio.getValue();
             statistic[0] = (double)statistic[0] / (double) statistic[1];
@@ -216,15 +191,100 @@ public class Evaluation {
         return statistics;
     }
 
-
+    /**
+     * 针对每一个不同的type, 统计related ratio 和 arity 之间的关系
+     */
+    private static void evaluateRelatedRatio(String dirPath,@Nonnull String resultDirName) throws Exception {
+        double[] range = new double[]{0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
+        File dirFile = new File(dirPath);
+        File[] typeDirs;
+        if (dirFile.isDirectory()) {
+            typeDirs = dirFile.listFiles();
+        } else {
+            throw new Exception("dirPath must be a dir");
+        }
+        File resultDir = new File(dirPath+File.separator+resultDirName);
+        if(!resultDir.exists()){
+            resultDir.mkdirs();
+        }
+        for (File typeDir : typeDirs){
+            evaluateRelatedRatioCore(typeDir,range,resultDir);
+        }
+    }
+    private static Pair<Double,Double> decideRange(double value, double[] ranges){
+        int upperBoundIndex = ranges.length-1;
+        for (int i=0;i<ranges.length;i++){
+            upperBoundIndex = i;
+            if(ranges[i]>=value){
+                break;
+            }
+        }
+        double lowerBound, upperBound;
+        if(upperBoundIndex==0){
+            lowerBound = 0;
+            upperBound = ranges[upperBoundIndex];
+        }else if(ranges[upperBoundIndex]<value){
+            lowerBound = ranges[upperBoundIndex];
+            upperBound = 1;
+        }else {
+            lowerBound = ranges[upperBoundIndex-1];
+            upperBound = ranges[upperBoundIndex];
+        }
+        Pair<Double,Double> range = new Pair<>(lowerBound,upperBound);
+        return range;
+    }
+    private static Map<Integer,double[]> evaluateRelatedRatioCore(File typeDir,double[] ranges,File resultDir) throws Exception {
+        if (!typeDir.isDirectory()) { return null; }
+        File[] dfsCodeFiles = typeDir.listFiles();
+        // can else returned
+        Map<Integer,double[]> statistics = new HashMap<>();
+        for (File dfsCodeFile : dfsCodeFiles){
+            if(dfsCodeFile.getName().startsWith("IN_")){
+                continue;
+            }
+            MLDFScode dfsCode = MLDFScode.readFromFile(dfsCodeFile.getAbsolutePath());
+            int arity = dfsCode.getEdgeSeq().size()+1;
+            double[] statistic ;
+            // relationNum; Relate Ratio
+            if (!statistics.containsKey(arity)){
+                statistic = new double[2];
+            }else {
+                statistic = statistics.get(arity);
+            }
+            {
+                //仅计算 所有，包括正反例
+                statistic[0]++;
+                statistic[1]+=dfsCode.getRelatedRatio();
+            }
+            statistics.put(arity,statistic);
+        }
+        if(statistics.size()>1){
+            // arity 种类太少，不具有拟合的价值
+            try{
+                File resultFile = new File(resultDir.getAbsolutePath()+File.separator+typeDir.getName()+".csv");
+                Writer writer = new FileWriter(resultFile);
+                for(Map.Entry<Integer,double[]> statisticArity : statistics.entrySet()){
+                    double [] statistic = statisticArity.getValue();
+                    statistic[1] = (double)statistic[1] / (double) statistic[0];
+                    writer.write(statisticArity.getKey()+","+(int)statisticArity.getValue()[0]+","+statisticArity.getValue()[1]+"\n");
+                }
+                writer.flush();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return statistics;
+    }
     public static void main(String[] args) throws Exception {
-        List<Map<String,MLDFScodeString>> judgements = Evaluation.readJudgementFromFile("D:\\judgement");
+/*        List<Map<String,MLDFScodeString>> judgements = Evaluation.readJudgementFromFile("D:\\judgement");
         double[] conficence = calJudgeConfidence(judgements);
         Map<String,MLDFScodeString> refinedJudgements = Evaluation.refineJudgements(judgements,conficence);
         System.out.println("quantity of relation:   "+relationNum);
         System.out.println("quantity of total instance:   "+totalInstanceNum);
         Map<Integer,double[]> statisticsArity =  Evaluation.countByArity(refinedJudgements);
         double[] ranges = new double[]{0.1,0.5,0.9};
-        Map<Pair<Double,Double>,double[]> statisticsRelatedRatio = Evaluation.countByRelatedRatio(refinedJudgements,ranges);
+        Map<Pair<Double,Double>,double[]> statisticsRelatedRatio = Evaluation.countByRelatedRatio(refinedJudgements,ranges);*/
+        Evaluation.evaluateRelatedRatio("D:\\D_10P\\result_Thresh_0.3D_10related_ratio_1.0E-5",
+                "result");
     }
 }

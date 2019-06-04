@@ -44,7 +44,7 @@ public class DFScodeInstance implements SaveToFile {
         if (!this.dfScode.equals(dfScode)) {
             throw new Exception("illegal DFS code");
         }
-        if (instance.length != dfScode.getNodes().size()) {
+        if (instance.length != dfScode.fetchNodes().size()) {
             throw new Exception("illegal instance");
         }
         this.instances.add(instance);
@@ -56,23 +56,13 @@ public class DFScodeInstance implements SaveToFile {
             return 0;
             // 当前模式 在图中 不存在 实例
         }
-        ArrayList<Set<Integer>> sets = new ArrayList<>(this.dfScode.getNodes().size());
-        for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
-            sets.add(new HashSet<>());
-        }
-
-        for (int[] instance : this.instances) {
-            for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
-                Set<Integer> set = sets.get(i);
-                set.add(instance[i]);
-                sets.set(i, set);
-            }
-        }
         int MNI = Integer.MAX_VALUE;
-        for (int i = 0; i < this.dfScode.getNodes().size(); i++) {
-            if (sets.get(i).size() < MNI) {
-                MNI = sets.get(i).size();
+        for (int i = 0; i < this.dfScode.fetchNodes().size(); i++) {
+            Set<Integer> nodeSet = new HashSet<>(this.instances.size());
+            for (int[] instance : this.instances) {
+                nodeSet.add(instance[i]);
             }
+            MNI = Math.min(MNI, nodeSet.size());
         }
         return MNI;
     }
@@ -85,7 +75,7 @@ public class DFScodeInstance implements SaveToFile {
      * @throws Exception
      */
     public Map<Integer, Integer> fetchInstanceNode(Integer nodeId) throws Exception {
-        if (!this.dfScode.getNodes().contains(nodeId)) {
+        if (!this.dfScode.fetchNodes().contains(nodeId)) {
             throw new Exception("illeagl para");
         }
         Map<Integer, Integer> instanceNodeMap = new HashMap<>(this.instances.size());
@@ -97,7 +87,12 @@ public class DFScodeInstance implements SaveToFile {
     }
 
     public int calRootNodeNum() throws Exception {
-        return this.fetchInstanceNode(0).entrySet().size();
+        if (this.dfScode == null && this.instances.isEmpty()) {
+            return 0;
+            // 当前模式 在图中 不存在 实例
+        } else {
+            return this.fetchInstanceNode(0).entrySet().size();
+        }
     }
 
     public DFScodeInstance sample(double ratio, int upperBound, int bottomBound) throws Exception {
@@ -131,6 +126,7 @@ public class DFScodeInstance implements SaveToFile {
         }
         return sampled;
     }
+
 
     public static void main(String[] args) throws Exception {
         DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
