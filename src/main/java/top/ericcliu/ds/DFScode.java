@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.util.Pair;
@@ -285,98 +285,6 @@ public class DFScode implements Cloneable {
         return nodeLabelMap.keySet();
     }
 
-/*    private GSpanEdge minRightMostPathExtension(DFScode minDFSCode, Table<Integer, Integer, Set<GSpanEdge>> blocks) throws Exception {
-        GSpanEdge minEdge = null;
-        Set<GSpanEdge> childrenEdge = new LinkedHashSet<>();
-        if (minDFSCode.edgeSeq.size() == 0) {
-            for (Set<GSpanEdge> edges : blocks.values()) {
-                childrenEdge.addAll(edges);
-            }
-        } else {
-            LinkedList<Integer> rightMostPath = minDFSCode.getRightMostPath();
-            Integer rightMostNode = rightMostPath.getLast();
-            if (rightMostPath.size() == 0 || rightMostPath.size() == 1) {
-                throw new Exception("right most path size is 0 or 1, ERROR");
-            } else {
-                // 1  not allow self loop
-                // 0  allow self loop
-                int leastRMPSize = 1;
-                if (rightMostPath.size() > leastRMPSize) {
-                    // backward extend, 最后1个节点，无需和最右节点组成新的边，且 不允许和最右节点组成后向边，构成self looped edge
-                    ListIterator<Integer> rightMostPathIt = rightMostPath.listIterator();
-                    int label1 = minDFSCode.getNodeLabel(rightMostNode);
-                    while (rightMostPathIt.hasNext()) {
-                        int node2 = rightMostPathIt.next();
-                        int label2 = minDFSCode.getNodeLabel(node2);
-
-                        Set<GSpanEdge> possibleChildren = new HashSet<>();
-                        Set<GSpanEdge> set1 = blocks.get(label1, label2);
-                        Set<GSpanEdge> set2 = blocks.get(label2, label1);
-                        // 反转了
-                        // 组成新边的时候 没有考虑反转
-                        if (set1 != null) {
-                            possibleChildren.addAll(set1);
-                        }
-                        if (set2 != null) {
-                            possibleChildren.addAll(set2);
-                        }
-                        for (GSpanEdge possibleChild : possibleChildren) {
-                            GSpanEdge possibleEdge = new GSpanEdge(rightMostNode, node2, label1, label2, possibleChild.getEdgeLabel(), 1);
-                            GSpanEdge possibleEdgeReverse = new GSpanEdge(node2, rightMostNode, label2, label1, possibleChild.getEdgeLabel(), 1);
-                            // 不允许有环
-                            if (!minDFSCode.getEdgeSeq().contains(possibleEdge) && !minDFSCode.getEdgeSeq().contains(possibleEdgeReverse)) {
-                                childrenEdge.add(possibleEdge);
-                            }
-                        }
-                    }
-                }
-                // forward extend
-                Iterator<Integer> descRMPit = rightMostPath.descendingIterator();
-                while (descRMPit.hasNext()) {
-                    Integer nodeInRMP = descRMPit.next();
-                    Integer nodeInRMPLabel = minDFSCode.getNodeLabel(nodeInRMP);
-                    Set<GSpanEdge> possibleChildren = new HashSet<>();
-                    for (Set<GSpanEdge> edgesLabelB : blocks.row(nodeInRMPLabel).values()) {
-                        possibleChildren.addAll(edgesLabelB);
-                    }
-                    for (GSpanEdge possibleChild : possibleChildren) {
-                        int nodeId2 = minDFSCode.getMaxNodeId() + 1;
-                        int nodeLabel2 = possibleChild.getLabelB();
-                        int edgeLabel = possibleChild.getEdgeLabel();
-                        GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, nodeId2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                        childrenEdge.add(possibleEdge);
-                    }
-
-                    possibleChildren = new HashSet<>();
-                    for (Set<GSpanEdge> edgesLabelA : blocks.column(nodeInRMPLabel).values()) {
-                        possibleChildren.addAll(edgesLabelA);
-                    }
-                    for (GSpanEdge possibleChild : possibleChildren) {
-                        int nodeId2 = minDFSCode.getMaxNodeId() + 1;
-                        int nodeLabel2 = possibleChild.getLabelA();
-                        int edgeLabel = possibleChild.getEdgeLabel();
-                        GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, nodeId2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                        childrenEdge.add(possibleEdge);
-                    }
-                }
-            }
-        }
-        if (childrenEdge.size() == 0) {
-            return null;
-        } else {
-            Iterator<GSpanEdge> childEdgeIt = childrenEdge.iterator();
-            while (childEdgeIt.hasNext()) {
-                GSpanEdge childEdge = childEdgeIt.next();
-                if (minEdge == null || childEdge.compareTo(minEdge) < 0) {
-                    minEdge = childEdge;
-                }
-            }
-            return minEdge;
-        }
-    }*/
-
-
-
     public Integer getRootNodeNum() {
         return rootNodeNum;
     }
@@ -489,58 +397,6 @@ public class DFScode implements Cloneable {
         dfScode.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
         //6
         dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
-  /*        //7
-        //dfScode.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
-        //8
-        //dfScode.addEdge(new GSpanEdge(5, 7, 3, 1, 1, 1));
-        //9
-        //dfScode.addEdge(new GSpanEdge(7, 8, 1, 2, 1, 1));
-        //10
-        DFScode dfScode1 = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
-        //1
-        dfScode1.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
-        //2
-        dfScode1.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
-        //3
-        dfScode1.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
-        //4
-        dfScode1.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
-        //5
-        dfScode1.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
-        //6
-        dfScode1.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
-        //7
-        dfScode1.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
-        //8
-        DFScode dfScode2 = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
-        //1
-        dfScode2.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
-        //2
-        dfScode2.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
-        //3
-        dfScode2.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
-        //4
-        dfScode2.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
-        //5
-        dfScode2.addEdge(new GSpanEdge(3, 5, 1, 3, 1, 1));
-        //6
-        dfScode2.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
-        //7
-        dfScode2.addEdge(new GSpanEdge(6, 1, 4, 1, 1, 1));
-        //8
-        System.out.println(dfScode.isParentOf(dfScode1));
-        System.out.println(dfScode.isParentOf(dfScode));
-        System.out.println(dfScode.isParentOf(dfScode2));
-        GSpanEdge gSpanEdge1 = new GSpanEdge(6, 5, 3, 1, 1, 1);
-        GSpanEdge gSpanEdge2 = new GSpanEdge(6, 1, 4, 1, 1, 1);
-        System.out.println(gSpanEdge1.equals(gSpanEdge2));
-                dfScode.saveToFile("test.json", true);
-        dfScode1 = DFScode.readFromFile("test.json");
-
-        String dirPath = "D:\\April9\\R_0.8\\P_all";*/
-        //DFScode.removeDupDumpReadable(dirPath,"C:\\bioportal.sqlite",true);
-/*        String dirPath = "/hdd/liubinchu/D_10/";
-        DFScode.removeDupDumpReadable(dirPath,"/home/lbc/bioportal1.sqlite",false);*/
         String dirPath = "D:\\New folder (3)\\";
         DFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }

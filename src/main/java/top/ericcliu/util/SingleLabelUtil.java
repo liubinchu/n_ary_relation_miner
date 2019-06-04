@@ -1,5 +1,10 @@
 package top.ericcliu.util;
 
+import top.ericcliu.ds.DFScode;
+import top.ericcliu.ds.DFScodeInstance;
+import top.ericcliu.ds.GSpanEdge;
+import top.ericcliu.ds.MultiLabelGraph;
+
 import java.io.File;
 import java.util.*;
 
@@ -65,14 +70,15 @@ public class SingleLabelUtil {
      * @return
      * @throws Exception
      */
-    public static ArrayList<GSpanEdge> rightMostPathExtension(DFScode parent, MultiLabelGraph dataGraph) throws Exception {
+    public static ArrayList<GSpanEdge> rightMostPathExtension(DFScode parent, MultiLabelGraph dataGraph)
+            throws Exception {
         ArrayList<GSpanEdge> childrenEdge = new ArrayList<>();
         LinkedList<Integer> rightMostPath = parent.fetchRightMostPath();
-        Integer rightMostNode = rightMostPath.getLast();
+        int rightMostNode = rightMostPath.getLast();
         if (rightMostPath.size() == 0 || rightMostPath.size() == 1) {
             throw new Exception("right most path size is 0 or 1, ERROR");
         } else if (rightMostPath.size() > 2) {
-            // backward extend, 最后1个节点，无需和最右节点组成边，也即最右节点 不允许和最右节点组成后向边，构成self looped edge
+            // 最右路径上只有一个或者两个节点时，组成后向边构成回路
             rightMostPath.removeLast();
             int tempNode = rightMostPath.removeLast();
             // 最后两个节点不参与后向拓展
@@ -85,16 +91,13 @@ public class SingleLabelUtil {
                 if (dataGraph.getGraphEdge().get(rightMostNodelabel, label2) != null) {
                     possibleChildren.addAll(dataGraph.getGraphEdge().get(rightMostNodelabel, label2).keySet());
                 }
-                if (dataGraph.getGraphEdge().get(label2, rightMostNodelabel) != null) {
-                    possibleChildren.addAll(dataGraph.getGraphEdge().get(label2, rightMostNodelabel).keySet());
-                }
                 for (DFScode possibleChild : possibleChildren) {
                     if (possibleChild.getEdgeSeq().size() != 1) {
                         throw new Exception("wrong edge");
                     }
-                    GSpanEdge possibleEdge = new GSpanEdge(rightMostNode, node2, rightMostNodelabel, label2, possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
-                    GSpanEdge possibleEdgeReverse = new GSpanEdge(node2, rightMostNode, label2, rightMostNodelabel, possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
-                    if (!parent.getEdgeSeq().contains(possibleEdge) && !parent.getEdgeSeq().contains(possibleEdgeReverse)) {
+                    GSpanEdge possibleEdge = new GSpanEdge(rightMostNode, node2, rightMostNodelabel, label2,
+                            possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
+                    if (!parent.getEdgeSeq().contains(possibleEdge) ) {
                         childrenEdge.add(possibleEdge);
                     }
                 }
@@ -106,8 +109,8 @@ public class SingleLabelUtil {
         // forward extend
         Iterator<Integer> descRMPit = rightMostPath.descendingIterator();
         while (descRMPit.hasNext()) {
-            Integer nodeInRMP = descRMPit.next();
-            Integer nodeInRMPLabel = parent.fetchNodeLabel(nodeInRMP);
+            int nodeInRMP = descRMPit.next();
+            int nodeInRMPLabel = parent.fetchNodeLabel(nodeInRMP);
             Set<DFScode> possibleChildren = new HashSet<>();
             for (Map<DFScode, DFScodeInstance> map : dataGraph.getGraphEdge().row(nodeInRMPLabel).values()) {
                 possibleChildren.addAll(map.keySet());
@@ -119,29 +122,16 @@ public class SingleLabelUtil {
                 int node2 = parent.getMaxNodeId() + 1;
                 int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelB();
                 int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
-                childrenEdge.add(possibleEdge);
-            }
-            possibleChildren = new HashSet<>();
-            for (Map<DFScode, DFScodeInstance> map : dataGraph.getGraphEdge().column(nodeInRMPLabel).values()) {
-                possibleChildren.addAll(map.keySet());
-            }
-            for (DFScode possibleChild : possibleChildren) {
-                if (possibleChild.getEdgeSeq().size() != 1) {
-                    throw new Exception("wrong edge");
-                }
-                int node2 = parent.getMaxNodeId() + 1;
-                int nodeLabel2 = possibleChild.getEdgeSeq().get(0).getLabelA();
-                int edgeLabel = possibleChild.getEdgeSeq().get(0).getEdgeLabel();
-                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 1);
+                GSpanEdge possibleEdge = new GSpanEdge(nodeInRMP, node2, nodeInRMPLabel, nodeLabel2, edgeLabel, 0);
                 childrenEdge.add(possibleEdge);
             }
         }
         return childrenEdge;
     }
 
-    public static DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances, GSpanEdge childernEdge,
-                                                boolean backwardExtend, MultiLabelGraph dataGraph) throws Exception {
+    public static DFScodeInstance subGraphIsomorphism(DFScode parent, DFScodeInstance parentInstances,
+                                                      GSpanEdge childernEdge, boolean backwardExtend,
+                                                      MultiLabelGraph dataGraph) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
         DFScodeInstance childInstance = new DFScodeInstance();
         DFScode child = new DFScode(parent).addEdge(childernEdge);
@@ -158,19 +148,19 @@ public class SingleLabelUtil {
             for (Map.Entry<Integer, Integer> nodeAIdDSMap : nodeAIdsDSMap.entrySet()) {
                 Integer instanceId = nodeAIdDSMap.getKey();
                 Set<Integer> appearedNodes = new HashSet<>();
-                for (Integer node : parentInstances.getInstances().get(instanceId)) {
+                for (int node : parentInstances.getInstances().get(instanceId)) {
                     appearedNodes.add(node);
                 }
-                Integer nodeAIdDS = nodeAIdDSMap.getValue();
-                for (Integer possNodeBId : possNodeBIds) {
+                int nodeAIdDS = nodeAIdDSMap.getValue();
+                for (int possNodeBId : possNodeBIds) {
                     if (appearedNodes.contains(possNodeBId)) {
                         continue;
                     }
                     if (!dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdDS, possNodeBId)) {
                         continue;
                     }
-                    Integer edgeValue = ((Integer) dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
-                    if (!edgeValue.equals(edgeLabel)) {
+                    int edgeValue = ((int) dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
+                    if (edgeValue!=edgeLabel) {
                         continue;
                     }
                     int newLength = parentInstances.getInstances().get(instanceId).length + 1;
@@ -182,10 +172,10 @@ public class SingleLabelUtil {
         } else if (nodeA>nodeB && backwardExtend) {
             // backward edge
             for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
-                Integer nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
-                Integer nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
+                int nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
+                int nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
                 boolean correctEdge = dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdsDS, nodeBIdsDS);
-                correctEdge = (correctEdge == false ? false : ((Integer) dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()).equals(edgeLabel));
+                correctEdge = (correctEdge == false ? false : (int) dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()==edgeLabel);
                 // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
                 // 目前只考虑 两个节点之间只存在一条边
                 if (correctEdge) {
@@ -202,10 +192,10 @@ public class SingleLabelUtil {
 
     public static void savePattern(DFScode childDFScode, DFScodeInstance childInstance,
                              int maxDepth, double threshold, double relatedRatio,
-                             int resultIndex,MultiLabelGraph dataGraph) throws Exception {
-        String dirPath = "result_Thresh_"+threshold+"D_"+maxDepth+"related_ratio_"+relatedRatio+
-                File.separator + dataGraph.graphName + "MNI_" + threshold;
-        String fileName = dataGraph.graphName + "MNI_" + threshold + "Id_" + (resultIndex) + ".json";
+                             int resultIndex,MultiLabelGraph dataGraph,String algorithm) throws Exception {
+        String dirPath = algorithm+"_Thresh_"+threshold+"D_"+maxDepth+"Related_Ratio_"+relatedRatio+
+                File.separator + dataGraph.graphName+ "_threshold_" + threshold;
+        String fileName = dataGraph.graphName + "_threshold_" + threshold + "Id_" + (resultIndex) + ".json";
         File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();

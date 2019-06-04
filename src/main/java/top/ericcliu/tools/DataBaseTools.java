@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.tools;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.google.common.base.Objects;
+import top.ericcliu.util.ArrangeCombination;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

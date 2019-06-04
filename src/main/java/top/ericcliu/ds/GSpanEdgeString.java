@@ -1,4 +1,6 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
+
+import top.ericcliu.tools.DataBaseTools;
 
 import java.io.Serializable;
 import java.sql.Connection;

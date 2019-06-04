@@ -1,6 +1,7 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.google.common.base.Objects;
+import top.ericcliu.tools.DataBaseTools;
 
 import java.sql.Connection;
 import java.util.LinkedList;

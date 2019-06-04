@@ -1,9 +1,13 @@
-package top.ericcliu.util;
+package top.ericcliu.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
+import top.ericcliu.ds.Seed;
+import top.ericcliu.ds.SeedEdge;
+import top.ericcliu.ds.SeedString;
+import top.ericcliu.ds.TypeRelatedGraph;
 
 import java.io.File;
 import java.sql.Connection;

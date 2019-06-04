@@ -1,7 +1,12 @@
 package top.ericcliu;
 
 import javafx.util.Pair;
-import top.ericcliu.util.*;
+import top.ericcliu.ds.DFScode;
+import top.ericcliu.ds.DFScodeInstance;
+import top.ericcliu.ds.GSpanEdge;
+import top.ericcliu.ds.MultiLabelGraph;
+import top.ericcliu.util.NaryMDCJustifier;
+import top.ericcliu.util.SingleLabelUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -67,7 +72,7 @@ public class NAryRelationMiner {
         ArrayList<Pair<DFScode,DFScodeInstance>> children = new ArrayList<>(childrenEdges.size());
         for (GSpanEdge childEdge : childrenEdges) {
             DFScode childDFScode = new DFScode(parent).addEdge(childEdge);
-            if (!new NaryMDCJustifier(childDFScode).justify()) {
+            if (!new NaryMDCJustifier(childDFScode,this.maxDepth).justify()) {
                 continue;
             }
             DFScodeInstance childInstance = SingleLabelUtil.subGraphIsomorphism(parent, parentInstances, childEdge,
@@ -88,7 +93,7 @@ public class NAryRelationMiner {
         if(children.isEmpty()){
             // 如果是叶子节点，保存
             SingleLabelUtil.savePattern(parent, parentInstances,this.maxDepth,this.threshold,
-                    this.relatedRatio,this.resultSize++,this.dataGraph);
+                    this.relatedRatio,this.resultSize++,this.dataGraph,"SLNaryRelation");
         }
         else {
             // 如果不是叶子节点，向下递归
@@ -113,20 +118,18 @@ public class NAryRelationMiner {
 
 
     public static void main(String[] args) throws Exception {
-        String filePath = args[0];
-        Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);
+/*        String filePath = args[0];
+        double threshold = Double.parseDouble(args[1]);
         int maxDepth = Integer.parseInt(args[2]);
-        double relatedRatioThreshold = Double.parseDouble(args[3]);
-        //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        double relatedRatio = Double.parseDouble(args[3]);*/
+        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        //double dataSetSizeRelatedthreshold = 0.1;
+        double threshold = 0.1;
+        int maxDepth = 10;
+        double relatedRatio = 0.1;
         try {
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
-            System.out.println("finish read file");
-            NAryRelationMiner miner = new NAryRelationMiner(graph, dataSetSizeRelatedthreshold, maxDepth, relatedRatioThreshold);
-            System.out.println(miner.getDataGraph().graphName);
-            System.out.println(graph.getGraphEdge());
-            System.out.println("SupportThreshold" + miner.support);
+            NAryRelationMiner miner = new NAryRelationMiner(graph, threshold, maxDepth, relatedRatio);
             miner.mine();
         } catch (Exception e) {
             e.printStackTrace(System.out);

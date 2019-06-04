@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.google.common.base.Objects;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author liubi
  * @date 2019-04-09 14:51
  **/
-public class DFScodeString implements Cloneable , SaveToFile{
+public class DFScodeString implements Cloneable , SaveToFile {
     private String relationNode ;
     private Integer MNI = -1;
     private Double relatedRatio = -1.0;
@@ -55,8 +55,12 @@ public class DFScodeString implements Cloneable , SaveToFile{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         DFScodeString that = (DFScodeString) o;
         return Objects.equal(relationNode, that.relationNode) &&
                 Objects.equal(MNI, that.MNI) &&

@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import java.util.HashSet;
 import java.util.Objects;

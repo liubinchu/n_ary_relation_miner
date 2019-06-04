@@ -1,4 +1,6 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
+
+import top.ericcliu.tools.DataBaseTools;
 
 import java.sql.Connection;
 import java.util.HashSet;
@@ -8,7 +10,7 @@ import java.util.Set;
  * @author liubi
  * @date 2019-04-16 15:22
  **/
-public class SeedString implements SaveToFile{
+public class SeedString implements SaveToFile {
     private String typeId;
     private double purity;
     private Integer nodeNums;

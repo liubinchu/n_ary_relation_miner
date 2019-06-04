@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
@@ -11,7 +11,7 @@ import java.util.*;
  * @author liubi
  * @date 2019-05-26 21:39
  **/
-public class MLDFScode implements SaveToFile{
+public class MLDFScode implements SaveToFile {
     /**
      * -1 未计算
      */
@@ -440,34 +440,7 @@ public class MLDFScode implements SaveToFile{
     }
 
     public static void main(String[] args) throws Exception {
-/*        LinkedList<Integer> label1 = new LinkedList<>();
-        label1.add(1);
-        LinkedList<Integer> label2 = new LinkedList<>();
-        label2.add(2);
-        LinkedList<Integer> label3 = new LinkedList<>();
-        label3.add(3);
-        LinkedList<Integer> label4 = new LinkedList<>();
-        label4.add(4);
 
-        ArrayList<MLGSpanEdge> edgeSeq = new ArrayList<>(7);
-        edgeSeq.add(new MLGSpanEdge(1, 2, label1, label1, 1, 1));
-        //1
-        edgeSeq.add(new MLGSpanEdge(2, 3, label1, label2, 1, 1));
-        //2
-        edgeSeq.add(new MLGSpanEdge(2, 4, label1, label3, 1, 1));
-        //3
-        edgeSeq.add(new MLGSpanEdge(4, 5, label3, label1, 1, 1));
-        //4
-        edgeSeq.add(new MLGSpanEdge(1, 5, label1, label3, 1, 1));
-        //5
-        edgeSeq.add(new MLGSpanEdge(5, 6, label3, label4, 1, 1));
-        //6
-        edgeSeq.add(new MLGSpanEdge(5, 6, label3, label2, 1, 1));
-        MLDFScode dfScode = new MLDFScode(edgeSeq);
-
-        dfScode.saveToFile("mlDFScode.json",false);
-        dfScode = MLDFScode.readFromFile("mlDFScode.json");
-        System.out.println(dfScode);*/
         String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\result_Thresh_0.1D_10related_ratio_0.001";
         MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }

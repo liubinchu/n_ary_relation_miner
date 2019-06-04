@@ -1,7 +1,9 @@
 package top.ericcliu;
 
 import javafx.util.Pair;
-import top.ericcliu.util.*;
+import top.ericcliu.ds.*;
+import top.ericcliu.util.MLNaryMDCJustifier;
+import top.ericcliu.util.MultiLabelUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -124,9 +126,9 @@ public class MLNAryRelationMiner {
         int maxDepth = 10;
         double relatedRatio = 0.001;
         try {
+            long startTime = System.currentTimeMillis();
             MLNAryRelationMiner miner = new MLNAryRelationMiner(new MultiLabelGraph(filePath),
                     threshold, maxDepth, relatedRatio);
-            long startTime = System.currentTimeMillis();
             miner.mine();
             System.out.println(filePath+","+ (System.currentTimeMillis() - startTime) + "," + miner.support);
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import java.util.ArrayList;
 import java.util.HashMap;

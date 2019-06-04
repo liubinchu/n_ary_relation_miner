@@ -1,6 +1,7 @@
 package top.ericcliu.util;
 
 import javafx.util.Pair;
+import top.ericcliu.ds.*;
 
 import java.util.*;
 
@@ -95,22 +96,21 @@ public class MLNaryMDCJustifier {
     /**
      * 判断给定的minEdgePair 和  index 指定的this.mlDFSCode 中的边的大小
      *
-     * @param minEdgePair
-     * @param index
+     * @param minEdgePair 待加入的边
+     * @param index       index 指定的this.mlDFSCode 中的边
+     * @param minDFScode  已经生成的DFScode
      * @return true: minEdgePair 是该步需要扩展的最小边
      * false: minEdgePair 不是该步需要扩展的最小边
      */
     private boolean compare(Pair<Boolean, MLGSpanEdge> minEdgePair, int index, MLDFScode minDFScode) throws Exception {
         MLGSpanEdge minEdge = minEdgePair.getValue();
         MLGSpanEdge dfScodeEdge = this.mlDFSCode.getEdgeSeq().get(index);
-        {
-            if (minEdge.getNodeA() != dfScodeEdge.getNodeA()
-                    || minEdge.getNodeB() != dfScodeEdge.getNodeB()
-                    || minEdge.getLabelB().size() != 1) {
-                throw new Exception("非法输入1");
-            }
+        if (minEdge.getLabelB().size() != 1) {
+            throw new Exception("非法输入1");
         }
-        if (minEdge.getDirection() != dfScodeEdge.getDirection()) {
+        if (minEdge.getNodeA() != dfScodeEdge.getNodeA()
+                || minEdge.getNodeB() != dfScodeEdge.getNodeB()
+                || minEdge.getDirection() != dfScodeEdge.getDirection()) {
             return false;
         }
         int minEdgeLabelB = (int) minEdge.getLabelB().getFirst();
@@ -126,7 +126,12 @@ public class MLNaryMDCJustifier {
                 return false;
             }
             int labelIndex = minDFScode.fetchNodeLabel(minDFScode.getMaxNodeId()).size();
-            return dfScodeEdge.getLabelB().get(labelIndex).equals(minEdgeLabelB);
+            if (dfScodeEdge.getLabelB().size() <= labelIndex) {
+                // 仍然可以增加一个标签，但是在this.mlDFSCode的对应节点上，没有该标签
+                return false;
+            } else {
+                return dfScodeEdge.getLabelB().get(labelIndex).equals(minEdgeLabelB);
+            }
         } else {
             // add a forward edge
             Set<Integer> temp = new HashSet<>(minEdgeLabelA);
@@ -154,43 +159,4 @@ public class MLNaryMDCJustifier {
             return dfScodeEdge.getLabelB().getFirst().equals(minEdgeLabelB);
         }
     }
-
-    /*    *//**
-     * 判断两个给定的MLGSpanEdge 的大小
-     * 除了 labelB之外 其他元素都应该相同
-     * labelB 应该只有一个
-     *
-     * @param edgeAPair
-     * @param edgeBPair
-     * @return
-     *//*
-    private int compare(Pair<Boolean, MLGSpanEdge> edgeAPair, Pair<Boolean, MLGSpanEdge> edgeBPair) throws Exception {
-        int addLabelA = edgeAPair.getKey() ? 0 : 1;
-        int addLabelB = edgeBPair.getKey() ? 0 : 1;
-        if (addLabelA != addLabelB) {
-            return addLabelA - addLabelB;
-        }
-        MLGSpanEdge edgeA = edgeAPair.getValue();
-        MLGSpanEdge edgeB = edgeBPair.getValue();
-        if (edgeA.getNodeA() != edgeB.getNodeA()) {
-            return edgeA.getNodeA() - edgeB.getNodeA();
-        }
-        if (edgeA.getNodeB() != edgeB.getNodeB()) {
-            return edgeA.getNodeB() - edgeB.getNodeB();
-        }
-        if (edgeA.getDirection() != edgeB.getDirection()) {
-            return edgeA.getDirection() - edgeB.getDirection();
-        }
-        Set<Integer> edgeALabelA = new HashSet<>(edgeA.getLabelA());
-        Set<Integer> edgeBLabelA = new HashSet<>(edgeB.getLabelA());
-        if (!edgeALabelA.equals(edgeBLabelA)
-                || edgeA.getLabelB().size() != 1
-                || edgeB.getLabelB().size() != 1) {
-            throw new Exception("非法参数");
-        }
-        if (edgeA.getEdgeLabel() != edgeB.getEdgeLabel()) {
-            return edgeA.getEdgeLabel() - edgeB.getEdgeLabel();
-        }
-        return (int) edgeA.getLabelB().getFirst() - (int) edgeB.getLabelB().getFirst();
-    }*/
 }

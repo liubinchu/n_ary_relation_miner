@@ -1,9 +1,9 @@
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import java.util.Objects;
 import java.util.Set;
 
-public class Seed implements Comparable ,SaveToFile{
+public class Seed implements Comparable , SaveToFile {
     private Integer typeId;
     private double purity;
     private Integer nodeNums;

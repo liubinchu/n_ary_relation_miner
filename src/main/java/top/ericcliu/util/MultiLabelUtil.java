@@ -1,6 +1,7 @@
 package top.ericcliu.util;
 
 import javafx.util.Pair;
+import top.ericcliu.ds.*;
 
 import java.io.File;
 import java.util.*;
@@ -26,7 +27,7 @@ public class MultiLabelUtil {
      * @throws Exception
      */
     public static   ArrayList<Pair<Boolean, MLGSpanEdge>>
-    nAryRelationExtension(MLDFScode parent,int maxDepth, MultiLabelGraph dataGraph) throws Exception {
+    nAryRelationExtension(MLDFScode parent, int maxDepth, MultiLabelGraph dataGraph) throws Exception {
         ArrayList<Pair<Boolean, MLGSpanEdge>> childrenEdge = new ArrayList<>();
         LinkedList<Integer> RMP = parent.fetchRightMostPath();
         if (RMP.size() == 0 || RMP.size() == 1) {
@@ -35,7 +36,8 @@ public class MultiLabelUtil {
         if (maxDepth < 1) {
             throw new Exception("maxDepth must > 0, ERROR");
         }
-        int maxSizeRMP = maxDepth + 1;
+        long maxSizeRMP = (long) maxDepth + 1;
+        // 当不需要深度限制时， maxDepth = Integer.MAX_VALUE;，避免越界
         boolean extendOnNode = true;
         if (RMP.size() >= maxSizeRMP) {
             // 超过最大深度,则跳过最右节点
@@ -79,7 +81,6 @@ public class MultiLabelUtil {
             }
         }
         for (GSpanEdgeModified child : children) {
-
             LinkedList<Integer> RMNodeNewLabel = new LinkedList<>();
             RMNodeNewLabel.add(child.getLabelB());
             int newEdgeLabel = child.getEdgeLabel();
@@ -129,10 +130,10 @@ public class MultiLabelUtil {
         return childrenEdge;
     }
 
-    public static  MLDFScodeInstance subGraphIsomorphism(MLDFScode parent,
-                                                         MLDFScodeInstance parentInstances,
-                                                         Pair<Boolean, MLGSpanEdge> childEdge,
-                                                         MultiLabelGraph dataGraph) throws Exception {
+    public static MLDFScodeInstance subGraphIsomorphism(MLDFScode parent,
+                                                        MLDFScodeInstance parentInstances,
+                                                        Pair<Boolean, MLGSpanEdge> childEdge,
+                                                        MultiLabelGraph dataGraph) throws Exception {
         // 假设 parent 和  childernEdge 能够组成合法的childDFScode， 合法性检查已经完成
         MLDFScodeInstance childInstance = new MLDFScodeInstance();
         if (childEdge.getKey()) {
@@ -194,9 +195,9 @@ public class MultiLabelUtil {
     public static void savePattern(MLDFScode MLChildCode, MLDFScodeInstance MLChildInstance,
                                    int maxDepth, double threshold, double relatedRatio,
                                    int resultIndex,MultiLabelGraph dataGraph) throws Exception {
-        String dirPath = "result_Thresh_"+threshold+"D_"+maxDepth+"related_ratio_"+relatedRatio+
-                File.separator + dataGraph.graphName + "MNI_" + threshold;
-        String fileName = dataGraph.graphName + "MNI_" + threshold + "Id_" + (resultIndex) + ".json";
+        String dirPath = "MLNaryRelation_Thresh_"+threshold+"D_"+maxDepth+"Related_Ratio_"+relatedRatio+
+                File.separator + dataGraph.graphName + "_threshold_" + threshold;
+        String fileName = dataGraph.graphName + "_threshold_" + threshold + "Id_" + (resultIndex) + ".json";
         File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();

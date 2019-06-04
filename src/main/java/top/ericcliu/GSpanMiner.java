@@ -1,7 +1,12 @@
 package top.ericcliu;
 
 import javafx.util.Pair;
-import top.ericcliu.util.*;
+import top.ericcliu.ds.DFScode;
+import top.ericcliu.ds.DFScodeInstance;
+import top.ericcliu.ds.GSpanEdge;
+import top.ericcliu.ds.MultiLabelGraph;
+import top.ericcliu.util.MinDFSCodeJustifier;
+import top.ericcliu.util.SingleLabelUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,24 +19,24 @@ import java.util.Map.Entry;
  **/
 public class GSpanMiner {
     private MultiLabelGraph dataGraph;
-    private Double threshold;
+    private double threshold;
     /**
      * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
      */
-    private Integer support;
+    private int support;
     private double relatedRatio;
     private int resultSize = 0;
 
     public GSpanMiner(MultiLabelGraph dataGraph, double thresh) throws Exception {
         this.dataGraph = dataGraph;
         this.threshold = thresh;
-        this.support = Math.max(2, ((Double) (threshold * this.dataGraph.getTypeRelatedNum())).intValue());
+        this.support = Math.max(2, (int)(threshold * this.dataGraph.getTypeRelatedNum()));
         //清洗不频繁的边
-        for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
-            for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
+        for (int labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
+            for (int labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
                 Map<DFScode, DFScodeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
                 if (map != null) {
-                    Boolean changed = false;
+                    boolean changed = false;
                     Iterator<Entry<DFScode, DFScodeInstance>> iterator = map.entrySet().iterator();
                     while (iterator.hasNext()) {
                         Entry<DFScode, DFScodeInstance> entry = iterator.next();
@@ -51,16 +56,6 @@ public class GSpanMiner {
     public MultiLabelGraph getDataGraph() {
         return dataGraph;
     }
-
-    public void setDataGraph(MultiLabelGraph dataGraph) {
-        this.dataGraph = dataGraph;
-    }
-
-
-
-
-
-
 
     private void mineCore(DFScode parent, DFScodeInstance parentInstances) throws Exception {
         ArrayList<GSpanEdge> childrenEdges = SingleLabelUtil.rightMostPathExtension(parent,this.dataGraph);
@@ -88,7 +83,7 @@ public class GSpanMiner {
         if (children.isEmpty()) {
             // 如果是叶子节点，保存
             SingleLabelUtil.savePattern(parent, parentInstances, Integer.MAX_VALUE, this.threshold,
-                    this.relatedRatio, this.resultSize++, this.dataGraph);
+                    this.relatedRatio, this.resultSize++, this.dataGraph,"gSpan");
         } else {
             // 如果不是叶子节点，向下递归
             for (Pair<DFScode, DFScodeInstance> child : children) {
@@ -117,13 +112,7 @@ public class GSpanMiner {
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
         Double dataSetSizeRelatedthreshold = 0.1;
         try {
-            MultiLabelGraph graph = new MultiLabelGraph(filePath);
-            System.out.println("finish read file");
-            GSpanMiner miner = new GSpanMiner(graph, dataSetSizeRelatedthreshold);
-            System.out.println(miner.getDataGraph().graphName);
-            System.out.println(graph.getGraphEdge());
-            System.out.println("    MNISupportThreshold" + miner.support);
-            miner.mine();
+            new GSpanMiner(new MultiLabelGraph(filePath), dataSetSizeRelatedthreshold).mine();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }

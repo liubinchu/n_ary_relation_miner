@@ -2,7 +2,7 @@
  * Copyright (c) @ EriccLiu 2018.
  */
 
-package top.ericcliu.util;
+package top.ericcliu.ds;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Multimap;
@@ -246,9 +246,9 @@ public class MultiLabelGraph {
         this.typeId = dfScode.getEdgeSeq().get(0).getLabelA();
         MutableValueGraph graph = ValueGraphBuilder
                 .directed()
-                .expectedNodeCount(dfScode.getNodes().size())
+                .expectedNodeCount(dfScode.fetchNodes().size())
                 .build();
-        for (Integer nodeId : dfScode.getNodes()) {
+        for (Integer nodeId : dfScode.fetchNodes()) {
             graph.addNode(nodeId);
         }
         Multimap<Integer, Integer> nodeLabels = MultimapBuilder.hashKeys().hashSetValues().build();

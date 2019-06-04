@@ -1,8 +1,10 @@
-package top.ericcliu.util;
+package top.ericcliu.tools;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import javafx.util.Pair;
+import top.ericcliu.ds.MLDFScode;
+import top.ericcliu.ds.MLDFScodeString;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -30,7 +32,7 @@ public class Evaluation {
      * @return List<Map<String,MLDFScodeString>> List 中 包含不同评估者的答案，Map的key是 文件名，value 是包含答案的DFScode
      * @throws Exception
      */
-    private static List<Map<String,MLDFScodeString>> readJudgementFromFile(String filePath) throws Exception {
+    private static List<Map<String, MLDFScodeString>> readJudgementFromFile(String filePath) throws Exception {
         File dir = new File(filePath);
         if(!dir.exists()||!dir.isDirectory()){
             throw new IllegalArgumentException("illegal file path ");
