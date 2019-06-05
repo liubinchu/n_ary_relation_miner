@@ -137,13 +137,14 @@ public class DFScode implements Cloneable {
      * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
     public int isParentOf(DFScode possibleChild) throws Exception {
-        if (possibleChild.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
+        return -1;
+/*        if (possibleChild.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
             throw new Exception("illegal DFS code");
         } else if (possibleChild.getEdgeSeq().size() < this.getEdgeSeq().size()) {
             return -1;
         } else {
             return DFScodeTree.isParentOf(new DFScodeTree(this), new DFScodeTree(possibleChild));
-        }
+        }*/
     }
 
     public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
@@ -216,12 +217,11 @@ public class DFScode implements Cloneable {
                 } else if (map.size() == 1) {
                     new DFScodeString(map.get(1), dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
                     );
-                    // id start from 1
                 } else {
-                    for (int i = 1; i < map.size() + 1; i++) {
+                    for (int i = 0; i < map.size(); i++) {
                         boolean flag = true;
                         DFScode currentDFScode = map.get(i);
-                        for (int j = 1; j < map.size() + 1; j++) {
+                        for (int j = 0; j < map.size(); j++) {
                             if (i == j) {
                                 continue;
                             }
@@ -384,20 +384,7 @@ public class DFScode implements Cloneable {
     }
 
     public static void main(String[] args) throws Exception {
-        DFScode dfScode = new DFScode(new GSpanEdge(1, 2, 1, 1, 1, 1));
-        //1
-        dfScode.addEdge(new GSpanEdge(2, 3, 1, 2, 1, 1));
-        //2
-        dfScode.addEdge(new GSpanEdge(3, 1, 2, 1, 1, 1));
-        //3
-        dfScode.addEdge(new GSpanEdge(2, 4, 1, 3, 1, 1));
-        //4
-        dfScode.addEdge(new GSpanEdge(4, 1, 3, 1, 1, 1));
-        //5
-        dfScode.addEdge(new GSpanEdge(1, 5, 1, 3, 1, 1));
-        //6
-        dfScode.addEdge(new GSpanEdge(5, 6, 3, 4, 1, 1));
-        String dirPath = "D:\\New folder (3)\\";
+        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\SLNaryRelation_Thresh_0.1D_10Related_Ratio_0.1";
         DFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 }

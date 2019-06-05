@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
 import javafx.util.Pair;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.*;
 
@@ -59,8 +60,8 @@ public class MLDFScode implements SaveToFile {
      * @param other
      * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
-    private int isParentOf(MLDFScode other) throws Exception {
-        if (other.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
+    private int isParentOf(@Nonnull MLDFScode other) throws Exception {
+       if (other.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
             throw new Exception("illegal DFS code");
         } else if (other.getEdgeSeq().size() < this.getEdgeSeq().size()) {
             return -1;
@@ -104,6 +105,7 @@ public class MLDFScode implements SaveToFile {
             }
             for (Pair<File, Map<Integer, MLDFScode>> dFScodeOfFile : mlDFScodes) {
                 File graphFile = dFScodeOfFile.getKey();
+                String[] split = graphFile.getName().split("T_|.json");
                 int typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
                 Map<Integer, MLDFScode> map = dFScodeOfFile.getValue();
                 if (map.isEmpty()) {
@@ -113,10 +115,10 @@ public class MLDFScode implements SaveToFile {
                     );
                     // id start from 1
                 } else {
-                    for (int i = 1; i < map.size() + 1; i++) {
+                    for (int i = 0; i < map.size(); i++) {
                         boolean flag = true;
                         MLDFScode currentDFScode = map.get(i);
-                        for (int j = 1; j < map.size() + 1; j++) {
+                        for (int j = 0; j < map.size(); j++) {
                             if (i == j) {
                                 continue;
                             }
@@ -441,7 +443,7 @@ public class MLDFScode implements SaveToFile {
 
     public static void main(String[] args) throws Exception {
 
-        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\result_Thresh_0.1D_10related_ratio_0.001";
+        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\MLNaryRelation_Thresh_0.1D_10Related_Ratio_0.001";
         MLDFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 }

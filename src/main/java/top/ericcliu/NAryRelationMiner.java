@@ -22,7 +22,7 @@ public class NAryRelationMiner {
     /**
      * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
      */
-    private Integer support;
+    private int support;
     /**
      * 模式扩展的最大深度 <= maxDepth
      */

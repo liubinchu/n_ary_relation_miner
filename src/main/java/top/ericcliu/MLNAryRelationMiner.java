@@ -15,16 +15,16 @@ import java.util.Map;
  **/
 public class MLNAryRelationMiner {
     private MultiLabelGraph dataGraph;
-    private Double threshold;
+    private double threshold;
     /**
      * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
      */
-    private Integer support;
+    private int support;
     /**
      * 模式扩展的最大深度 <= maxDepth
      */
     private int maxDepth;
-    private Double relatedRatio;
+    private double relatedRatio;
     private int resultSize = 0;
 
     public MLNAryRelationMiner(MultiLabelGraph dataGraph, double threshold, int maxDepth, double relatedRatio) throws Exception {
@@ -34,8 +34,8 @@ public class MLNAryRelationMiner {
         this.maxDepth = maxDepth;
         this.relatedRatio = relatedRatio;
         //清洗不频繁的边
-        for (Integer labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
-            for (Integer labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
+        for (int labelA : this.dataGraph.getGraphEdge().rowKeySet()) {
+            for (int labelB : this.dataGraph.getGraphEdge().columnKeySet()) {
                 Map<DFScode, DFScodeInstance> map = this.dataGraph.getGraphEdge().get(labelA, labelB);
                 if (map != null) {
                     boolean changed = false;
@@ -115,16 +115,16 @@ public class MLNAryRelationMiner {
     }
 
     public static void main(String[] args) throws Exception {
-/*        String filePath = args[0];
+        String filePath = args[0];
         double threshold = Double.parseDouble(args[1]);
         int maxDepth = Integer.parseInt(args[2]);
-        double relatedRatio = Double.parseDouble(args[3]);*/
-        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        double relatedRatio = Double.parseDouble(args[3]);
+/*        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.8351461857952731R_1.0T_8980466.json";
         //String filePath = "small";
         double threshold = 0.1;
         int maxDepth = 10;
-        double relatedRatio = 0.001;
+        double relatedRatio = 0.001;*/
         try {
             long startTime = System.currentTimeMillis();
             MLNAryRelationMiner miner = new MLNAryRelationMiner(new MultiLabelGraph(filePath),

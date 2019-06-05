@@ -24,7 +24,6 @@ public class GSpanMiner {
      * 支持度 用以判断 1. 是否作为 父模式扩展（MNI）2. 是否作为频繁模式输出（instance num）
      */
     private int support;
-    private double relatedRatio;
     private int resultSize = 0;
 
     public GSpanMiner(MultiLabelGraph dataGraph, double thresh) throws Exception {
@@ -83,7 +82,7 @@ public class GSpanMiner {
         if (children.isEmpty()) {
             // 如果是叶子节点，保存
             SingleLabelUtil.savePattern(parent, parentInstances, Integer.MAX_VALUE, this.threshold,
-                    this.relatedRatio, this.resultSize++, this.dataGraph,"gSpan");
+                    Integer.MAX_VALUE, this.resultSize++, this.dataGraph,"gSpan");
         } else {
             // 如果不是叶子节点，向下递归
             for (Pair<DFScode, DFScodeInstance> child : children) {
@@ -110,9 +109,9 @@ public class GSpanMiner {
         Double dataSetSizeRelatedthreshold = Double.parseDouble(args[1]);*/
         String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
-        Double dataSetSizeRelatedthreshold = 0.1;
+        double threshold = 0.1;
         try {
-            new GSpanMiner(new MultiLabelGraph(filePath), dataSetSizeRelatedthreshold).mine();
+            new GSpanMiner(new MultiLabelGraph(filePath), threshold).mine();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
