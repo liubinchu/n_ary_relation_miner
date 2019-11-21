@@ -203,8 +203,7 @@ public class MultiLabelUtil {
             dir.mkdirs();
         }
         MLChildCode.saveToFile(dirPath + File.separator + "RE_" + fileName, false);
-        MLChildInstance.sample(1, 10, 10).
-                saveToFile(dirPath + File.separator + "IN_" + fileName, false);
+        //MLChildInstance.sample(1, 10, 10).saveToFile(dirPath + File.separator + "IN_" + fileName, false);
     }
 
     public static double calRelatedRatio(MLDFScode mldfScode, MultiLabelGraph dataGraph) {

@@ -1,6 +1,7 @@
 package top.ericcliu.util;
 
 import javafx.util.Pair;
+import lombok.extern.log4j.Log4j2;
 import top.ericcliu.ds.*;
 
 import java.util.*;
@@ -9,6 +10,7 @@ import java.util.*;
  * @author liubi
  * @date 2019-05-28 09:41
  **/
+@Log4j2
 public class MLNaryMDCJustifier {
     private MultiLabelGraph mlDFSCodeGraph;
     private MLDFScode mlDFSCode;
@@ -70,7 +72,7 @@ public class MLNaryMDCJustifier {
                 }
             }
             if (minMLEdgePair == null) {
-                System.err.println("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                log.error("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
                 return false;
                 //  应该不会出现这种情况 bug 待解决
             } else {

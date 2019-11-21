@@ -78,6 +78,7 @@ public class NAryRelationMiner {
             DFScodeInstance childInstance = SingleLabelUtil.subGraphIsomorphism(parent, parentInstances, childEdge,
                     false,this.dataGraph);
             childDFScode.setRootNodeNum(childInstance.calRootNodeNum());
+            // 使用 RootNodeNum 作为频繁度剪枝手段
             if(childDFScode.getRootNodeNum()<this.support){
                 continue;
             }
@@ -90,8 +91,8 @@ public class NAryRelationMiner {
             }
             children.add(new Pair<>(childDFScode, childInstance));
         }
-        if(children.isEmpty()){
-            // 如果是叶子节点，保存
+        if(children.isEmpty()&&parent.getEdgeSeq().size()>1){
+            // 如果是叶子节点 且 不是二元关系 ie. 不止一条边，保存
             SingleLabelUtil.savePattern(parent, parentInstances,this.maxDepth,this.threshold,
                     this.relatedRatio,this.resultSize++,this.dataGraph,"SLNaryRelation");
         }
@@ -118,15 +119,17 @@ public class NAryRelationMiner {
 
 
     public static void main(String[] args) throws Exception {
-/*        String filePath = args[0];
+        String filePath = args[0];
         double threshold = Double.parseDouble(args[1]);
         int maxDepth = Integer.parseInt(args[2]);
-        double relatedRatio = Double.parseDouble(args[3]);*/
-        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        double relatedRatio = Double.parseDouble(args[3]);
+
+/*        String filePath = "D_10P_0.8351461857952731R_1.0T_8980466.json";
         //String filePath = "D_10P_0.7616333464587202R_1.0T_8980377.json";
         double threshold = 0.1;
         int maxDepth = 10;
-        double relatedRatio = 0.1;
+        double relatedRatio = 0.1;*/
+
         try {
             MultiLabelGraph graph = new MultiLabelGraph(filePath);
             NAryRelationMiner miner = new NAryRelationMiner(graph, threshold, maxDepth, relatedRatio);

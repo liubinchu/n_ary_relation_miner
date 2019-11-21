@@ -40,6 +40,7 @@ public class MLTreeNode {
     /**
      * 判断  treeA 是否是 treeB 的 父模式
      * treeA 与 treeB 完全相同时也认为是父模式
+     *
      * @param treeA
      * @param treeB
      * @return 1 equal, 0 parent -1 not parent(child/no relation)
@@ -58,11 +59,10 @@ public class MLTreeNode {
         }
         HashSet<Integer> reduntent = new HashSet<>(treeA.nodeVal);
         reduntent.removeAll(treeB.nodeVal);
-        if (!reduntent.isEmpty()){
+        if (!reduntent.isEmpty()) {
             // treeB.nodeVal 是 treeA.nodeVal 的子集，因此
             return -1;
-        }
-        else if (treeA.childern == null && treeB.childern != null) {
+        } else if (treeA.childern == null && treeB.childern != null) {
             return 0;
         } else if (treeB.childern == null || treeA.childern.size() > treeB.childern.size()) {
             return -1;
@@ -104,7 +104,7 @@ public class MLTreeNode {
             return false;
         }
         MLTreeNode that = (MLTreeNode) o;
-        return edgeVal == that.edgeVal &&
+        return Objects.equal(edgeVal, that.edgeVal) &&
                 Objects.equal(nodeVal, that.nodeVal) &&
                 Objects.equal(childern, that.childern);
     }

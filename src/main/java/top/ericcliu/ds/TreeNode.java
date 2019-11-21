@@ -91,8 +91,12 @@ public class TreeNode {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         TreeNode node = (TreeNode) o;
         return Objects.equal(nodeVal, node.nodeVal) &&
                 Objects.equal(edgeVal, node.edgeVal) &&

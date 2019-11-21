@@ -1,6 +1,7 @@
 package top.ericcliu;
 
 import javafx.util.Pair;
+import lombok.extern.log4j.Log4j2;
 import top.ericcliu.ds.*;
 import top.ericcliu.util.MLNaryMDCJustifier;
 import top.ericcliu.util.MultiLabelUtil;
@@ -13,6 +14,7 @@ import java.util.Map;
  * @author liubi
  * @date 2019-05-27 10:10
  **/
+@Log4j2
 public class MLNAryRelationMiner {
     private MultiLabelGraph dataGraph;
     private double threshold;
@@ -42,7 +44,7 @@ public class MLNAryRelationMiner {
                     Iterator<Map.Entry<DFScode, DFScodeInstance>> it = map.entrySet().iterator();
                     while (it.hasNext()) {
                         Map.Entry<DFScode, DFScodeInstance> entry = it.next();
-                        if(entry.getKey().getEdgeSeq().size()!=1){
+                        if (entry.getKey().getEdgeSeq().size() != 1) {
                             throw new Exception("illegal edge");
                         }
                         if (entry.getValue().calMNI() < this.support) {
@@ -59,8 +61,8 @@ public class MLNAryRelationMiner {
     }
 
     private void mineCore(MLDFScode parent, MLDFScodeInstance parentInstances) throws Exception {
-        ArrayList<Pair<Boolean, MLGSpanEdge>> childEdgePairs = MultiLabelUtil.nAryRelationExtension(parent,this.maxDepth,this.dataGraph);
-        ArrayList<Pair<MLDFScode,MLDFScodeInstance>> children = new ArrayList<>(childEdgePairs.size());
+        ArrayList<Pair<Boolean, MLGSpanEdge>> childEdgePairs = MultiLabelUtil.nAryRelationExtension(parent, this.maxDepth, this.dataGraph);
+        ArrayList<Pair<MLDFScode, MLDFScodeInstance>> children = new ArrayList<>(childEdgePairs.size());
         for (Pair<Boolean, MLGSpanEdge> childEdgePair : childEdgePairs) {
             MLDFScode childDFScode = new MLDFScode(parent);
             if (childEdgePair.getKey()) {
@@ -73,8 +75,9 @@ public class MLNAryRelationMiner {
             if (!new MLNaryMDCJustifier(childDFScode).justify()) {
                 continue;
             }
-            MLDFScodeInstance childInstance = MultiLabelUtil.subGraphIsomorphism(parent, parentInstances, childEdgePair,this.dataGraph);
+            MLDFScodeInstance childInstance = MultiLabelUtil.subGraphIsomorphism(parent, parentInstances, childEdgePair, this.dataGraph);
             childDFScode.setRootNodeNum(childInstance.calRootNodeNum());
+            // 使用 RootNodeNum 作为频繁度剪枝手段
             if (childDFScode.getRootNodeNum() < this.support) {
                 continue;
             }
@@ -83,18 +86,18 @@ public class MLNAryRelationMiner {
                 childDFScode.setMNI(childInstance.calMNI());
                 childDFScode.setRootNodeRatio(((double) childDFScode.getRootNodeNum()
                         / (double) this.dataGraph.getTypeRelatedNum()));
-                childDFScode.setRelatedRatio(MultiLabelUtil.calRelatedRatio(childDFScode,this.dataGraph));
+                childDFScode.setRelatedRatio(MultiLabelUtil.calRelatedRatio(childDFScode, this.dataGraph));
             }
             children.add(new Pair<>(childDFScode, childInstance));
         }
-        if(children.isEmpty()){
-            // 如果是叶子节点，保存
-            MultiLabelUtil.savePattern(parent,parentInstances,this.maxDepth,this.threshold,
-                    this.relatedRatio,this.resultSize++,this.dataGraph);
-        }else {
+        if (children.isEmpty() && parent.getEdgeSeq().size() > 1) {
+            // 如果是叶子节点 且 不是二元关系 ie. 不止一条边，保存
+            MultiLabelUtil.savePattern(parent, parentInstances, this.maxDepth, this.threshold,
+                    this.relatedRatio, this.resultSize++, this.dataGraph);
+        } else {
             // 如果不是叶子节点，向下递归
-            for(Pair<MLDFScode,MLDFScodeInstance> child : children){
-                mineCore(child.getKey(),child.getValue());
+            for (Pair<MLDFScode, MLDFScodeInstance> child : children) {
+                mineCore(child.getKey(), child.getValue());
             }
         }
     }
@@ -119,8 +122,8 @@ public class MLNAryRelationMiner {
         double threshold = Double.parseDouble(args[1]);
         int maxDepth = Integer.parseInt(args[2]);
         double relatedRatio = Double.parseDouble(args[3]);
-/*        String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
-        //String filePath = "D_10P_0.8351461857952731R_1.0T_8980466.json";
+/*        //String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
+        String filePath = "D_10P_0.8351461857952731R_1.0T_8980466.json";
         //String filePath = "small";
         double threshold = 0.1;
         int maxDepth = 10;
@@ -130,9 +133,9 @@ public class MLNAryRelationMiner {
             MLNAryRelationMiner miner = new MLNAryRelationMiner(new MultiLabelGraph(filePath),
                     threshold, maxDepth, relatedRatio);
             miner.mine();
-            System.out.println(filePath+","+ (System.currentTimeMillis() - startTime) + "," + miner.support);
+            log.info(filePath + "," + (System.currentTimeMillis() - startTime) + "," + miner.support);
         } catch (Exception e) {
-            e.printStackTrace(System.out);
+            log.error(e.getMessage());
         }
     }
 }

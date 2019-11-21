@@ -1,7 +1,6 @@
 package top.ericcliu.ds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.util.Pair;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -112,7 +111,7 @@ public class DFScode implements Cloneable {
         this.rootNodeId = fetchNodeLabel(minNodeId);
     }
 
-    public DFScode (DFScode dfScode){
+    public DFScode(DFScode dfScode) {
         this.rootNodeId = dfScode.rootNodeId;
         this.MNI = dfScode.MNI;
         this.relatedRatio = dfScode.relatedRatio;
@@ -137,14 +136,14 @@ public class DFScode implements Cloneable {
      * @return 1 equal, 0 parent -1 not parent(child/no relation)
      */
     public int isParentOf(DFScode possibleChild) throws Exception {
-        return -1;
-/*        if (possibleChild.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
+        //return -1;
+        if (possibleChild.getEdgeSeq().isEmpty() || this.getEdgeSeq().isEmpty()) {
             throw new Exception("illegal DFS code");
         } else if (possibleChild.getEdgeSeq().size() < this.getEdgeSeq().size()) {
             return -1;
         } else {
             return DFScodeTree.isParentOf(new DFScodeTree(this), new DFScodeTree(possibleChild));
-        }*/
+        }
     }
 
     public boolean saveToFile(String filePath, boolean isAppend) throws Exception {
@@ -180,71 +179,6 @@ public class DFScode implements Cloneable {
         return new DFScode(dfScodeJson);
     }
 
-    public static void removeDupDumpReadable(String dirPath, String dataBasePath) throws Exception {
-        //结果保存在第二级目录中
-        try {
-            File dirFile = new File(dirPath);
-            File[] files;
-            if (dirFile.isDirectory()) {
-                files = dirFile.listFiles();
-            } else {
-                throw new Exception("dirPath must be a dir");
-            }
-            ArrayList<Pair<File, Map<Integer, DFScode>>> dfScodes = new ArrayList<>();
-            for (File dir : files) {
-                if (!dir.isDirectory()) {
-                    continue;
-                }
-                File[] reFiles = dir.listFiles();
-                Map<Integer, DFScode> currentMap = new HashMap<>();
-                for (File reFile : reFiles) {
-                    String fileName = reFile.getName();
-                    if (fileName.length() >= 2 && fileName.charAt(0) == 'R' && fileName.charAt(1) == 'E' && reFile.length() > 1) {
-                        Integer relationId = Integer.parseInt(fileName.split("Id_")[1].replace(".json", ""));
-                        System.out.println(dir.getAbsolutePath() + File.separator + fileName);
-                        DFScode dfScode = DFScode.readFromFile(dir.getAbsolutePath() + File.separator + fileName);
-                        currentMap.put(relationId, dfScode);
-                    }
-                }
-                dfScodes.add(new Pair<>(dir, currentMap));
-            }
-            for (Pair<File, Map<Integer, DFScode>> dFScodeOfFile : dfScodes) {
-                File graphFile = dFScodeOfFile.getKey();
-                Integer typeId = Integer.parseInt(graphFile.getName().split("T_|.json")[1]);
-                Map<Integer, DFScode> map = dFScodeOfFile.getValue();
-                if (map.isEmpty()) {
-                    continue;
-                } else if (map.size() == 1) {
-                    new DFScodeString(map.get(1), dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_1.json", false
-                    );
-                } else {
-                    for (int i = 0; i < map.size(); i++) {
-                        boolean flag = true;
-                        DFScode currentDFScode = map.get(i);
-                        for (int j = 0; j < map.size(); j++) {
-                            if (i == j) {
-                                continue;
-                            }
-                            DFScode nextDFScode = map.get(j);
-                            int mode = currentDFScode.isParentOf(nextDFScode);
-                            if (mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI )) {
-                                // mode == 0 || (mode == 1 && currentDFScode.MNI < nextDFScode.MNI && i>j )
-                                flag = false;
-                                break;
-                            }
-                        }
-                        if (flag) {
-                            new DFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(graphFile.getAbsolutePath() + File.separator + "READRE_" + graphFile.getName() + "Id_" + i + ".json", false);
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-        }
-    }
-
-
     public LinkedList<Integer> fetchRightMostPath() throws Exception {
         LinkedList<Integer> rightMostPath = new LinkedList<>();
         for (GSpanEdge edge : this.edgeSeq) {
@@ -272,8 +206,10 @@ public class DFScode implements Cloneable {
         }
         return rightMostPath;
     }
+
     /**
      * 获得DFScode中 节点的标签
+     *
      * @param nodeId DFScode 中 节点id
      * @return
      */
@@ -346,7 +282,6 @@ public class DFScode implements Cloneable {
     }
 
 
-
     public Integer getMaxNodeId() {
         return maxNodeId;
     }
@@ -381,10 +316,5 @@ public class DFScode implements Cloneable {
         return "DFScode{" +
                 "edgeSeq=" + edgeSeq +
                 '}';
-    }
-
-    public static void main(String[] args) throws Exception {
-        String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\SLNaryRelation_Thresh_0.1D_10Related_Ratio_0.1";
-        DFScode.removeDupDumpReadable(dirPath, "C:\\bioportal1.sqlite");
     }
 }

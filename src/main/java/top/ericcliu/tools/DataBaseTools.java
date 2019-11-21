@@ -1,24 +1,26 @@
 package top.ericcliu.tools;
 
+import lombok.extern.log4j.Log4j2;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * @author liubi
  * id <0 时
- *         -24 < id < 0 其对应正数，为 types_strings 表的内容
- *         id = -24 时 表示 replaced id
+ * -24 < id < 0 其对应正数，为 types_strings 表的内容
+ * id = -24 时 表示 replaced id
  */
+@Log4j2
 public class DataBaseTools {
     public Connection sqliteConect(String databasePath) {
         Connection db = null;
         try {
             db = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
             db.setAutoCommit(false);
-            System.out.println("Connect database successfully");
         } catch (Exception e) {
-            System.out.println("Connect database failed , check database file path:" + databasePath);
-            throw e;
+            log.error("Connect database failed , check database file path:" + databasePath);
+            log.error(e.getMessage());
         } finally {
             return db;
         }
@@ -70,6 +72,7 @@ public class DataBaseTools {
         Integer nextIdtypes_string = statement.executeQuery("select max (id) from types_string").getInt(1) + 1;
         String s = "INSERT INTO types_string (id,type_string) VALUES (" + nextIdtypes_string + ", '" + content + "')";
         statement.executeUpdate(s);
+        log.info(s);
         return true;
     }
 
@@ -107,8 +110,8 @@ public class DataBaseTools {
                 + "',"
                 + string_type_id
                 + ")";
-        //System.out.println(s);
         statement.executeUpdate(s);
+        log.info(s);
         return true;
     }
 
@@ -144,8 +147,8 @@ public class DataBaseTools {
                 + ", "
                 + types_id
                 + ")";
-        //System.out.println(s);
         statement.executeUpdate(s);
+        log.info(s);
         return true;
     }
 
@@ -161,13 +164,14 @@ public class DataBaseTools {
             s.append(nodes[i]);
         }
         s.append(";");
-        System.out.println(s.toString());
         ResultSet resultSet = statement.executeQuery(s.toString());
+
         ArrayList<Integer> result = new ArrayList<>();
         while (resultSet.next()) {
             result.add(resultSet.getInt("id"));
         }
-        //System.out.println(result);
+        log.info(s.toString());
+        log.info(result);
         return result;
     }
 
@@ -192,8 +196,8 @@ public class DataBaseTools {
                 + 4 + ", "
                 + typeId
                 + ")";
-        System.out.println(s);
         statement.executeUpdate(s);
+        log.info(s);
         return true;
     }
 
@@ -217,13 +221,14 @@ public class DataBaseTools {
                 + nodeId + ", "
                 + typeId
                 + ")";
-        System.out.println(s);
         statement.executeUpdate(s);
+        log.info(s);
         return true;
     }
 
     /**
      * "2013-05-07T10:03:15Z"^^http://www.w3.org/2001/XMLSchema#dateTime 存在这样的数据 需要将其 拆分 得到标签
+     *
      * @return
      */
     public static boolean seperateTriples(Connection readOnly, Connection readWrite) throws SQLException {
@@ -232,44 +237,44 @@ public class DataBaseTools {
             addType_mapping(readWrite);
             addType_types_node(readWrite);
             ArrayList<Integer> nodesString = selelctNodes(readOnly, new int[]{2, 9, 13, 14, 19, 20});
-            for(Integer nodeString :nodesString){
+            for (Integer nodeString : nodesString) {
                 addNodeType_triples_all(readWrite, nodeString, 16576049);
                 addNodeType_nodes_type(readWrite, nodeString, 16576049);
             }
             ArrayList<Integer> nodesTime = selelctNodes(readOnly, new int[]{3, 10, 22});
-            for(Integer nodeTime :nodesTime){
+            for (Integer nodeTime : nodesTime) {
                 addNodeType_triples_all(readWrite, nodeTime, 16576050);
                 addNodeType_nodes_type(readWrite, nodeTime, 16576050);
             }
-            ArrayList<Integer> nodesNumber = selelctNodes(readOnly, new int[]{4,6,7,8,12,15,18});
-            for(Integer nodeNumber :nodesNumber){
+            ArrayList<Integer> nodesNumber = selelctNodes(readOnly, new int[]{4, 6, 7, 8, 12, 15, 18});
+            for (Integer nodeNumber : nodesNumber) {
                 addNodeType_triples_all(readWrite, nodeNumber, 16576051);
                 addNodeType_nodes_type(readWrite, nodeNumber, 16576051);
             }
             ArrayList<Integer> nodesBoolean = selelctNodes(readOnly, new int[]{5});
-            for(Integer nodeBoolean :nodesBoolean){
+            for (Integer nodeBoolean : nodesBoolean) {
                 addNodeType_triples_all(readWrite, nodeBoolean, 16576052);
                 addNodeType_nodes_type(readWrite, nodeBoolean, 16576052);
             }
             ArrayList<Integer> nodesWebURI = selelctNodes(readOnly, new int[]{11});
-            for(Integer nodeWebURI :nodesWebURI){
+            for (Integer nodeWebURI : nodesWebURI) {
                 addNodeType_triples_all(readWrite, nodeWebURI, 16576053);
                 addNodeType_nodes_type(readWrite, nodeWebURI, 16576053);
             }
             ArrayList<Integer> nodesName = selelctNodes(readOnly, new int[]{16});
-            for(Integer nodeName :nodesName){
+            for (Integer nodeName : nodesName) {
                 addNodeType_triples_all(readWrite, nodeName, 16576054);
                 addNodeType_nodes_type(readWrite, nodeName, 16576054);
             }
             ArrayList<Integer> nodesID = selelctNodes(readOnly, new int[]{17});
-            for(Integer nodeID :nodesID){
+            for (Integer nodeID : nodesID) {
                 addNodeType_triples_all(readWrite, nodeID, 16576055);
                 addNodeType_nodes_type(readWrite, nodeID, 16576055);
             }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return  false;
+            return false;
         } finally {
             readOnly.close();
             readWrite.close();
@@ -278,11 +283,13 @@ public class DataBaseTools {
 
 
     public static void main(String[] args) throws SQLException {
+        String dbPath = args[0];
         DataBaseTools dataBaseTools = new DataBaseTools();
-        Connection db = dataBaseTools.sqliteConect("/home/lbc/bioportal1.sqlite");
+        Connection db = dataBaseTools.sqliteConect(dbPath);
+        //Connection db = dataBaseTools.sqliteConect("/home/lbc/disk/bioportal_sep.sqlite");
         // disk C  readonly for Java
         try {
-            seperateTriples(db,db);
+            seperateTriples(db, db);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

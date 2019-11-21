@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
+import lombok.extern.log4j.Log4j2;
 import top.ericcliu.ds.Seed;
 import top.ericcliu.ds.SeedEdge;
 import top.ericcliu.ds.SeedString;
@@ -19,18 +20,19 @@ import java.util.*;
 /**
  * @author liubi
  */
+@Log4j2
 public class SeedsCalculator {
     private static Set<Integer> subMetaData = new HashSet<>();
     private static Set<Integer> predMetaData = new HashSet<>();
     private static Set<Integer> objMetaData = new HashSet<>();
     private final static String DATA_BASE_PATH = "/home/lbc/bioportal1.sqlite";
     //private static String DATA_BASE_PATH = "C:\\bioportal1.sqlite";
-    private final static String OUT_PUT_FILE_NAME = "seeds1"+".json";
+    private final static String OUT_PUT_FILE_NAME = "seeds1" + ".json";
     private static Connection db = new DataBaseTools().sqliteConect(DATA_BASE_PATH);
 
-   static {
+    static {
         try {
-             // 需要去除的类型 ie 主语
+            // 需要去除的类型 ie 主语
             subMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://www.w3.org/%\""));
             subMetaData.removeAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://www.w3.org/2001/sw/hcls/ns/transmed/TMO%\""));
             subMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content LIKE \"http://purl.org/dc/terms%\""));
@@ -49,7 +51,7 @@ public class SeedsCalculator {
             subMetaData.addAll(getIDs("select id from mapping where content like \"%creation_date\""));
             subMetaData.addAll(getIDs("select id from mapping where content like \"%sameAs\""));
             subMetaData.addAll(getIDs("select id from mapping where content like \"%description\""));
-            System.out.println("finish getting subMetaData");
+            log.info("finish getting subMetaData");
             predMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content = \"http://www.w3.org/1999/02/22-rdf-syntax-ns#type\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping WHERE content = \"http://www.w3.org/2000/01/rdf-schema#subClassOf\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%Dataset\""));
@@ -57,13 +59,13 @@ public class SeedsCalculator {
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%sameAs\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://www.w3.org/2002/07/owl#Thing\""));
             predMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://www.w3.org/2000/01/rdf-schema#label\""));
-            System.out.println("finish getting predMetaData");
+            log.info("finish getting predMetaData");
             objMetaData.addAll(getIDs("SELECT * FROM mapping WHERE content = \"http://bio2rdf.org/bio2rdf_vocabulary:namespace\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://bio2rdf.org%Resource\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%Dataset\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"http://who.int/icd#%DefinitionTerm\" or content like \"http://who.int/icd#ClamlReference\" or content like \"http://who.int/icd#TitleTerm\" or content like \"http://who.int/icd#InclusionTerm\""));
             objMetaData.addAll(getIDs("SELECT id FROM mapping where content like \"%Dataset\""));
-            System.out.println("finish getting objMetaData");
+            log.info("finish getting objMetaData");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,7 +76,7 @@ public class SeedsCalculator {
         String sql = "SELECT COUNT(*) FROM \"types_node\" ";
         ResultSet res = stmt.executeQuery(sql);
         int typesNum = res.getInt("COUNT(*)");
-        System.out.println("types num : " + typesNum);
+        log.info("types num : " + typesNum);
         ArrayList<Integer> types = new ArrayList<>(typesNum);
         res.close();
         stmt.close();
@@ -174,14 +176,14 @@ public class SeedsCalculator {
 
     public static ArrayList<Seed> calculateSeeds(boolean isSaveToFile, boolean isSaveReadable, String dataBaseFile) throws Exception {
         ArrayList<Integer> types = getAlltypes();
-        System.out.println(types.size());
+        log.info("Existing {} types", types.size());
         types.removeAll(subMetaData);
-        System.out.println(types.size());
-        System.out.println("finish get All types ");
+        log.info("Remaining {} types after remove build-in words", types.size());
+        log.info("finish get All types ");
         ArrayList<Seed> seeds = new ArrayList<>(types.size());
         for (int typeId : types) {
             Map<Integer, Integer> nodes = getNodesOfType(typeId);
-            System.out.println("finish get Nodes Of Type " + typeId);
+            log.info("finish get Nodes Of Type " + typeId);
             if (nodes.size() < 10) {
                 // 若该类型下 节点个数 小于 10 那么不计算 ,不具有代表性
                 continue;
@@ -190,7 +192,7 @@ public class SeedsCalculator {
             for (Integer nodeId : nodes.keySet()) {
                 commonEdges = getEdgesOfNode(nodeId, nodes, commonEdges);
             }
-            System.out.println("finish cal commonEdges of " + typeId);
+            log.info("finish cal commonEdges of " + typeId);
             if (commonEdges == null || commonEdges.isEmpty()) {
                 continue;
                 // 若该类型下 commonEdges个数 小于1 没有公共边 那么不计算 / 不具有代表性
@@ -205,6 +207,11 @@ public class SeedsCalculator {
             }
             purity /= nodesNums;
             purity = (1 - purity) * 2;
+            if (((int) purity) == 1 && commonEdges.size() == 1) {
+                continue;
+                // 若该 根节点 开始的 purity ==1 / 所有实例具有相同的公共边
+                // 且 公共边只有一条 那么 为二元关系 不作为种子进行挖掘
+            }
             seeds.add(new Seed(typeId, purity, nodesNums, commonEdges));
         }
 
@@ -216,10 +223,12 @@ public class SeedsCalculator {
 
             File seedFile = new File(OUT_PUT_FILE_NAME);
             if (seedFile.exists()) {
+                log.error("file already exist");
                 throw new Exception("file already exist");
             } else if (seedFile.createNewFile()) {
                 mapper.writeValue(seedFile, seeds);
             } else {
+                log.error("create file failed");
                 throw new Exception("create file failed");
             }
         }
@@ -234,10 +243,12 @@ public class SeedsCalculator {
 
             File seedFile = new File("READ_" + OUT_PUT_FILE_NAME);
             if (seedFile.exists()) {
+                log.error("file already exist");
                 throw new Exception("file already exist");
             } else if (seedFile.createNewFile()) {
                 mapper.writeValue(seedFile, seedStrings);
             } else {
+                log.error("create file failed");
                 throw new Exception("create file failed");
             }
         }
@@ -256,12 +267,12 @@ public class SeedsCalculator {
         if (deep > maxDeep) {
             return triples;
         }
-        if (triples == null || appearedSub==null) {
+        if (triples == null || appearedSub == null) {
             appearedSub = new HashSet<>();
             triples = new ArrayList<>();
         }
-        System.out.println("triples.size(): " + triples.size());
-        System.out.println("appearedSub.size(): " + appearedSub.size());
+        log.info("triples.size(): " + triples.size());
+        log.info("appearedSub.size(): " + appearedSub.size());
         // 查找 第一层节点label label 加入nodeLabels
         Statement stmt = db.createStatement();
         Statement stmt1 = db.createStatement();
@@ -320,7 +331,9 @@ public class SeedsCalculator {
         res.close();
         stmt.close();
         for (int object : objects) {
-            if (appearedSub.contains(object)) { continue; }
+            if (appearedSub.contains(object)) {
+                continue;
+            }
             generateTriples(object, deep + 1, triples, appearedSub, maxDeep, nodeLabels);
         }
         return triples;
@@ -356,7 +369,7 @@ public class SeedsCalculator {
         for (int index : nodeIndexes) {
             nodes.add(originNodes.get(index));
         }
-        List<int[]> triples =  new ArrayList<>();
+        List<int[]> triples = new ArrayList<>();
         Set<Integer> appearedNodes = null;
         Multimap<Integer, Integer> nodeLabels = TreeMultimap.create();
         for (int nodeId : nodes) {
@@ -371,18 +384,19 @@ public class SeedsCalculator {
         if (resultFile.createNewFile()) {
             mapper.writeValue(resultFile, new TypeRelatedGraph(typeId, nodes, triples, maxDeep, nodeLabels));
         } else {
+            log.error("file already exist");
             throw new Exception("file already exist");
         }
     }
 
     public static void main(String[] args) throws Exception {
-       ArrayList<Seed> seeds = calculateSeeds(true, true, DATA_BASE_PATH);
+        ArrayList<Seed> seeds = calculateSeeds(true, true, DATA_BASE_PATH);
         double sampleRatio = 1;
         int maxDeep = Integer.parseInt(args[0]);
         for (Seed seed : seeds) {
-            String filePath = "D1_" + maxDeep + "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId() + ".json";
+            String filePath = "D_" + maxDeep + "P_" + seed.getPurity() + "R_" + sampleRatio + "T_" + seed.getTypeId() + ".json";
             SeedsCalculator.extractTypeRelatedGraph(maxDeep, seed.getTypeId(), filePath, sampleRatio);
-            System.out.println("finish " + filePath + " at " + new Date());
+            log.info("ExtractTypeRelatedGraph Finished");
         }
         db.close();
     }

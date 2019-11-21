@@ -16,11 +16,15 @@ public class SingleLabelUtil {
 
     /**
      * 模式拓展原则，在gSpan最右拓展的基础上，进行修改 加上针对多元关系模式扩展的限制
+     * 1. 去除后向拓展
+     * 2. 增加深度限制
+     *
      * @param parent
      * @return
      * @throws Exception
      */
-    public static ArrayList<GSpanEdge> nAryRelationExtension(DFScode parent, MultiLabelGraph dataGraph, int maxDepth) throws Exception {
+    public static ArrayList<GSpanEdge> nAryRelationExtension(
+            DFScode parent, MultiLabelGraph dataGraph, int maxDepth) throws Exception {
         ArrayList<GSpanEdge> childrenEdge = new ArrayList<>();
         LinkedList<Integer> rightMostPath = parent.fetchRightMostPath();
         if (rightMostPath.size() == 0 || rightMostPath.size() == 1) {
@@ -97,7 +101,7 @@ public class SingleLabelUtil {
                     }
                     GSpanEdge possibleEdge = new GSpanEdge(rightMostNode, node2, rightMostNodelabel, label2,
                             possibleChild.getEdgeSeq().get(0).getEdgeLabel(), 1);
-                    if (!parent.getEdgeSeq().contains(possibleEdge) ) {
+                    if (!parent.getEdgeSeq().contains(possibleEdge)) {
                         childrenEdge.add(possibleEdge);
                     }
                 }
@@ -160,7 +164,7 @@ public class SingleLabelUtil {
                         continue;
                     }
                     int edgeValue = ((int) dataGraph.getValueGraph().edgeValue(nodeAIdDS, possNodeBId).get());
-                    if (edgeValue!=edgeLabel) {
+                    if (edgeValue != edgeLabel) {
                         continue;
                     }
                     int newLength = parentInstances.getInstances().get(instanceId).length + 1;
@@ -169,13 +173,13 @@ public class SingleLabelUtil {
                     childInstance.addInstance(child, newInstance);
                 }
             }
-        } else if (nodeA>nodeB && backwardExtend) {
+        } else if (nodeA > nodeB && backwardExtend) {
             // backward edge
             for (int instanceId = 0; instanceId < parentInstances.getInstances().size(); instanceId++) {
                 int nodeAIdsDS = parentInstances.getInstances().get(instanceId)[nodeA];
                 int nodeBIdsDS = parentInstances.getInstances().get(instanceId)[nodeB];
                 boolean correctEdge = dataGraph.getValueGraph().hasEdgeConnecting(nodeAIdsDS, nodeBIdsDS);
-                correctEdge = (correctEdge == false ? false : (int) dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get()==edgeLabel);
+                correctEdge = (correctEdge == false ? false : (int) dataGraph.getValueGraph().edgeValue(nodeAIdsDS, nodeBIdsDS).get() == edgeLabel);
                 // Guava Value Graph 不允许 两个节点之间存在多条边， 在KB 中 存在这种情况 暂时不考虑
                 // 目前只考虑 两个节点之间只存在一条边
                 if (correctEdge) {
@@ -183,29 +187,27 @@ public class SingleLabelUtil {
                     childInstance.addInstance(child, nodeInstanceMap);
                 }
             }
-        }
-        else {
+        } else {
             throw new Exception("appear backward edge, but only forward extend is allowed");
         }
         return childInstance;
     }
 
     public static void savePattern(DFScode childDFScode, DFScodeInstance childInstance,
-                             int maxDepth, double threshold, double relatedRatio,
-                             int resultIndex,MultiLabelGraph dataGraph,String algorithm) throws Exception {
-        String dirPath = algorithm+"_Thresh_"+threshold+"D_"+maxDepth+"Related_Ratio_"+relatedRatio+
-                File.separator + dataGraph.graphName+ "_threshold_" + threshold;
+                                   int maxDepth, double threshold, double relatedRatio,
+                                   int resultIndex, MultiLabelGraph dataGraph, String algorithm) throws Exception {
+        String dirPath = algorithm + "_Thresh_" + threshold + "D_" + maxDepth + "Related_Ratio_" + relatedRatio +
+                File.separator + dataGraph.graphName + "_threshold_" + threshold;
         String fileName = dataGraph.graphName + "_threshold_" + threshold + "Id_" + (resultIndex) + ".json";
         File dir = new File(dirPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         childDFScode.saveToFile(dirPath + File.separator + "RE_" + fileName, false);
-        childInstance.sample(1, 10, 10).
-                saveToFile(dirPath + File.separator + "IN_" + fileName, false);
+        //childInstance.sample(1, 10, 10).saveToFile(dirPath + File.separator + "IN_" + fileName, false);
     }
 
-    public static double calRelatedRatio(DFScode dFScode ,MultiLabelGraph dataGraph) throws Exception {
+    public static double calRelatedRatio(DFScode dFScode, MultiLabelGraph dataGraph) throws Exception {
         double relatedRatio = 0d;
         for (GSpanEdge edge : dFScode.getEdgeSeq()) {
             Map<DFScode, DFScodeInstance> map = dataGraph.getGraphEdge().get(edge.getLabelA(), edge.getLabelB());

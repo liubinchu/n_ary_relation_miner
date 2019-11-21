@@ -55,6 +55,7 @@ public class GSpanEdgeModified<NodeType, EdgeType>  {
         GSpanEdgeModified<?, ?> that = (GSpanEdgeModified<?, ?>) o;
         return nodeA == that.nodeA &&
                 nodeB == that.nodeB &&
+                //labelA == gSpanEdge.labelA &&
                 labelB == that.labelB &&
                 edgeLabel == that.edgeLabel &&
                 direction == that.direction;
