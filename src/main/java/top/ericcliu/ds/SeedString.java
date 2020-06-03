@@ -12,11 +12,20 @@ import java.util.Set;
  **/
 public class SeedString implements SaveToFile {
     private String typeId;
+    private String content;
     private double purity;
     private Integer nodeNums;
     private Set<SeedEdge<String>> commonEdges;
 
     public SeedString() {
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getTypeId() {
@@ -39,7 +48,8 @@ public class SeedString implements SaveToFile {
         DataBaseTools dataBaseTools = new DataBaseTools();
         try {
             Connection db =dataBaseTools.sqliteConect(databasePath);
-            this.typeId = dataBaseTools.printer(db,seed.getTypeId());
+            this.typeId = String.valueOf(seed.getTypeId());
+            this.content = dataBaseTools.printer(db,seed.getTypeId());
             this.purity = seed.getPurity();
             this.nodeNums = seed.getNodeNums();
             this.commonEdges = new HashSet<>(seed.getCommonEdges().size());

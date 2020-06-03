@@ -53,20 +53,20 @@ public class MLDFScodeInstance implements SaveToFile {
         return true;
     }
 
-    public int calMNI() throws Exception {
+    public int calMMNI() throws Exception {
         if (this.mldfScode == null && this.instances.size() == 0) {
             return 0;
             // 当前模式 在图中 不存在 实例
         }
-        int MNI = Integer.MAX_VALUE;
+        int MMNI = Integer.MAX_VALUE;
         for (int i = 0; i < this.mldfScode.fetchNodes().size(); i++) {
-            Set<Integer> nodeSet = new HashSet<>(this.instances.size());
+            Set<Integer> nodeSet = new HashSet<>();
             for (int[] instance : this.instances) {
                 nodeSet.add(instance[i]);
             }
-            MNI = Math.min(MNI, nodeSet.size());
+            MMNI = Math.min(MMNI, nodeSet.size());
         }
-        return MNI;
+        return MMNI;
     }
 
     /**
@@ -88,14 +88,25 @@ public class MLDFScodeInstance implements SaveToFile {
         return instanceNodeMap;
     }
 
-    public int calRootNodeNum() throws Exception {
+    public int calNMNI() throws Exception {
         if (this.mldfScode == null && this.instances.isEmpty()) {
             return 0;
             // 当前模式 在图中 不存在 实例
         } else {
-            return this.fetchInstanceNode(0).entrySet().size();
+
+           // return this.fetchInstanceNode(0).entrySet().size();
+            int NMNI = Integer.MAX_VALUE;
+            Set<Integer> nodeSet = new HashSet<>();
+            for (int[] instance : this.instances) {
+                nodeSet.add(instance[0]);
+            }
+            NMNI = Math.min(NMNI, nodeSet.size());
+
+            return NMNI;
         }
-    }
+
+
+}
 
     public MLDFScodeInstance sample(double ratio, int upperBound, int bottomBound) throws Exception {
         int sampleNum = (int) (this.instances.size() * ratio);
@@ -143,6 +154,6 @@ public class MLDFScodeInstance implements SaveToFile {
         DFScodeInstance.addInstance(dfScode, new int[]{1, 4, 4});
 
         MLDFScodeInstance newInstance = DFScodeInstance.sample(1, 2, 2);
-        System.out.println(newInstance.fetchInstanceNode(1));
+        System.out.println(DFScodeInstance.fetchInstanceNode(1));
     }
 }

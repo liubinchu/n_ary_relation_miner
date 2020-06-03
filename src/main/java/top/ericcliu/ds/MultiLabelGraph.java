@@ -11,6 +11,7 @@ import com.google.common.collect.Table;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
+import lombok.ToString;
 
 import java.util.*;
 
@@ -18,6 +19,7 @@ import java.util.*;
  * @author liubi
  * @date 2018-12-04 13:27
  **/
+@ToString
 public class MultiLabelGraph {
     private final Integer replacedTypeId = -24;
     /**

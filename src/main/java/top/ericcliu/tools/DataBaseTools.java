@@ -16,15 +16,19 @@ public class DataBaseTools {
     public Connection sqliteConect(String databasePath) {
         Connection db = null;
         try {
-            db = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
-            db.setAutoCommit(false);
+            while (db == null) {
+                db = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
+                db.setAutoCommit(false);
+                System.out.println("try to connect database :" + databasePath);
+            }
         } catch (Exception e) {
-            log.error("Connect database failed , check database file path:" + databasePath);
-            log.error(e.getMessage());
+            System.out.println("Connect database failed , check database file path:" + databasePath);
+            System.out.println(e.getMessage());
         } finally {
             return db;
         }
     }
+
 
     public String printer(Connection db, Integer id) throws Exception {
         // this function used to print the actural string in database which is mapped to an id in memory
@@ -72,7 +76,7 @@ public class DataBaseTools {
         Integer nextIdtypes_string = statement.executeQuery("select max (id) from types_string").getInt(1) + 1;
         String s = "INSERT INTO types_string (id,type_string) VALUES (" + nextIdtypes_string + ", '" + content + "')";
         statement.executeUpdate(s);
-        log.info(s);
+        System.out.println(s);
         return true;
     }
 
@@ -111,7 +115,7 @@ public class DataBaseTools {
                 + string_type_id
                 + ")";
         statement.executeUpdate(s);
-        log.info(s);
+        System.out.println(s);
         return true;
     }
 
@@ -148,7 +152,7 @@ public class DataBaseTools {
                 + types_id
                 + ")";
         statement.executeUpdate(s);
-        log.info(s);
+        System.out.println(s);
         return true;
     }
 
@@ -170,8 +174,8 @@ public class DataBaseTools {
         while (resultSet.next()) {
             result.add(resultSet.getInt("id"));
         }
-        log.info(s.toString());
-        log.info(result);
+        System.out.println(s.toString());
+        System.out.println(result);
         return result;
     }
 
@@ -197,7 +201,7 @@ public class DataBaseTools {
                 + typeId
                 + ")";
         statement.executeUpdate(s);
-        log.info(s);
+        System.out.println(s);
         return true;
     }
 
@@ -222,7 +226,7 @@ public class DataBaseTools {
                 + typeId
                 + ")";
         statement.executeUpdate(s);
-        log.info(s);
+        System.out.println(s);
         return true;
     }
 

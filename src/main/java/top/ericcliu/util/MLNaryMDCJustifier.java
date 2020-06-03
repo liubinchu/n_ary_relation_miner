@@ -64,7 +64,7 @@ public class MLNaryMDCJustifier {
                 childrenEdgeInstanceMap.put(childEdgePair, childInstace);
             }
             for (Map.Entry<Pair<Boolean, MLGSpanEdge>, MLDFScodeInstance> entry : childrenEdgeInstanceMap.entrySet()) {
-                if (entry.getValue().calMNI() > 0) {
+                if (entry.getValue().calMMNI() > 0) {
                     if (minMLEdgePair == null || entry.getKey().getValue().compareTo(minMLEdgePair.getValue()) < 0) {
                         minMLEdgePair = entry.getKey();
                         minDFSCodeInstance = entry.getValue();
@@ -72,7 +72,7 @@ public class MLNaryMDCJustifier {
                 }
             }
             if (minMLEdgePair == null) {
-                log.error("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                log.error(this.mlDFSCodeGraph.graphName+":   childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
                 return false;
                 //  应该不会出现这种情况 bug 待解决
             } else {
@@ -90,7 +90,6 @@ public class MLNaryMDCJustifier {
                     minDFScode.addEdge(minMLEdgePair.getValue());
                 }
             }
-
         }
         return true;
     }

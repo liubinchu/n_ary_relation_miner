@@ -67,7 +67,7 @@ public class MLTreeNode {
         } else if (treeB.childern == null || treeA.childern.size() > treeB.childern.size()) {
             return -1;
         } else {
-            //treeA.val.equals(treeB.val) && treeA.childern.size()<=treeB.childern.size()
+            //treeA.val.equals(treeB.val) && treeA.children.size()<=treeB.children.size()
             Set<List<MLTreeNode>> arrangesB = ArrangeCombination.arrangementSelect(treeB.childern, treeA.childern.size(), false);
             List<MLTreeNode> childrenA = new ArrayList<>(treeA.childern);
             for (List<MLTreeNode> arrange : arrangesB) {
@@ -91,7 +91,7 @@ public class MLTreeNode {
         return "MLTreeNode{" +
                 "nodeVal=" + nodeVal +
                 ", edgeVal=" + edgeVal +
-                ", childern=" + childern +
+                ", children=" + childern +
                 '}';
     }
 

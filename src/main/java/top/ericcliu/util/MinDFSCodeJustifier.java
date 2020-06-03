@@ -1,5 +1,6 @@
 package top.ericcliu.util;
 
+import lombok.extern.log4j.Log4j2;
 import top.ericcliu.ds.DFScode;
 import top.ericcliu.ds.DFScodeInstance;
 import top.ericcliu.ds.GSpanEdge;
@@ -16,6 +17,7 @@ import java.util.Map;
  * 用以 判断一个DFScode 是否是 最小DFScode
  * 是一个受限版本的gSpan
  **/
+@Log4j2
 public class MinDFSCodeJustifier {
     private MultiLabelGraph dFSCodeGraph;
     private DFScode dFScode;
@@ -77,7 +79,9 @@ public class MinDFSCodeJustifier {
                 }
             }
             if (minEdge == null) {
-                throw new Exception("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                log.error(this.dFSCodeGraph.graphName+":   childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                return false;
+                //throw new Exception("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
             } else if (minEdge.compareTo(dFScode.getEdgeSeq().get(edgeIndex++)) < 0) {
                 // 生成的DFScode 更小， 给定dfs code不是最小DFScode
                 return false;

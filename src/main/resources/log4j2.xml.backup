@@ -64,10 +64,10 @@
         <Root level="DEBUG" includeLocation="true">
             <!-- 只要是级别比ERROR高的，包括ERROR就输出到控制台 -->
             <!--appender-ref中的值必须是在前面定义的appenders-->
-            <Appender-ref level="INFO" ref="ConsolePrint"/>
-            <!--Appender-ref ref="RollingFileDebug"/>
+            <Appender-ref level="ERROR" ref="ConsolePrint"/>
+            <Appender-ref ref="RollingFileDebug"/>
             <Appender-ref ref="RollingFileInfo"/>
-            <Appender-ref ref="RollingFileError"/-->
+            <Appender-ref ref="RollingFileError"/>
         </Root>
     </Loggers>
 </Configuration>

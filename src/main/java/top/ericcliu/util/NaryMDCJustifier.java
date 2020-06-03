@@ -1,5 +1,6 @@
 package top.ericcliu.util;
 
+import lombok.extern.log4j.Log4j2;
 import top.ericcliu.ds.DFScode;
 import top.ericcliu.ds.DFScodeInstance;
 import top.ericcliu.ds.GSpanEdge;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author liubi
  * @date 2019-05-22 09:29
  **/
+@Log4j2
 public class NaryMDCJustifier {
     private MultiLabelGraph dFSCodeGraph;
     private DFScode dFScode;
@@ -79,7 +81,10 @@ public class NaryMDCJustifier {
                 }
             }
             if (minEdge == null) {
-                throw new Exception("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                log.error(this.dFSCodeGraph.graphName+":   childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
+                return false;
+                //  应该不会出现这种情况 bug 待解决
+                //throw new Exception("childrenEdge size == 0, or all childInstace.getMNI() < 0, no valid childrenEdge");
             } else if (minEdge.compareTo(dFScode.getEdgeSeq().get(edgeIndex++)) < 0) {
                 // 生成的DFScode 更小， 给定dfs code不是最小DFScode
                 return false;

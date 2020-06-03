@@ -32,7 +32,7 @@ public class MLDFScodeString implements SaveToFile {
 
     public MLDFScodeString(MLDFScode mldfScode, String databasePath, Integer relationId) throws Exception {
         if (mldfScode == null) {
-            throw new Exception("Multi Label DFScode is null");
+            throw new Exception("Multi Label DFS code is null");
         } else {
             this.MNI = mldfScode.getMNI();
             this.relatedRatio = mldfScode.getRelatedRatio();

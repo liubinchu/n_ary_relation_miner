@@ -1,11 +1,14 @@
-package top.ericcliu.ds;
+package top.ericcliu.tools;
 
 import lombok.extern.log4j.Log4j2;
+import top.ericcliu.ds.DFScode;
+import top.ericcliu.ds.DFScodeString;
 import top.ericcliu.util.ResParseUtil;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * @author liubi
@@ -92,16 +95,16 @@ public class SLNaryResParser {
             File dirFile = new File(dirPath);
             File[] files;
             if (!dirFile.isDirectory()) {
-                log.error(" \"dirPath\" must be a dir :" + dirFile);
+                System.out.println(" \"dirPath\" must be a dir :" + dirFile);
                 return;
             }
             for (File secondDir : dirFile.listFiles()) {
-                log.info("start: " + secondDir);
+                System.out.println("start: " + secondDir);
                 parse(secondDir.getAbsolutePath(), dataBasePath, resDirPath);
-                log.info("finish: " + secondDir);
+                System.out.println("finish: " + secondDir);
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            System.out.println(e.getMessage());
             return;
         }
     }
@@ -116,12 +119,12 @@ public class SLNaryResParser {
             try {
                 typeId = Integer.parseInt(dirFile.getName().split("T_|.json")[1]);
             } catch (Exception e) {
-                log.error(dirFile.getName() + " is not a relation dir");
-                log.error(e.getMessage());
+                System.out.println(dirFile.getName() + " is not a relation dir");
+                System.out.println(e.getMessage());
                 return;
             }
             if (!dirFile.isDirectory()) {
-                log.error(" \"dirPath\" must be a dir :" + dirFile);
+                System.out.println(" \"dirPath\" must be a dir :" + dirFile);
                 return;
             }
             File[] reFiles = dirFile.listFiles();
@@ -134,10 +137,10 @@ public class SLNaryResParser {
                     map.put(relationId, dfScode);
                 }
             }
-            log.info("relation numbers: " + map.size());
+            System.out.println("relation numbers: " + map.size());
             if (map.size() == 1) {
                 new DFScodeString(map.get(0), dataBasePath, typeId).saveToFile(resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_0.json", false);
-                log.info("GENERATE: " + resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_0.json");
+                System.out.println("GENERATE: " + resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_0.json");
                 // id start from 1
             } else {
                 for (int i = 0; i < map.size(); i++) {
@@ -156,19 +159,20 @@ public class SLNaryResParser {
                     }
                     if (flag) {
                         new DFScodeString(currentDFScode, dataBasePath, typeId).saveToFile(resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_" + i + ".json", false);
-                        log.info("GENERATE: " + resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_" + i + ".json");
+                        System.out.println("GENERATE: " + resDirPath + File.separator + "READRE_" + dirFile.getName() + "Id_" + i + ".json");
                     }
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
     public static void main(String[] args) throws Exception {
         String dirPath = "D:\\OneDrive - Monash University\\WDS\\n_ary_relation_miner\\SLNaryRelation_Thresh_0.1D_10Related_Ratio_0.1";
-/*        String dirPath = args[0];
+        String dbPath = "D:\\bioportal.sqlite";
+        /*        String dirPath = args[0];
         String dbPath = args[1];*/
-        SLNaryResParser.parseAll(dirPath, "D:\\bioportal.sqlite", dirPath + File.separator + "noDup");
+        SLNaryResParser.parseAll(dirPath, dbPath, dirPath + File.separator + "noDup");
     }
 }

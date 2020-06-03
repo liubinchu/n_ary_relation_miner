@@ -1,5 +1,6 @@
 package top.ericcliu.ds;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 
@@ -10,22 +11,27 @@ import java.io.FileWriter;
  * @author liubi
  * @date 2019-04-15 21:16
  **/
-interface  SaveToFile {
+interface SaveToFile {
+    default String toJsonString() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new GuavaModule());
+        return mapper.writeValueAsString(this);
+    }
+
     default boolean saveToFile(String filePath, boolean isAppend) throws Exception {
         File file = new File(filePath);
         FileWriter fileWriter;
-        if(file.exists()){
-            fileWriter = new FileWriter(filePath,isAppend);
-        }
-        else {
+        if (file.exists()) {
+            fileWriter = new FileWriter(filePath, isAppend);
+        } else {
             fileWriter = new FileWriter(filePath);
         }
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new GuavaModule());
         try {
-            mapper.writeValue(fileWriter,this);
+            mapper.writeValue(fileWriter, this);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

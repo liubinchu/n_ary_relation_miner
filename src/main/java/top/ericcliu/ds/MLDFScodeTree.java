@@ -1,5 +1,7 @@
 package top.ericcliu.ds;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -9,6 +11,7 @@ import java.util.Map;
  * @author liubi
  * @date 2019-05-31 10:37
  **/
+@Data
 public class MLDFScodeTree {
     private  MLTreeNode root = null;
     /**

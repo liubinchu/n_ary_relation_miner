@@ -49,8 +49,8 @@ public class Assignment {
     }
     public static void main(String[] args) throws IOException {
         ArrayList<LinkedList<String>> fileLists = assign(
-                "D:\\D_10P\\fileListSortedBigToSmall.csv",
-                6,
+                "E:\\master_thesis_experinment\\all_files_bioportal.csv",
+                4,
                 false);
     }
 }

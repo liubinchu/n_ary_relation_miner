@@ -61,7 +61,7 @@ public class TreeNode {
         } else if (treeB.childern == null || treeA.childern.size() > treeB.childern.size()) {
             return -1;
         } else {
-            //treeA.val.equals(treeB.val) && treeA.childern.size()<=treeB.childern.size()
+            //treeA.val.equals(treeB.val) && treeA.children.size()<=treeB.children.size()
             Set<List<TreeNode>> arrangesB = ArrangeCombination.arrangementSelect(treeB.childern, treeA.childern.size(), false);
             List<TreeNode> childrenA = new ArrayList<>(treeA.childern);
             for (List<TreeNode> arrange : arrangesB) {
@@ -85,7 +85,7 @@ public class TreeNode {
         return "TreeNode{" +
                 "nodeVal=" + nodeVal +
                 ", edgeVal=" + edgeVal +
-                ", childern=" + childern +
+                ", children=" + childern +
                 '}';
     }
 
