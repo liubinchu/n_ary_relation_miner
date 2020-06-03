@@ -1,0 +1,1636 @@
+[
+    {
+        "typeId": "10214",
+        "content": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Conditional_probability",
+        "purity": 1,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_reference",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_locality",
+                "nodeBLabelSet": [
+                    "http://purl.org/autism-ontology/1.0/autism-rules.owl#Locality"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_frequency_value",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#float"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980520",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#glycosidic_covalent_bond_between_carbohydrate_residues",
+        "purity": 1,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#covalently_links_to",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#covalently_links_from",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980122",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#high-mannose_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 22,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980078",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#complex_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 795,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980358",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#hybrid_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 59,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980706",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#substituent",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#replaced_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#small_organic_molecule_atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#small_organic_molecule"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_position",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#integer"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980246",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration",
+        "purity": 1,
+        "nodeNums": 30,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#embodies_relative_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#relative_monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#embodies_absolute_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#absolute_configuration"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "173574",
+        "content": "http://purl.obolibrary.org/obo/IAO_0000098",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000114",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/IAO_0000078"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000119",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000117",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000112",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "11104698",
+        "content": "http://purl.obolibrary.org/obo/OBI_0001168",
+        "purity": 1,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000117",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "12043923",
+        "content": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#bi-coded-scale-item",
+        "purity": 1,
+        "nodeNums": 221,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-numerical-value",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#float"
+                ]
+            },
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-qualitative-scale-item-code",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-quantitative-scale-item-code",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "7603960",
+        "content": "http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom",
+        "purity": 1,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2003/11/swrl#argument1",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2003/11/swrl#Variable"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2003/11/swrl#argument2",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2003/11/swrl#Variable"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "14839557",
+        "content": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#CodingMetaClass",
+        "purity": 1,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codingSystemName",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codeTitle",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codeID",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "12330475",
+        "content": "http://rs.tdwg.org/dwc/terms/Family",
+        "purity": 0.9986449864498645,
+        "nodeNums": 492,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_order",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Order"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "12330515",
+        "content": "http://rs.tdwg.org/dwc/terms/Order",
+        "purity": 0.9984126984126984,
+        "nodeNums": 126,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_family",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Family"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_class",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Class"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "12330997",
+        "content": "http://rs.tdwg.org/dwc/terms/Class",
+        "purity": 0.9888888888888889,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_order",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Order"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_phylum",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Phylum"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "7748",
+        "content": "http://www.w3.org/2002/07/owl#AllDisjointClasses",
+        "purity": 0.9833333333333334,
+        "nodeNums": 360,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#members",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "10894041",
+        "content": "http://www.owl-ontologies.com/NPOntology.owl#TransportProtein",
+        "purity": 0.9696969696969697,
+        "nodeNums": 22,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980625",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#five-carbon_sugar",
+        "purity": 0.9603098655730231,
+        "nodeNums": 30,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980977",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#furanose",
+        "purity": 0.9403622693096378,
+        "nodeNums": 12,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980339",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#deoxy_sugar",
+        "purity": 0.9026551448988371,
+        "nodeNums": 81,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980293",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#aldose",
+        "purity": 0.8932266772396844,
+        "nodeNums": 171,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8981142",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#nine-carbon_sugar",
+        "purity": 0.8874086597163522,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_second_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980377",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#amino_sugar",
+        "purity": 0.8849500416428429,
+        "nodeNums": 61,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_amino_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980338",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#beta_sugar",
+        "purity": 0.883365840871561,
+        "nodeNums": 84,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980296",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#alpha_sugar",
+        "purity": 0.8796889209188974,
+        "nodeNums": 104,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980289",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#six-carbon_sugar",
+        "purity": 0.8784649815695906,
+        "nodeNums": 140,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980299",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#pyranose",
+        "purity": 0.8773069953242096,
+        "nodeNums": 176,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+
+    {
+        "typeId": "8981081",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#uronic_acid",
+        "purity": 0.8703022467728354,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "11143258",
+        "content": "http://purl.obolibrary.org/obo/ODGI.owl#PubMedID",
+        "purity": 0.8600000000000001,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isPubMedIDOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Disease_Gene_Study_in_Paper"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isIDComponentOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Literature_Database"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980448",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#aldonic_acid",
+        "purity": 0.8580978716272833,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "8980466",
+        "content": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#keto_sugar",
+        "purity": 0.8580978716272833,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "9",
+        "content": "http://www.w3.org/ns/dcat#Distribution",
+        "purity": 0.8391608391608256,
+        "nodeNums": 720,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/dc/terms/license",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/publisher",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/title",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/rights",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/format",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "13165860",
+        "content": "http://www.owl-ontologies.com/Ontology1415135201.owl#obsolete_term_metaclass",
+        "purity": 0.8273199792091401,
+        "nodeNums": 794,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_Name_for_Obsolete",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Term_Status",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+
+    {
+        "typeId": "10680",
+        "content": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Vocabulary_term",
+        "purity": 0.6952380952380952,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#concept",
+                "nodeBLabelSet": [
+                    "http://purl.org/autism-ontology/1.0/autism-rules.owl#Concept"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "10667208",
+        "content": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DeprecatedTerms",
+        "purity": 0.6730735930735932,
+        "nodeNums": 55,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#deprecation_reason",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#deprecation_in_version",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "10422350",
+        "content": "http://who.int/icd#ExclusionTerm",
+        "purity": 0.6695402298850639,
+        "nodeNums": 348,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://who.int/icd#language",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "11260",
+        "content": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Risk_factor",
+        "purity": 0.6532467532467525,
+        "nodeNums": 44,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_exposure",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_subject",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "5534745",
+        "content": "http://purl.obolibrary.org/obo/UO_0000051",
+        "purity": 0.6123436797121009,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000412",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/subset",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "11143468",
+        "content": "http://purl.obolibrary.org/obo/ODGI.owl#Linkage",
+        "purity": 0.6095238095238094,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isObservedIn",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Disease_Gene_Study_in_Paper"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isObservedRelationshipOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Microsatellite_Marker"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "11106417",
+        "content": "http://purl.obolibrary.org/obo/OBI_0000713",
+        "purity": 0.5800000000000001,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000114",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/IAO_0000078"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "10566",
+        "content": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Concept",
+        "purity": 0.5136363636363639,
+        "nodeNums": 110,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#concept_preffered_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "10892141",
+        "content": "http://www.owl-ontologies.com/NPOntology.owl#IC50",
+        "purity": 0.45999999999999974,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#activityCategory",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "14795034",
+        "content": "http://www.semanticweb.org/ontologies/2008/1/Ontology1204037102846.owl#Data_Requestor",
+        "purity": 0.41065162907268116,
+        "nodeNums": 19,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.semanticweb.org/ontologies/2008/1/Ontology1204037102846.owl#HasAccessDate",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#date"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "14839589",
+        "content": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#ConditionMetaClass",
+        "purity": 0.4022675736961452,
+        "nodeNums": 42,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#isInSensitiveDefinitionOf",
+                "nodeBLabelSet": [
+                    "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#SyndromeMetaClass"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "13165529",
+        "content": "http://www.owl-ontologies.com/Ontology1415135201.owl#anatomical_space_metaclass",
+        "purity": 0.35351111709271654,
+        "nodeNums": 913,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "13164561",
+        "content": "http://www.owl-ontologies.com/Ontology1415135201.owl#vein_metaclass",
+        "purity": 0.3456220601381883,
+        "nodeNums": 837,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "13165240",
+        "content": "http://www.owl-ontologies.com/Ontology1415135201.owl#imaging_observation_metaclass",
+        "purity": 0.3223176147033955,
+        "nodeNums": 985,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "12330589",
+        "content": "http://www.stkos-ontology/domain/plantbiodiversity#Species",
+        "purity": 0.31742424242424283,
+        "nodeNums": 110,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    }
+]

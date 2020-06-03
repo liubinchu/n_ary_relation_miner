@@ -1,0 +1,14 @@
+TypeId, Content, NodeNums, Purity
+836892,http://data.linkedmdb.org/resource/movie/country,247,1.0
+652204,http://data.linkedmdb.org/resource/movie/film_festival_event,685,1.0
+704535,http://data.linkedmdb.org/resource/movie/dubbing_performance,118,1.0
+1021634,http://data.linkedmdb.org/resource/movie/film_regional_release_date,418,1.0
+837819,http://data.linkedmdb.org/resource/movie/film_film_company_relationship,36,0.9907407407407409
+842408,http://data.linkedmdb.org/resource/movie/performance,197271,0.9896920142004502
+802569,http://data.linkedmdb.org/resource/movie/personal_film_appearance,1120,0.9508928571428459
+2058314,http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship,15256,0.8331511282810444
+1113141,http://data.linkedmdb.org/resource/movie/content_rating,107,0.7370716510903439
+803434,http://data.linkedmdb.org/resource/movie/film_cut,45259,0.6636720504950122
+195607,http://data.linkedmdb.org/resource/oddlinker/interlink,162199,0.6340221109905315
+2123428,http://data.linkedmdb.org/resource/movie/film_crew_gig,17237,0.5041171124132184
+1858106,http://data.linkedmdb.org/resource/movie/film,85620,0.30426247311143606

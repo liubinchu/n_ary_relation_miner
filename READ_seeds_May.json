@@ -1,0 +1,4289 @@
+[
+    {
+        "typeId": "http://purl.org/dc/terms/Dataset",
+        "purity": 1,
+        "nodeNums": 361,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/ns/dcat#distribution",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/ns/dcat#Distribution"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Conditional_probability",
+        "purity": 1,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_reference",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_locality",
+                "nodeBLabelSet": [
+                    "http://purl.org/autism-ontology/1.0/autism-rules.owl#Locality"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_frequency_value",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#float"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2000/01/rdf-schema#Resource",
+        "purity": 1,
+        "nodeNums": 313,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2000/01/rdf-schema#Class"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#DataOneOf",
+        "purity": 1,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#DataOneOf"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#DataHasValue",
+        "purity": 1,
+        "nodeNums": 89,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#DataHasValue"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectMinCardinality",
+        "purity": 1,
+        "nodeNums": 52,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectMinCardinality"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectExactCardinality",
+        "purity": 1,
+        "nodeNums": 125,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectExactCardinality"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#glycosidic_covalent_bond_between_carbohydrate_residues",
+        "purity": 1,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#covalently_links_to",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#covalently_links_from",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#high-mannose_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 22,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#complex_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 795,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#relative_monosaccharide_configuration",
+        "purity": 1,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component",
+        "purity": 1,
+        "nodeNums": 25,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#hybrid_N-glycan_oligosaccharide",
+        "purity": 1,
+        "nodeNums": 59,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_root_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_residue",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#functional_group",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#substituent",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#replaced_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#small_organic_molecule_atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#small_organic_molecule"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_position",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#integer"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration",
+        "purity": 1,
+        "nodeNums": 30,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#embodies_relative_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#relative_monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#embodies_absolute_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#absolute_configuration"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#nucleoside_base_atom",
+        "purity": 1,
+        "nodeNums": 20,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://bioportal/bioontology.org/ontologies/HIVO0004#OWLClass_00000007833729527495",
+        "purity": 1,
+        "nodeNums": 39,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.semanticweb.org/owner/ontologies/2014/2/HIVandAIDS.owl#OWLDataProperty_00000008016662876846",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#integer"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#DefinitionTerm",
+        "purity": 1,
+        "nodeNums": 775,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#language",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#ClamlReference",
+        "purity": 1,
+        "nodeNums": 347,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#text",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#InclusionTerm",
+        "purity": 1,
+        "nodeNums": 221,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#language",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectComplementOf",
+        "purity": 1,
+        "nodeNums": 105,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectComplementOf"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#FamilyRelationship",
+        "purity": 1,
+        "nodeNums": 12,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DerivedBioAssayType",
+        "purity": 1,
+        "nodeNums": 25,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DataType",
+        "purity": 1,
+        "nodeNums": 25,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#ConcentrationUnitOther",
+        "purity": 1,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#StrainOrLineDatabase",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#has_human_readable_URI",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#BiologicalProperty",
+        "purity": 1,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#ConcentrationUnit",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#LabelCompound",
+        "purity": 1,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DatabaseEntryType",
+        "purity": 1,
+        "nodeNums": 20,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DataTransformationProtocolType",
+        "purity": 1,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#Roles",
+        "purity": 1,
+        "nodeNums": 14,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#BioMaterialCharacteristicCategory",
+        "purity": 1,
+        "nodeNums": 19,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://carre.kmi.open.ac.uk/ontology/lifestyle.owl#sports",
+        "purity": 1,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "http://carre.kmi.open.ac.uk/ontology/lifestyle.owl#shopping",
+                    "http://carre.kmi.open.ac.uk/ontology/lifestyle.owl#gambling"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/IAO_0000098",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000117",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000112",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000114",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/IAO_0000078"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000119",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Choromosome_Arm",
+        "purity": 1,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://neurolog.unice.fr/ontoneurolog/v3.0/ontoneurolog-extension-of-dolce.owl#model-acronym",
+        "purity": 1,
+        "nodeNums": 237,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://neurolog.unice.fr/ontoneurolog/v3.0/ontoneurolog-extension-of-dolce.owl#model-name",
+        "purity": 1,
+        "nodeNums": 97,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#instrument-definition-article",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#habit",
+        "purity": 1,
+        "nodeNums": 12,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#MarineBiome",
+        "purity": 1,
+        "nodeNums": 26,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#RaunkiærSystem",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#FreshwaterBiome",
+        "purity": 1,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#DataExactCardinality",
+        "purity": 1,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#DataExactCardinality"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2006/12/owl2-xml#ObjectSomeValuesFrom",
+        "purity": 1,
+        "nodeNums": 668,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2006/12/owl2-xml#ObjectSomeValuesFrom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectPropertyChain",
+        "purity": 1,
+        "nodeNums": 32,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectPropertyChain"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.geneontology.org/formats/oboInOwl#Definition",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.geneontology.org/formats/oboInOwl#hasDbXref",
+                "nodeBLabelSet": [
+                    "http://www.geneontology.org/formats/oboInOwl#DbXref"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.geneontology.org/formats/oboInOwl#Definition"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.geneontology.org/formats/oboInOwl#DbXref",
+        "purity": 1,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.geneontology.org/formats/oboInOwl#DbXref"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.geneontology.org/formats/oboInOwl#hasURI",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#anyURI"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom",
+        "purity": 1,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2003/11/swrl#DifferentIndividualsAtom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2003/11/swrl#argument1",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2003/11/swrl#Variable"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2003/11/swrl#argument2",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2003/11/swrl#Variable"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#CodingMetaClass",
+        "purity": 1,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codeTitle",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codingSystemName",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#codeID",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#Variable",
+        "purity": 1,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#Variable"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2001/sw/hcls/ns/transmed/TMO_0140",
+        "purity": 1,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2001/sw/hcls/ns/transmed/TMO_0199",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/elements/1.1/description",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://rs.tdwg.org/dwc/terms/Family",
+        "purity": 0.9991869918699188,
+        "nodeNums": 492,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_order",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Order"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectAllValuesFrom",
+        "purity": 0.9991266375545853,
+        "nodeNums": 229,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectAllValuesFrom"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://rs.tdwg.org/dwc/terms/Order",
+        "purity": 0.9988662131519275,
+        "nodeNums": 126,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_family",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Family"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_class",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Class"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ObjectUnionOf",
+        "purity": 0.9984313725490195,
+        "nodeNums": 255,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#ObjectUnionOf"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+        "purity": 0.9967532467532467,
+        "nodeNums": 44,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#StemForm",
+        "purity": 0.9951690821256036,
+        "nodeNums": 69,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#H_atom_component",
+        "purity": 0.9940476190476191,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://rs.tdwg.org/dwc/terms/Country",
+        "purity": 0.9928698752228164,
+        "nodeNums": 187,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#AllDisjointClasses",
+        "purity": 0.9928571428571427,
+        "nodeNums": 360,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#members",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2003/11/swrl#Builtin",
+        "purity": 0.9925925925925925,
+        "nodeNums": 171,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://rs.tdwg.org/dwc/terms/Class",
+        "purity": 0.9920634920634921,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_order",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Order"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#belong_to_phylum",
+                "nodeBLabelSet": [
+                    "http://rs.tdwg.org/dwc/terms/Phylum"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#HardwareType",
+        "purity": 0.9888888888888889,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#AtomicAction",
+        "purity": 0.9882352941176471,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#DataSomeValuesFrom",
+        "purity": 0.9847619047619047,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#DataSomeValuesFrom"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#PerturbationalDesign",
+        "purity": 0.9833333333333334,
+        "nodeNums": 12,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#Sex",
+        "purity": 0.9818181818181819,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#GDB_ID",
+        "purity": 0.9814814814814816,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#InitialTimePoint",
+        "purity": 0.98,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#EnvironmentalFactorCategory",
+        "purity": 0.98,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#MethodologicalDesign",
+        "purity": 0.9777777777777779,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#ComplexAction",
+        "purity": 0.9696969696969697,
+        "nodeNums": 33,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#TransportProtein",
+        "purity": 0.9696969696969697,
+        "nodeNums": 22,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://cerrado.linkeddata.es/ecology/ccon#WoodLayer",
+        "purity": 0.9682926829268292,
+        "nodeNums": 82,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://cerrado.linkeddata.es/ecology/ccon#Species",
+        "purity": 0.9682926829268292,
+        "nodeNums": 82,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#five-carbon_sugar",
+        "purity": 0.9669030100334448,
+        "nodeNums": 30,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#ExperimentalProtocolType",
+        "purity": 0.9666666666666668,
+        "nodeNums": 36,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#MaterialType",
+        "purity": 0.9647058823529413,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#Soil",
+        "purity": 0.9639639639639639,
+        "nodeNums": 74,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#DataRange",
+        "purity": 0.9581027667984199,
+        "nodeNums": 253,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#DataRange"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/BiodiversityOntologyFull.owl#GeographicalCoordinate",
+        "purity": 0.9504065040650407,
+        "nodeNums": 41,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.fao.org/aims/aos/cwr.owl#Angiosperm",
+        "purity": 0.95,
+        "nodeNums": 20,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#furanose",
+        "purity": 0.949933110367893,
+        "nodeNums": 12,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#amino_acid_atom",
+        "purity": 0.9480519480519483,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_archetype",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#atom"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Ensembl_cytogenetic_band",
+        "purity": 0.9400000000000002,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#FlowerPerianthForm",
+        "purity": 0.9333333333333333,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/po#Stem",
+        "purity": 0.9292929292929293,
+        "nodeNums": 33,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#BioMolecularAnnotation",
+        "purity": 0.9272727272727275,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#WoodlandBiome",
+        "purity": 0.9272727272727272,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#NormalizationDescriptionType",
+        "purity": 0.9238095238095236,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#PubMedID",
+        "purity": 0.9222222222222223,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isPubMedIDOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Disease_Gene_Study_in_Paper"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isIDComponentOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Literature_Database"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#deoxy_sugar",
+        "purity": 0.9165678388254908,
+        "nodeNums": 81,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#aldose",
+        "purity": 0.9100138393769643,
+        "nodeNums": 171,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2003/11/swrl#Variable",
+        "purity": 0.9052287581699345,
+        "nodeNums": 204,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#Surface",
+        "purity": 0.9030303030303035,
+        "nodeNums": 110,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#nine-carbon_sugar",
+        "purity": 0.9017933031003109,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_second_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#beta_sugar",
+        "purity": 0.901390803304668,
+        "nodeNums": 84,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#amino_sugar",
+        "purity": 0.9005815460186435,
+        "nodeNums": 61,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_amino_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#alpha_sugar",
+        "purity": 0.898317384524137,
+        "nodeNums": 104,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#six-carbon_sugar",
+        "purity": 0.8974911035237654,
+        "nodeNums": 140,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#pyranose",
+        "purity": 0.8962649894527699,
+        "nodeNums": 176,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/ns/dcat#Distribution",
+        "purity": 0.8916408668730855,
+        "nodeNums": 720,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/dc/terms/publisher",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/title",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/license",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://xmlns.com/foaf/0.1/page",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/rights",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/dc/terms/format",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#ExclusionTerm",
+        "purity": 0.8898467432950257,
+        "nodeNums": 348,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://who.int/icd#language",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/OBI_0001168",
+        "purity": 0.8888888888888891,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000117",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/po#Fruit",
+        "purity": 0.8888888888888888,
+        "nodeNums": 39,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#bi-coded-scale-item",
+        "purity": 0.8888888888888862,
+        "nodeNums": 221,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-qualitative-scale-item-code",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-quantitative-scale-item-code",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://neurolog.unice.fr/ontoneurolog/v3.0/instrument.owl#has-numerical-value",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#float"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#uronic_acid",
+        "purity": 0.8888821523304284,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#aldonic_acid",
+        "purity": 0.8769603948364664,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#keto_sugar",
+        "purity": 0.8769603948364664,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#monosaccharide_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_number_of_main_chain_C_atoms",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#int"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_deoxy_carbon_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_sugar_structural_variation",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#sugar_carbonyl_carbon_site_variation"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_ring_form",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#ring_form"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_link",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_atom",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_monosaccharide_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_configuration",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#anomeric_configuration"
+                ]
+            },
+            {
+                "edgeLabel": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#has_anomeric_carbon",
+                "nodeBLabelSet": [
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_atom",
+                    "http://glycomics.ccrc.uga.edu/ontologies/GlycO#C_atom_component"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#BindingProtein",
+        "purity": 0.873015873015873,
+        "nodeNums": 21,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#StructuralProtein",
+        "purity": 0.8725490196078431,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#FactorRegulatorHormone",
+        "purity": 0.8703703703703707,
+        "nodeNums": 36,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N_atom_component",
+        "purity": 0.8549019607843138,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#LeafShape",
+        "purity": 0.849462365591398,
+        "nodeNums": 31,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#AllDifferent",
+        "purity": 0.8215384615384602,
+        "nodeNums": 65,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2002/07/owl#AllDifferent"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#InverseFunctionalProperty",
+        "purity": 0.8204428303655122,
+        "nodeNums": 388,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Vocabulary_term",
+        "purity": 0.817142857142857,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#concept",
+                "nodeBLabelSet": [
+                    "http://purl.org/autism-ontology/1.0/autism-rules.owl#Concept"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#SignallingProtein",
+        "purity": 0.812820512820513,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#N-glycan_carbohydrate_residue",
+        "purity": 0.8000000000000016,
+        "nodeNums": 144,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#GalNAc-initiated_O-glycan_carbohydrate_residue",
+        "purity": 0.8000000000000003,
+        "nodeNums": 18,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#OrganismPartDatabase",
+        "purity": 0.8000000000000003,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://bioportal/bioontology.org/ontologies/HIVO0004#OWLClass_00000007820230529857",
+        "purity": 0.7999999999999994,
+        "nodeNums": 38,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.semanticweb.org/owner/ontologies/2014/2/HIVandAIDS.owl#OWLDataProperty_00000008016662876846",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#integer"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#DeprecatedTerms",
+        "purity": 0.7954975593253095,
+        "nodeNums": 55,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#comment",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#unique_identifier",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#deprecation_reason",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://mged.sourceforge.net/ontologies/MGEDOntology.owl#deprecation_in_version",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#O_atom_component",
+        "purity": 0.7785714285714289,
+        "nodeNums": 28,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#ClimateRegion",
+        "purity": 0.7727272727272725,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/OBI_0000713",
+        "purity": 0.7722277722277724,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000114",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/IAO_0000078"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/Ontology1415135201.owl#obsolete_term_metaclass",
+        "purity": 0.7626577872169844,
+        "nodeNums": 794,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_Name_for_Obsolete",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Term_Status",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/OGSF_0000031",
+        "purity": 0.7597402597402598,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#ForestBiome",
+        "purity": 0.75,
+        "nodeNums": 16,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#nucleoside_base_intraresidue_covalent_bond",
+        "purity": 0.7460317460317463,
+        "nodeNums": 21,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Linkage",
+        "purity": 0.7430303030303029,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isObservedRelationshipOf",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Microsatellite_Marker"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/ODGI.owl#isObservedIn",
+                "nodeBLabelSet": [
+                    "http://purl.obolibrary.org/obo/ODGI.owl#Disease_Gene_Study_in_Paper"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Risk_factor",
+        "purity": 0.7378246753246751,
+        "nodeNums": 44,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_exposure",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#has_subject",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2003/11/swrl#Imp",
+        "purity": 0.7264114462490254,
+        "nodeNums": 862,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#Receptor",
+        "purity": 0.718037518037518,
+        "nodeNums": 51,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#carbohydrate_intraresidue_covalent_bond",
+        "purity": 0.7179487179487176,
+        "nodeNums": 39,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://xmlns.com/foaf/0.1/Person",
+        "purity": 0.7025641025641025,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://xmlns.com/foaf/0.1/name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/UO_0000051",
+        "purity": 0.696168426180541,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000111",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000115",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/IAO_0000412",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://purl.obolibrary.org/obo/subset",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/envo#PhysiographicFeature",
+        "purity": 0.6866402116402115,
+        "nodeNums": 54,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.org/autism-ontology/1.0/autism-rules.owl#Concept",
+        "purity": 0.6749783549783559,
+        "nodeNums": 110,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/autism-ontology/1.0/autism-rules.owl#concept_preffered_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#DefinitionSection",
+        "purity": 0.6705837173579108,
+        "nodeNums": 62,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://who.int/icd#TermSection",
+        "purity": 0.6665266106442573,
+        "nodeNums": 34,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#ConceptMetaClass",
+        "purity": 0.6621212121212137,
+        "nodeNums": 88,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#ConditionMetaClass",
+        "purity": 0.6592661306947019,
+        "nodeNums": 42,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#isInSensitiveDefinitionOf",
+                "nodeBLabelSet": [
+                    "http://www.medicine.mcgill.ca/epidemiology/buckeridge/syndromes.owl#SyndromeMetaClass"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.sarala.bioeng.auckland.ac.nz/Physical.owl#Constant",
+        "purity": 0.6479853479853483,
+        "nodeNums": 13,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/VO_0000299",
+        "purity": 0.6161224489795913,
+        "nodeNums": 70,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#NuclearReceptor",
+        "purity": 0.6105042016806721,
+        "nodeNums": 17,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Disease_Gene_Study_in_Paper",
+        "purity": 0.5930735930735929,
+        "nodeNums": 11,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Classified_Group",
+        "purity": 0.5904761904761906,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/IAO_0000129",
+        "purity": 0.585714285714285,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.semanticweb.org/ontologies/2008/1/Ontology1204037102846.owl#Data_Requestor",
+        "purity": 0.576524644945698,
+        "nodeNums": 19,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.semanticweb.org/ontologies/2008/1/Ontology1204037102846.owl#HasAccessDate",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#date"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/Ontology1415135201.owl#anatomical_space_metaclass",
+        "purity": 0.5142106767517525,
+        "nodeNums": 913,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://rs.tdwg.org/dwc/terms/StateProvince",
+        "purity": 0.5095238095238095,
+        "nodeNums": 35,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/Ontology1415135201.owl#vein_metaclass",
+        "purity": 0.50902913626928,
+        "nodeNums": 837,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://glycomics.ccrc.uga.edu/ontologies/GlycO#residue_link",
+        "purity": 0.5073157754722002,
+        "nodeNums": 179,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/ODGI.owl#Gene",
+        "purity": 0.484949494949495,
+        "nodeNums": 10,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.stkos-ontology/domain/plantbiodiversity#Species",
+        "purity": 0.47943722943723066,
+        "nodeNums": 110,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.stkos-ontology/domain/plantbiodiversity#has_related_synonym",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/Ontology1415135201.owl#imaging_observation_metaclass",
+        "purity": 0.4726219184087166,
+        "nodeNums": 985,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/Ontology1415135201.owl#Preferred_name",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://www.w3.org/2000/01/rdf-schema#label",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://purl.obolibrary.org/obo/OBI_0000245",
+        "purity": 0.4655270655270656,
+        "nodeNums": 117,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.owl-ontologies.com/NPOntology.owl#IC50",
+        "purity": 0.45999999999999974,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.owl-ontologies.com/NPOntology.owl#activityCategory",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#SymmetricProperty",
+        "purity": 0.39837415580062707,
+        "nodeNums": 120,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2000/01/rdf-schema#Class",
+        "purity": 0.3978338580611309,
+        "nodeNums": 66,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#IrreflexiveProperty",
+        "purity": 0.3867114367114364,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#Ontology",
+        "purity": 0.3841933981037262,
+        "nodeNums": 359,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#TransitiveProperty",
+        "purity": 0.38007110086023,
+        "nodeNums": 318,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#AsymmetricProperty",
+        "purity": 0.37582010582010583,
+        "nodeNums": 15,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.semanticweb.org/ontologies/2008/1/Ontology1204037102846.owl#Situation",
+        "purity": 0.330621693121693,
+        "nodeNums": 24,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "purity": 0.30456957328385936,
+        "nodeNums": 175,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "http://www.w3.org/2002/07/owl#ReflexiveProperty",
+        "purity": 0.2441192906710148,
+        "nodeNums": 29,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            }
+        ]
+    }
+]

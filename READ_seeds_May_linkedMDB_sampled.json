@@ -1,0 +1,346 @@
+[
+    {
+        "typeId": "836892",
+        "content": "http://data.linkedmdb.org/resource/movie/country",
+        "purity": 1,
+        "nodeNums": 247,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://www.w3.org/2002/07/owl#sameAs",
+                "nodeBLabelSet": [
+                    "uri"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_continent",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_areaInSqKm",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#double"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_iso_alpha3",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_iso_numeric",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_population",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_iso_alpha2",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_capital",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_currency",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_languages",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/country_fips_code",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "652204",
+        "content": "http://data.linkedmdb.org/resource/movie/film_festival_event",
+        "purity": 1,
+        "nodeNums": 685,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_festival_event_opening_date",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_festival_event_closing_date",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "704535",
+        "content": "http://data.linkedmdb.org/resource/movie/dubbing_performance",
+        "purity": 1,
+        "nodeNums": 118,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/dubbing_performance_actor",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/dubbing_performance_character",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/dubbing_performance_language",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/dubbing_performance_film",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "1021634",
+        "content": "http://data.linkedmdb.org/resource/movie/film_regional_release_date",
+        "purity": 1,
+        "nodeNums": 418,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_regional_release_date_film_release_distribution_medium",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_regional_release_date_film_release_region",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_regional_release_date_film_regional_debut_venue",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_regional_release_date_release_date",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "837819",
+        "content": "http://data.linkedmdb.org/resource/movie/film_film_company_relationship",
+        "purity": 0.9907407407407409,
+        "nodeNums": 36,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_company_relationship_role_service",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "842408",
+        "content": "http://data.linkedmdb.org/resource/movie/performance",
+        "purity": 0.9896920142004502,
+        "nodeNums": 197271,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/performance_character",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/performance_film",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/performance_note",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/performance_actor",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "802569",
+        "content": "http://data.linkedmdb.org/resource/movie/personal_film_appearance",
+        "purity": 0.9508928571428459,
+        "nodeNums": 1120,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/personal_film_appearance_type_of_appearance",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/personal_film_appearance_person",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "2058314",
+        "content": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship",
+        "purity": 0.8331511282810444,
+        "nodeNums": 15256,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship_year",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship_film_cut",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship_film_distribution_medium",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship_distributor",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_film_distributor_relationship_region",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "1113141",
+        "content": "http://data.linkedmdb.org/resource/movie/content_rating",
+        "purity": 0.7370716510903439,
+        "nodeNums": 107,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/content_rating_country",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/content_rating_film_rating_system",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "803434",
+        "content": "http://data.linkedmdb.org/resource/movie/film_cut",
+        "purity": 0.6636720504950122,
+        "nodeNums": 45259,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/runtime",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "195607",
+        "content": "http://data.linkedmdb.org/resource/oddlinker/interlink",
+        "purity": 0.6340221109905315,
+        "nodeNums": 162199,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/oddlinker/link_type",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            },
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/oddlinker/linkage_run",
+                "nodeBLabelSet": [
+                    "http://data.linkedmdb.org/resource/oddlinker/linkage_run"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "2123428",
+        "content": "http://data.linkedmdb.org/resource/movie/film_crew_gig",
+        "purity": 0.5041171124132184,
+        "nodeNums": 17237,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://data.linkedmdb.org/resource/movie/film_crew_role",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    },
+    {
+        "typeId": "1858106",
+        "content": "http://data.linkedmdb.org/resource/movie/film",
+        "purity": 0.30426247311143606,
+        "nodeNums": 85620,
+        "commonEdges": [
+            {
+                "edgeLabel": "http://purl.org/dc/terms/title",
+                "nodeBLabelSet": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                ]
+            }
+        ]
+    }
+]
