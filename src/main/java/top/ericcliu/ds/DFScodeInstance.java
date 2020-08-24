@@ -141,4 +141,12 @@ public class DFScodeInstance implements SaveToFile {
         DFScodeInstance.sample(1, 1, 1).saveToFile("edgeInstanceTest.json", false);
         System.out.println(DFScodeInstance.calMNI());
     }
+
+    @Override
+    public String toString() {
+        return "DFScodeInstance{" +
+                "instances=" + instances +
+                ", dfScode=" + dfScode +
+                '}';
+    }
 }

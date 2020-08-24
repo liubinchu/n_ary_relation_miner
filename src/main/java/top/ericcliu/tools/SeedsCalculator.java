@@ -29,10 +29,10 @@ public class SeedsCalculator {
     private static Set<Integer> predMetaData = new HashSet<>();
     private static Set<Integer> objMetaData = new HashSet<>();
     private static Set<Integer> metaData = new HashSet<>();
-    //private final static String DATA_BASE_PATH = "E:\\bioportal.sqlite";
+    private final static String DATA_BASE_PATH = "E:\\bioportal.sqlite";
     //private static String DATA_BASE_PATH = "/home/lbc/bioportal1.sqlite";
     private final static String OUT_PUT_FILE_NAME = "seeds_May_bioportal_sampled";
-    private static String DATA_BASE_PATH = "E:\\linkedmdb.sqlite";
+    //private static String DATA_BASE_PATH = "E:\\linkedmdb.sqlite";
     //private static String DATA_BASE_PATH = "/home/lbc/linkedmdb.sqlite";
     //private final static String OUT_PUT_FILE_NAME = "seeds_May_linkedMDB_sampled" ;
     private static Connection db = new DataBaseTools().sqliteConect(DATA_BASE_PATH);
@@ -391,8 +391,8 @@ public class SeedsCalculator {
     }
 
     public static void main(String[] args) throws Exception {
-        ArrayList<SeedString> seeds = calculateSeeds(true, true,
-                true, DATA_BASE_PATH);
+        //ArrayList<SeedString> seeds = calculateSeeds(true, true,
+        //        true, DATA_BASE_PATH);
         int maxNode = 50;
         int maxDeep = 5;
 /*        for (SeedString seed : seeds) {
@@ -400,6 +400,8 @@ public class SeedsCalculator {
             SeedsCalculator.extractTypeRelatedGraph(maxDeep, seed.getTypeId(), filePath, maxNode);
             System.out.println("ExtractTypeRelatedGraph Finished");
         }*/
+        String filePath = "D_" + maxDeep + "P_" + 10156 + "R_" + maxNode + "T_" + 10156 + ".json";
+        SeedsCalculator.extractTypeRelatedGraph(maxDeep, 10156, filePath, maxNode);
         db.close();
     }
 }

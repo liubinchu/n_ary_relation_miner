@@ -15,7 +15,6 @@ import java.util.Map;
  * @date 2019-05-27 10:10
  **/
 public class MLNAryRelationMiner {
-
     public static int leafNums = 0;
     //挖掘空间中叶子节点数
     public static int nodeNums = 0;
@@ -58,6 +57,21 @@ public class MLNAryRelationMiner {
                             it.remove();
                             changed = true;
                         }
+
+/*                        MLDFScode mldfScode = new MLDFScode(entry.getKey());
+                        MLDFScodeInstance mldfScodeInstance = new MLDFScodeInstance(entry.getValue());
+                        mldfScode.setRootNodeNum(mldfScodeInstance.calNMNI());
+                        mldfScode.setInstanceNum(mldfScodeInstance.getInstances().size());
+                        mldfScode.setMNI(mldfScodeInstance.calMMNI());
+                        mldfScode.setRootNodeRatio(((double) mldfScode.getRootNodeNum()
+                                / (double) this.dataGraph.getTypeRelatedNum()));
+                        mldfScode.setRelatedRatio(MultiLabelUtil.calRelatedRatio(mldfScode,
+                                this.dataGraph));
+                        System.out.println(mldfScode.toJsonString());
+                        System.out.println(new MLDFScodeString(
+                                mldfScode,
+                                "E:\\bioportal.sqlite",
+                                10156).toJsonString());*/
                     }
                     if (changed) {
                         this.dataGraph.getGraphEdge().put(labelA, labelB, map);
@@ -100,6 +114,11 @@ public class MLNAryRelationMiner {
             childDFScode.setRelatedRatio(MultiLabelUtil.calRelatedRatio(childDFScode,
                     this.dataGraph));
 
+            System.out.println(childDFScode.toJsonString());
+            System.out.println(new MLDFScodeString(
+                    childDFScode,
+                    "E:\\bioportal.sqlite",
+                    10156).toJsonString());
             // 使用 NMNI 作为频繁度剪枝手段
             if (childDFScode.getRootNodeNum() < this.support) {
                 continue;
@@ -130,7 +149,6 @@ public class MLNAryRelationMiner {
                     // 仅从当前 typeId 作为根节点 出发 拓展
                     MLDFScode mldfScode = new MLDFScode(entry.getKey());
                     MLDFScodeInstance mldfScodeInstance = new MLDFScodeInstance(entry.getValue());
-
                     mldfScode.setRootNodeNum(mldfScodeInstance.calNMNI());
                     mldfScode.setInstanceNum(mldfScodeInstance.getInstances().size());
                     mldfScode.setMNI(mldfScodeInstance.calMMNI());
@@ -138,7 +156,6 @@ public class MLNAryRelationMiner {
                             / (double) this.dataGraph.getTypeRelatedNum()));
                     mldfScode.setRelatedRatio(MultiLabelUtil.calRelatedRatio(mldfScode,
                             this.dataGraph));
-
                     mineCore(mldfScode, mldfScodeInstance, 1);
                 }
             }
@@ -147,14 +164,14 @@ public class MLNAryRelationMiner {
 
 
     public static void main(String[] args) throws Exception {
-        String filePath = args[0];
+/*        String filePath = args[0];
         double threshold = Double.parseDouble(args[1]);
         int maxDepth = Integer.parseInt(args[2]);
-        double relatedRatio = Double.parseDouble(args[3]);
-  /*      String filePath = "D_10P_0.7378246753246751R_1.0T_11260.json";
-        double threshold = 0.1;
+        double relatedRatio = Double.parseDouble(args[3]);*/
+        String filePath = "D_5P_10156R_50T_10156.json";
+        double threshold = 0.01;
         int maxDepth = 3;
-        double relatedRatio = 0.001;*/
+        double relatedRatio = 0.001;
         double purity = Double.parseDouble(filePath.split("[_R]")[2]);
         // 当前版本不起作用 经过验证，相关性度量不起作用
         try {
